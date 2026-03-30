@@ -849,8 +849,10 @@ async function fetchSpot(btn, keyword, name, emoji) {
 }
 
 // ══════════════════════════════════════════
-//  아이템 시세 검색 (mashop.kr 기반)
+//  아이템 시세 검색 (내 PC 봇 서버 경유)
 // ══════════════════════════════════════════
+const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.app";
+
 function setItemSearch(name) {
   document.getElementById('item-input').value = name;
   searchItem();
@@ -878,73 +880,47 @@ async function searchItem() {
   btn.innerHTML = '<span class="spinner"></span>';
 
   try {
-    // mashop.kr 아이템 검색 API 사용
-    const enc = encodeURIComponent(keyword);
-    const raw = await proxyFetch(`https://api.mashop.kr/api/items?keyword=${enc}`);
-    const listRaw = await proxyFetch(`https://api.mashop.kr/api/items/price-stat?keyword=${enc}`);
-
-    const prices     = extractAll(raw, 'price');
-    const colors     = extractAll(raw, 'serverColor');
-    const tradeTypes = extractAll(raw, 'tradeType');
-    const createTimes= extractAll(raw, 'createTime');
-    const statPrices = extractAll(listRaw, 'price');
-    const statTimes  = extractAll(listRaw, 'dateTime');
-    const memos      = extractComments(raw);
-
-    if (prices.length === 0 && statPrices.length === 0) {
-      document.getElementById('item-error-msg').textContent = `'${keyword}' 검색 결과가 없습니다.`;
-      errBox.classList.remove('hidden');
-      return;
+    const res = await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(keyword)}`, {
+      headers: { 'ngrok-skip-browser-warning': '1' }
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+      throw new Error(err.error || `HTTP ${res.status}`);
     }
+    const data = await res.json();
 
-    let html = `<div style="font-weight:700;font-size:1rem;margin-bottom:12px;">📦 ${keyword}</div>`;
+    let html = `<div style="font-weight:700;font-size:1rem;margin-bottom:12px;">📦 ${data.name}</div>`;
 
-    if (statPrices.length > 0) {
-      html += `<div class="item-result-section"><div class="item-result-title">📊 시간대별 평균가</div>`;
-      const from = Math.max(0, statPrices.length - 3);
-      for (let i = from; i < statPrices.length; i++) {
-        const hour = statTimes[i] ? statTimes[i].substring(11,16) : '??:??';
-        html += `<div class="item-row"><span>${hour}</span><span class="price-high">${formatPriceMashop(statPrices[i])}</span></div>`;
-      }
-      html += `</div><hr class="divider">`;
+    html += `<div class="item-result-section"><div class="item-result-title">💸 팝니다</div>`;
+    if (data.sell && data.sell.length > 0) {
+      data.sell.forEach(e => {
+        const price = formatPrice(e.itemPrice || 0);
+        const comment = e.comment ? ` · ${e.comment}` : '';
+        html += `<div class="item-row">
+          <span class="price-sell">${price} 메소</span>
+          <span style="color:var(--muted);font-size:.8rem">${comment}</span>
+        </div>`;
+      });
+    } else {
+      html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
     }
-
-    html += `<div class="item-result-section"><div class="item-result-title">💸 판매 매물</div>`;
-    let sc = 0;
-    for (let j = 0; j < prices.length && sc < 5; j++) {
-      if ((tradeTypes[j] || 'SELL') !== 'SELL') continue;
-      const ct = createTimes[j] ? ` 🕐${toKST(createTimes[j])}` : '';
-      const memo = memos[j] ? ` · ${memos[j]}` : '';
-      html += `<div class="item-row">
-        <div class="item-row-left">
-          <div class="server-dot ${serverColor(colors[j])}"></div>
-          <span class="price-sell">${formatPriceMashop(prices[j])}</span>
-          <span style="color:var(--muted);font-size:0.78rem">${ct}${memo}</span>
-        </div>
-      </div>`;
-      sc++;
-    }
-    if (sc === 0) html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 매물 없음</span></div>`;
     html += `</div><hr class="divider">`;
 
-    html += `<div class="item-result-section"><div class="item-result-title">🛒 구매 희망가</div>`;
-    let bc = 0;
-    for (let k = 0; k < prices.length && bc < 3; k++) {
-      if (tradeTypes[k] !== 'BUY') continue;
-      const buyCt = createTimes[k] ? ` 🕐${toKST(createTimes[k])}` : '';
-      const buyMemo = memos[k] ? ` · ${memos[k]}` : '';
-      html += `<div class="item-row">
-        <div class="item-row-left">
-          <div class="server-dot ${serverColor(colors[k])}"></div>
-          <span class="price-buy">${formatPriceMashop(prices[k])}</span>
-          <span style="color:var(--muted);font-size:0.78rem">${buyCt}${buyMemo}</span>
-        </div>
-      </div>`;
-      bc++;
+    html += `<div class="item-result-section"><div class="item-result-title">🛒 삽니다</div>`;
+    if (data.buy && data.buy.length > 0) {
+      data.buy.forEach(e => {
+        const price = formatPrice(e.itemPrice || 0);
+        const comment = e.comment ? ` · ${e.comment}` : '';
+        html += `<div class="item-row">
+          <span class="price-buy">${price} 메소</span>
+          <span style="color:var(--muted);font-size:.8rem">${comment}</span>
+        </div>`;
+      });
+    } else {
+      html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
     }
-    if (bc === 0) html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
     html += `</div>`;
-    html += `<div style="margin-top:10px;font-size:0.75rem;color:var(--muted)">♡ <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 기준</div>`;
+    html += `<div style="margin-top:10px;font-size:.75rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
 
     resultBox.innerHTML = html;
     resultBox.className = 'card';
