@@ -853,6 +853,14 @@ async function fetchSpot(btn, keyword, name, emoji) {
 // ══════════════════════════════════════════
 const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.dev";
 
+const SHORTCUTS = {
+  파엘:"파워 엘릭서", 마엘:"마나 엘릭서", 만병:"만병통치약",
+  새벽:"새벽의 이슬", 황혼:"황혼의 이슬", 일비:"일비 표창",
+  뇌전:"뇌전수리검", 장공10:"장갑 공격력 주문서 10%",
+  장공60:"장갑 공격력 주문서 60%", 노목:"노가다 목장갑",
+  드퍼슬:"드래곤 퍼플 슬레브", 드그슬:"드래곤 그린 슬레브",
+};
+
 function setItemSearch(name) {
   document.getElementById('item-input').value = name;
   searchItem();
@@ -865,8 +873,11 @@ function formatPrice(n) {
 }
 
 async function searchItem() {
-  const keyword = document.getElementById('item-input').value.trim();
+  let keyword = document.getElementById('item-input').value.trim();
   if (!keyword) return;
+
+  // 줄임말 변환
+  if (SHORTCUTS[keyword]) keyword = SHORTCUTS[keyword];
 
   const errBox = document.getElementById('item-error');
   const candBox = document.getElementById('item-candidates');
@@ -881,50 +892,38 @@ async function searchItem() {
 
   try {
     const res = await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(keyword)}`, {
-      headers: { 'ngrok-skip-browser-warning': '1' }
+      method: 'GET',
+      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' },
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
-      throw new Error(err.error || `HTTP ${res.status}`);
+
+    if (res.status === 404) {
+      // 부분 검색 시도
+      const res2 = await fetch(`${NGROK_URL}/search?q=${encodeURIComponent(keyword)}`, {
+        headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
+      });
+      if (res2.ok) {
+        const data2 = await res2.json();
+        if (data2.items && data2.items.length > 0) {
+          candBox.innerHTML = `<div class="item-result-title" style="margin-bottom:8px">검색 결과 ${data2.items.length}개 — 선택하세요</div>`;
+          data2.items.forEach(item => {
+            const b = document.createElement('button');
+            b.className = 'candidate-btn';
+            b.textContent = item.name;
+            b.onclick = () => fetchItemByName(item.name);
+            candBox.appendChild(b);
+          });
+          candBox.classList.remove('hidden');
+          return;
+        }
+      }
+      document.getElementById('item-error-msg').textContent = `'${keyword}' 아이템을 찾을 수 없습니다.`;
+      errBox.classList.remove('hidden');
+      return;
     }
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-
-    let html = `<div style="font-weight:700;font-size:1rem;margin-bottom:12px;">📦 ${data.name}</div>`;
-
-    html += `<div class="item-result-section"><div class="item-result-title">💸 팝니다</div>`;
-    if (data.sell && data.sell.length > 0) {
-      data.sell.forEach(e => {
-        const price = formatPrice(e.itemPrice || 0);
-        const comment = e.comment ? ` · ${e.comment}` : '';
-        html += `<div class="item-row">
-          <span class="price-sell">${price} 메소</span>
-          <span style="color:var(--muted);font-size:.8rem">${comment}</span>
-        </div>`;
-      });
-    } else {
-      html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
-    }
-    html += `</div><hr class="divider">`;
-
-    html += `<div class="item-result-section"><div class="item-result-title">🛒 삽니다</div>`;
-    if (data.buy && data.buy.length > 0) {
-      data.buy.forEach(e => {
-        const price = formatPrice(e.itemPrice || 0);
-        const comment = e.comment ? ` · ${e.comment}` : '';
-        html += `<div class="item-row">
-          <span class="price-buy">${price} 메소</span>
-          <span style="color:var(--muted);font-size:.8rem">${comment}</span>
-        </div>`;
-      });
-    } else {
-      html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
-    }
-    html += `</div>`;
-    html += `<div style="margin-top:10px;font-size:.75rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
-
-    resultBox.innerHTML = html;
-    resultBox.className = 'card';
-    resultBox.classList.remove('hidden');
+    renderItemResult(data);
   } catch(e) {
     document.getElementById('item-error-msg').textContent = '오류: ' + e.message;
     errBox.classList.remove('hidden');
@@ -933,6 +932,54 @@ async function searchItem() {
     btn.innerHTML = '검색';
   }
 }
+
+async function fetchItemByName(name) {
+  document.getElementById('item-candidates').classList.add('hidden');
+  const errBox = document.getElementById('item-error');
+  const btn = document.getElementById('item-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    const res = await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(name)}`, {
+      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    renderItemResult(await res.json());
+  } catch(e) {
+    document.getElementById('item-error-msg').textContent = '오류: ' + e.message;
+    errBox.classList.remove('hidden');
+  } finally { btn.disabled = false; btn.innerHTML = '검색'; }
+}
+
+function renderItemResult(data) {
+  const resultBox = document.getElementById('item-result');
+  let html = `<div style="font-weight:700;font-size:1rem;margin-bottom:12px;">📦 ${data.name}</div>`;
+  html += `<div class="item-result-section"><div class="item-result-title">💸 팝니다</div>`;
+  if (data.sell && data.sell.length > 0) {
+    data.sell.forEach(e => {
+      const price = formatPrice(e.itemPrice || 0);
+      const comment = e.comment ? ` · ${e.comment}` : '';
+      html += `<div class="item-row"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.8rem">${comment}</span></div>`;
+    });
+  } else {
+    html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
+  }
+  html += `</div><hr class="divider">`;
+  html += `<div class="item-result-section"><div class="item-result-title">🛒 삽니다</div>`;
+  if (data.buy && data.buy.length > 0) {
+    data.buy.forEach(e => {
+      const price = formatPrice(e.itemPrice || 0);
+      const comment = e.comment ? ` · ${e.comment}` : '';
+      html += `<div class="item-row"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.8rem">${comment}</span></div>`;
+    });
+  } else {
+    html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
+  }
+  html += `</div><div style="margin-top:10px;font-size:.75rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
+  resultBox.innerHTML = html;
+  resultBox.className = 'card';
+  resultBox.classList.remove('hidden');
+}
+
 
 // ══════════════════════════════════════════
 //  날씨
