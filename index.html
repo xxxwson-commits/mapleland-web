@@ -378,6 +378,15 @@ main { position: relative; z-index: 1; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── 필터 UI ── */
+.filter-grid { display: flex; flex-direction: column; gap: 8px; }
+.filter-row { display: flex; align-items: center; gap: 8px; }
+.filter-label { font-size: .8rem; color: var(--muted); width: 85px; flex-shrink: 0; }
+.filter-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; color: var(--text); font-size: .85rem; outline: none; min-width: 0; transition: border-color .2s; }
+.filter-input:focus { border-color: var(--accent); }
+.filter-input::placeholder { color: var(--muted); }
+.filter-tilde { color: var(--muted); font-size: .85rem; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -933,6 +942,9 @@ async function searchItem() {
   }
 }
 
+// 선택된 아이템 저장
+let selectedItem = null;
+
 async function fetchItemByName(name) {
   document.getElementById('item-candidates').classList.add('hidden');
   const errBox = document.getElementById('item-error');
@@ -943,22 +955,109 @@ async function fetchItemByName(name) {
       headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    renderItemResult(await res.json());
+    const data = await res.json();
+    selectedItem = { name: data.name, code: data.code };
+    showFilterUI(data);
   } catch(e) {
     document.getElementById('item-error-msg').textContent = '오류: ' + e.message;
     errBox.classList.remove('hidden');
   } finally { btn.disabled = false; btn.innerHTML = '검색'; }
 }
 
-function renderItemResult(data) {
+function showFilterUI(data) {
   const resultBox = document.getElementById('item-result');
-  let html = `<div style="font-weight:700;font-size:1rem;margin-bottom:12px;">📦 ${data.name}</div>`;
-  html += `<div class="item-result-section"><div class="item-result-title">💸 팝니다</div>`;
+  resultBox.innerHTML = `
+    <div style="font-weight:700;font-size:1rem;margin-bottom:14px;">📦 ${data.name}</div>
+    <div class="filter-grid">
+      <div class="filter-row">
+        <span class="filter-label">💰 가격</span>
+        <input class="filter-input" id="f-lowprice" placeholder="최소" type="number">
+        <span class="filter-tilde">~</span>
+        <input class="filter-input" id="f-highprice" placeholder="최대" type="number">
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">⚔️ 공격력</span>
+        <input class="filter-input" id="f-lowpad" placeholder="최소" type="number">
+        <span class="filter-tilde">~</span>
+        <input class="filter-input" id="f-highpad" placeholder="최대" type="number">
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">✨ 마력</span>
+        <input class="filter-input" id="f-lowmad" placeholder="최소" type="number">
+        <span class="filter-tilde">~</span>
+        <input class="filter-input" id="f-highmad" placeholder="최대" type="number">
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">📊 합마</span>
+        <input class="filter-input" id="f-lowhapma" placeholder="최소" type="number">
+        <span class="filter-tilde">~</span>
+        <input class="filter-input" id="f-highhapma" placeholder="최대" type="number">
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">🔨 작횟수</span>
+        <input class="filter-input" id="f-lowupgrade" placeholder="최소" type="number">
+        <span class="filter-tilde">~</span>
+        <input class="filter-input" id="f-highupgrade" placeholder="최대" type="number">
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">🔧 남은업횟</span>
+        <input class="filter-input" id="f-lowtuc" placeholder="최소" type="number">
+        <span class="filter-tilde">~</span>
+        <input class="filter-input" id="f-hightuc" placeholder="최대" type="number">
+      </div>
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:12px;" onclick="applyFilter()">🔍 필터 적용</button>
+    <div id="filter-result" style="margin-top:12px;"></div>
+  `;
+  resultBox.className = 'card';
+  resultBox.classList.remove('hidden');
+
+  // 기본 결과 바로 표시
+  renderTradeResult(data, document.getElementById('filter-result'));
+}
+
+async function applyFilter() {
+  if (!selectedItem) return;
+  const btn = document.querySelector('#item-result .btn-primary');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> 조회 중...';
+
+  const params = new URLSearchParams({ q: selectedItem.name });
+  const fields = {
+    'f-lowprice': 'lowPrice', 'f-highprice': 'highPrice',
+    'f-lowpad': 'lowincPAD', 'f-highpad': 'highincPAD',
+    'f-lowmad': 'lowincMAD', 'f-highmad': 'highincMAD',
+    'f-lowhapma': 'lowHapma', 'f-highhapma': 'highHapma',
+    'f-lowupgrade': 'lowUpgrade', 'f-highupgrade': 'highUpgrade',
+    'f-lowtuc': 'lowTuc', 'f-hightuc': 'highTuc',
+  };
+  for (const [id, param] of Object.entries(fields)) {
+    const val = document.getElementById(id)?.value;
+    if (val) params.set(param, val);
+  }
+
+  try {
+    const res = await fetch(`${NGROK_URL}/item?${params.toString()}`, {
+      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    renderTradeResult(await res.json(), document.getElementById('filter-result'));
+  } catch(e) {
+    document.getElementById('filter-result').innerHTML = `<div class="error-box">✕ 오류: ${e.message}</div>`;
+  } finally {
+    btn.disabled = false; btn.innerHTML = '🔍 필터 적용';
+  }
+}
+
+function renderTradeResult(data, container) {
+  let html = `<div class="item-result-section"><div class="item-result-title">💸 팝니다</div>`;
   if (data.sell && data.sell.length > 0) {
     data.sell.forEach(e => {
       const price = formatPrice(e.itemPrice || 0);
       const comment = e.comment ? ` · ${e.comment}` : '';
-      html += `<div class="item-row"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.8rem">${comment}</span></div>`;
+      const pad = e.incPAD ? ` 공+${e.incPAD}` : '';
+      const mad = e.incMAD ? ` 마+${e.incMAD}` : '';
+      const tuc = e.tuc !== undefined ? ` 남은업횟${e.tuc}` : '';
+      html += `<div class="item-row"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${pad}${mad}${tuc}${comment}</span></div>`;
     });
   } else {
     html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
@@ -969,15 +1068,17 @@ function renderItemResult(data) {
     data.buy.forEach(e => {
       const price = formatPrice(e.itemPrice || 0);
       const comment = e.comment ? ` · ${e.comment}` : '';
-      html += `<div class="item-row"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.8rem">${comment}</span></div>`;
+      html += `<div class="item-row"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${comment}</span></div>`;
     });
   } else {
     html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
   }
-  html += `</div><div style="margin-top:10px;font-size:.75rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
-  resultBox.innerHTML = html;
-  resultBox.className = 'card';
-  resultBox.classList.remove('hidden');
+  html += `</div><div style="margin-top:8px;font-size:.75rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
+  container.innerHTML = html;
+}
+
+function renderItemResult(data) {
+  showFilterUI(data);
 }
 
 
