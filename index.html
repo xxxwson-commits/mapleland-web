@@ -849,10 +849,8 @@ async function fetchSpot(btn, keyword, name, emoji) {
 }
 
 // ══════════════════════════════════════════
-//  아이템 시세 검색
+//  아이템 시세 검색 (mashop.kr 기반)
 // ══════════════════════════════════════════
-let itemCache = null;
-
 function setItemSearch(name) {
   document.getElementById('item-input').value = name;
   searchItem();
@@ -862,24 +860,6 @@ function formatPrice(n) {
   n = parseInt(n);
   if (isNaN(n)) return '0';
   return n.toLocaleString('ko-KR');
-}
-
-async function getItemList(keyword) {
-  if (!itemCache) {
-    itemCache = await proxyFetch('https://mapleland.gg/api/items?v=260206');
-  }
-  const items = [];
-  const re = /"itemCode"\s*:\s*(\d+)\s*,\s*"itemName"\s*:\s*"([^"]+)"/g;
-  let m;
-  while ((m = re.exec(itemCache)) !== null) items.push({ code: m[1], name: m[2] });
-
-  const kwNoSpace = keyword.replace(/\s/g,'');
-  for (const item of items) if (item.name === keyword) return [item];
-  for (const item of items) if (item.name.replace(/\s/g,'') === kwNoSpace) return [item];
-  const res = [];
-  for (const item of items) { if (res.length >= 9) break; if (item.name.includes(keyword)) res.push(item); }
-  if (res.length === 0) for (const item of items) { if (res.length >= 9) break; if (item.name.replace(/\s/g,'').includes(kwNoSpace)) res.push(item); }
-  return res;
 }
 
 async function searchItem() {
@@ -898,113 +878,80 @@ async function searchItem() {
   btn.innerHTML = '<span class="spinner"></span>';
 
   try {
-    const items = await getItemList(keyword);
-    if (items.length === 0) {
+    // mashop.kr 아이템 검색 API 사용
+    const enc = encodeURIComponent(keyword);
+    const raw = await proxyFetch(`https://api.mashop.kr/api/items?keyword=${enc}`);
+    const listRaw = await proxyFetch(`https://api.mashop.kr/api/items/price-stat?keyword=${enc}`);
+
+    const prices     = extractAll(raw, 'price');
+    const colors     = extractAll(raw, 'serverColor');
+    const tradeTypes = extractAll(raw, 'tradeType');
+    const createTimes= extractAll(raw, 'createTime');
+    const statPrices = extractAll(listRaw, 'price');
+    const statTimes  = extractAll(listRaw, 'dateTime');
+    const memos      = extractComments(raw);
+
+    if (prices.length === 0 && statPrices.length === 0) {
       document.getElementById('item-error-msg').textContent = `'${keyword}' 검색 결과가 없습니다.`;
       errBox.classList.remove('hidden');
       return;
     }
-    if (items.length === 1) {
-      await fetchItemTrade(items[0]);
-    } else {
-      // 여러 결과 → 선택지 표시
-      candBox.innerHTML = `<div class="item-result-title" style="margin-bottom:8px">검색 결과 ${items.length}개 — 아이템을 선택하세요</div>`;
-      items.forEach(item => {
-        const b = document.createElement('button');
-        b.className = 'candidate-btn';
-        b.textContent = item.name;
-        b.onclick = () => fetchItemTrade(item);
-        candBox.appendChild(b);
-      });
-      candBox.classList.remove('hidden');
-    }
-  } catch(e) {
-    document.getElementById('item-error-msg').textContent = '오류: ' + e.message;
-    errBox.classList.remove('hidden');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '검색';
-  }
-}
 
-async function fetchItemTrade(item) {
-  const candBox = document.getElementById('item-candidates');
-  const resultBox = document.getElementById('item-result');
-  const errBox = document.getElementById('item-error');
-  candBox.classList.add('hidden');
-  resultBox.classList.add('hidden');
-  errBox.classList.add('hidden');
+    let html = `<div style="font-weight:700;font-size:1rem;margin-bottom:12px;">📦 ${keyword}</div>`;
 
-  const btn = document.getElementById('item-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>';
-
-  try {
-    const p = new URLSearchParams({ itemCode: item.code, highPrice: '9999999999' });
-    ['lowPrice','lowincPAD','highincPAD','lowincPDD','highincPDD',
-     'lowUpgrade','highUpgrade','lowTuc','highTuc','lowincMAD','highincMAD',
-     'lowHapma','highHapma','lowincSTR','highincSTR','lowincDEX','highincDEX',
-     'lowincINT','highincINT','lowincLUK','highincLUK','lowincMHP','highincMHP',
-     'lowincMMP','highincMMP','hapStatsName','lowHapStatsValue','highHapStatsValue'
-    ].forEach(k => p.set(k, ''));
-
-    const raw = await proxyFetch('https://api.mapleland.gg/trade?' + p.toString());
-
-    // JSON 객체 단위로 분리
-    const entries = [];
-    let depth = 0, start = -1;
-    for (let i = 0; i < raw.length; i++) {
-      if (raw[i] === '{') { if (depth === 0) start = i; depth++; }
-      else if (raw[i] === '}') { depth--; if (depth === 0 && start !== -1) { entries.push(raw.substring(start, i+1)); start = -1; } }
+    if (statPrices.length > 0) {
+      html += `<div class="item-result-section"><div class="item-result-title">📊 시간대별 평균가</div>`;
+      const from = Math.max(0, statPrices.length - 3);
+      for (let i = from; i < statPrices.length; i++) {
+        const hour = statTimes[i] ? statTimes[i].substring(11,16) : '??:??';
+        html += `<div class="item-row"><span>${hour}</span><span class="price-high">${formatPriceMashop(statPrices[i])}</span></div>`;
+      }
+      html += `</div><hr class="divider">`;
     }
 
-    function ef(obj, key) {
-      const re = new RegExp(`"${key}"\\s*:\\s*"?([^",}]+)"?`);
-      const m = obj.match(re); return m ? m[1].trim() : '';
-    }
-    function ec(obj) {
-      const m = obj.match(/"comment"\s*:\s*"((?:[^"\\]|\\.)*)"/);
-      return m ? m[1].trim() : '';
-    }
-
-    let html = `<div style="font-weight:700;font-size:1rem;margin-bottom:12px;">📦 ${item.name}</div>`;
-    html += `<div class="item-result-section"><div class="item-result-title">💸 팝니다</div>`;
+    html += `<div class="item-result-section"><div class="item-result-title">💸 판매 매물</div>`;
     let sc = 0;
-    for (let s = 0; s < entries.length && sc < 4; s++) {
-      if (ef(entries[s],'tradeType') !== 'sell') continue;
-      const price = formatPrice(ef(entries[s],'itemPrice') || '0');
-      const comment = ec(entries[s]);
+    for (let j = 0; j < prices.length && sc < 5; j++) {
+      if ((tradeTypes[j] || 'SELL') !== 'SELL') continue;
+      const ct = createTimes[j] ? ` 🕐${toKST(createTimes[j])}` : '';
+      const memo = memos[j] ? ` · ${memos[j]}` : '';
       html += `<div class="item-row">
-        <span class="price-sell">${price} 메소</span>
-        ${comment ? `<span style="color:var(--muted);font-size:0.8rem">✏️ ${comment}</span>` : ''}
+        <div class="item-row-left">
+          <div class="server-dot ${serverColor(colors[j])}"></div>
+          <span class="price-sell">${formatPriceMashop(prices[j])}</span>
+          <span style="color:var(--muted);font-size:0.78rem">${ct}${memo}</span>
+        </div>
       </div>`;
       sc++;
     }
-    if (sc === 0) html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
+    if (sc === 0) html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 매물 없음</span></div>`;
     html += `</div><hr class="divider">`;
 
-    html += `<div class="item-result-section"><div class="item-result-title">🛒 삽니다</div>`;
+    html += `<div class="item-result-section"><div class="item-result-title">🛒 구매 희망가</div>`;
     let bc = 0;
-    for (let b = 0; b < entries.length && bc < 4; b++) {
-      if (ef(entries[b],'tradeType') !== 'buy') continue;
-      const bprice = formatPrice(ef(entries[b],'itemPrice') || '0');
-      const bcomment = ec(entries[b]);
+    for (let k = 0; k < prices.length && bc < 3; k++) {
+      if (tradeTypes[k] !== 'BUY') continue;
+      const buyCt = createTimes[k] ? ` 🕐${toKST(createTimes[k])}` : '';
+      const buyMemo = memos[k] ? ` · ${memos[k]}` : '';
       html += `<div class="item-row">
-        <span class="price-buy">${bprice} 메소</span>
-        ${bcomment ? `<span style="color:var(--muted);font-size:0.8rem">✏️ ${bcomment}</span>` : ''}
+        <div class="item-row-left">
+          <div class="server-dot ${serverColor(colors[k])}"></div>
+          <span class="price-buy">${formatPriceMashop(prices[k])}</span>
+          <span style="color:var(--muted);font-size:0.78rem">${buyCt}${buyMemo}</span>
+        </div>
       </div>`;
       bc++;
     }
-    if (bc === 0) html += `<div class="item-row"><span style="color:var(--muted)">현재 구매 희망 없음</span></div>`;
+    if (bc === 0) html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
     html += `</div>`;
-    html += `<div style="margin-top:10px;font-size:0.75rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
+    html += `<div style="margin-top:10px;font-size:0.75rem;color:var(--muted)">♡ <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 기준</div>`;
 
     resultBox.innerHTML = html;
     resultBox.className = 'card';
     resultBox.classList.remove('hidden');
   } catch(e) {
     document.getElementById('item-error-msg').textContent = '오류: ' + e.message;
-    document.getElementById('item-error').classList.remove('hidden');
+    errBox.classList.remove('hidden');
   } finally {
     btn.disabled = false;
     btn.innerHTML = '검색';
