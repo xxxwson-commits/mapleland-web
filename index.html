@@ -140,6 +140,31 @@ footer a:hover{color:var(--accent);}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+/* 초대코드 오버레이 */
+.invite-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.invite-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:90%;max-width:360px;text-align:center;}
+.invite-logo{font-family:var(--display);font-size:1.8rem;color:var(--accent);margin-bottom:6px;}
+.invite-sub{font-size:.8rem;color:var(--muted);margin-bottom:24px;}
+.invite-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px;color:var(--text);font-family:var(--mono);font-size:1rem;text-align:center;letter-spacing:.15em;outline:none;margin-bottom:10px;transition:border-color .2s;}
+.invite-input:focus{border-color:var(--accent);}
+.invite-error{font-size:.82rem;color:var(--red);min-height:20px;margin-bottom:8px;}
+.invite-welcome{font-size:.85rem;color:var(--green);min-height:20px;margin-bottom:8px;}
+/* 타이머 단축키 버튼 */
+.timer-adj-row{display:flex;gap:4px;justify-content:center;}
+.adj-btn{padding:3px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--muted);font-size:.72rem;cursor:pointer;transition:all .15s;}
+.adj-btn:hover{border-color:var(--accent);color:var(--accent);}
+.timer-auto-row{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);}
+.toggle-switch{position:relative;width:32px;height:18px;cursor:pointer;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:18px;transition:.2s;}
+.toggle-slider:before{content:'';position:absolute;width:12px;height:12px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.2s;}
+.toggle-switch input:checked+.toggle-slider{background:var(--green);}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(14px);}
+/* 관리자 코드 관리 */
+.code-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;margin-bottom:4px;font-size:.82rem;}
+.code-badge{font-family:var(--mono);color:var(--accent);font-weight:700;flex:1;}
+.code-name{color:var(--muted);font-size:.78rem;}
+.code-disabled{opacity:.4;}</style>
 </style>
 </head>
 <body>
@@ -246,7 +271,7 @@ footer a:hover{color:var(--accent);}
 <!-- 타이머 -->
 <div id="tab-timer" class="tab-panel">
   <div class="section-title">⏱️ 스킬 타이머</div>
-  <div style="margin-bottom:10px;font-size:.82rem;color:var(--muted)">프리셋 클릭으로 빠르게 추가, 시간 직접 수정도 가능해요.</div>
+  <div style="margin-bottom:10px;font-size:.82rem;color:var(--muted)">프리셋 클릭으로 빠르게 추가 · 각 타이머에서 ±30초/±5초 조정 가능</div>
   <div class="timer-preset-row">
     <div class="timer-preset" onclick="addTimer('한타임',60,0)">🍁 한타임 1시간</div>
     <div class="timer-preset" onclick="addTimer('경쿠',15,0)">❄️ 경쿠 15분</div>
@@ -302,7 +327,7 @@ footer a:hover{color:var(--accent);}
 <footer>
   <div style="margin-bottom:4px;">제작 · 운영: 표식길드 <strong style="color:var(--accent)">fourcard</strong></div>
   <div style="margin-bottom:4px;">후원계좌: 신한 110-376-464404 손x원</div>
-  <div>© 2026 메랜비서</div>
+  <div>© 2026 메랜비서 · <a href="https://mapleland.gg" target="_blank">mapleland.gg</a></div>
 </footer>
 <script>
 const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.dev";
@@ -498,7 +523,7 @@ function beep() {
 
 function addTimer(name, mins, secs) {
   const id = Date.now();
-  timers.push({ id, name, totalSec: mins*60+secs, remaining: mins*60+secs, running: false, finished: false, mins, secs });
+  timers.push({ id, name, totalSec: mins*60+secs, remaining: mins*60+secs, running: false, finished: false, autoRestart: false });
   renderTimers();
   if(!timerInterval) timerInterval = setInterval(tickTimers, 1000);
 }
@@ -512,32 +537,38 @@ function addCustomTimer() {
 }
 
 function tickTimers() {
-  let anyRunning = false;
+  let anyActive = false;
   timers.forEach(t => {
     if(t.running && !t.finished) {
       t.remaining--;
-      if(t.remaining <= 0) { t.remaining=0; t.finished=true; t.running=false; beep(); }
-      anyRunning = true;
+      anyActive = true;
+      if(t.remaining <= 0) {
+        t.remaining = 0;
+        beep();
+        if(t.autoRestart) {
+          t.finished = true;
+          setTimeout(() => { t.remaining = t.totalSec; t.finished = false; renderTimers(); }, 1500);
+        } else {
+          t.finished = true; t.running = false;
+        }
+      }
     }
-    if(t.running) anyRunning = true;
+    if(t.running) anyActive = true;
   });
   renderTimers();
-  if(!anyRunning && timers.every(t=>!t.running)) { clearInterval(timerInterval); timerInterval=null; }
+  if(!anyActive) { clearInterval(timerInterval); timerInterval = null; }
 }
 
-function startTimer(id) {
-  const t=timers.find(t=>t.id===id);if(!t)return;
-  t.running=true;t.finished=false;
-  if(!timerInterval) timerInterval=setInterval(tickTimers,1000);
-  renderTimers();
-}
+function startTimer(id) { const t=timers.find(t=>t.id===id);if(!t)return;t.running=true;t.finished=false;if(!timerInterval)timerInterval=setInterval(tickTimers,1000);renderTimers(); }
 function pauseTimer(id) { const t=timers.find(t=>t.id===id);if(t){t.running=false;renderTimers();} }
 function resetTimer(id) { const t=timers.find(t=>t.id===id);if(t){t.running=false;t.finished=false;t.remaining=t.totalSec;renderTimers();} }
 function deleteTimer(id) { timers=timers.filter(t=>t.id!==id);renderTimers(); }
+function toggleAutoRestart(id) { const t=timers.find(t=>t.id===id);if(t){t.autoRestart=!t.autoRestart;renderTimers();} }
+function adjustTimer(id, delta) { const t=timers.find(t=>t.id===id);if(!t)return;t.remaining=Math.max(0,t.remaining+delta);t.totalSec=Math.max(1,t.totalSec+delta);renderTimers(); }
 function updateTimerTime(id) {
   const t=timers.find(t=>t.id===id);if(!t)return;
-  const m=parseInt(document.getElementById(`tm-${id}`).value)||0;
-  const s=parseInt(document.getElementById(`ts-${id}`).value)||0;
+  const m=parseInt(document.getElementById(`tm-${id}`)?.value)||0;
+  const s=parseInt(document.getElementById(`ts-${id}`)?.value)||0;
   t.totalSec=m*60+s;t.remaining=m*60+s;t.running=false;t.finished=false;
   renderTimers();
 }
@@ -552,12 +583,22 @@ function renderTimers() {
     return `<div class="timer-card ${t.running?'running':''} ${t.finished?'finished':''}">
       <div class="timer-name">${t.name}</div>
       <div class="timer-display ${urgent||t.finished?'urgent':''}">${t.finished?'⏰ 종료!':fmtTimer(t.remaining)}</div>
+      <div class="timer-adj-row">
+        <button class="adj-btn" onclick="adjustTimer(${t.id},-30)">-30초</button>
+        <button class="adj-btn" onclick="adjustTimer(${t.id},-5)">-5초</button>
+        <button class="adj-btn" onclick="adjustTimer(${t.id},5)">+5초</button>
+        <button class="adj-btn" onclick="adjustTimer(${t.id},30)">+30초</button>
+      </div>
       <div class="timer-time-edit">
         <input class="timer-time-input" id="tm-${t.id}" value="${Math.floor(t.totalSec/60)}" min="0" max="999" type="number">
         <span style="color:var(--muted);font-size:.8rem;">분</span>
         <input class="timer-time-input" id="ts-${t.id}" value="${t.totalSec%60}" min="0" max="59" type="number">
         <span style="color:var(--muted);font-size:.8rem;">초</span>
         <button class="btn-secondary" style="padding:4px 8px;font-size:.72rem;" onclick="updateTimerTime(${t.id})">설정</button>
+      </div>
+      <div class="timer-auto-row">
+        <label class="toggle-switch"><input type="checkbox" ${t.autoRestart?'checked':''} onchange="toggleAutoRestart(${t.id})"><span class="toggle-slider"></span></label>
+        <span>자동 재시작</span>
       </div>
       <div class="timer-controls">
         ${t.running?`<button class="timer-btn pause" onclick="pauseTimer(${t.id})">⏸ 일시정지</button>`:`<button class="timer-btn start" onclick="startTimer(${t.id})">▶ 시작</button>`}
