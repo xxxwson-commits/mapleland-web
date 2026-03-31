@@ -523,52 +523,64 @@ setInterval(updateClock,1000); updateClock();
   });
 })();
 
-// ── PIP 타이머 ──
-let pipVisible=false;
+// ── PIP 타이머 (팝업 윈도우) ──
+let pipWin=null;
+let pipInterval=null;
+
 function togglePIP(){
-  pipVisible=!pipVisible;
-  document.getElementById('pip-overlay').classList.toggle('show',pipVisible);
-  if(pipVisible)updatePIP();
+  if(pipWin&&!pipWin.closed){
+    pipWin.close();
+    pipWin=null;
+    if(pipInterval){clearInterval(pipInterval);pipInterval=null;}
+    return;
+  }
+  // 팝업 윈도우 오픈 (바탕화면으로 드래그 가능)
+  const w=220,h=timers.length>0?Math.min(60+timers.length*44,320):120;
+  const left=window.screen.width-w-20;
+  const top=window.screen.height-h-60;
+  pipWin=window.open('','_blank',`width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,status=no,titlebar=no`);
+  if(!pipWin){alert('팝업이 차단되었습니다. 브라우저에서 팝업 허용 후 다시 시도해주세요.');return;}
+  pipWin.document.write(getPIPHTML());
+  pipWin.document.close();
+  // 1초마다 팝업 내용 갱신
+  pipInterval=setInterval(()=>{
+    if(!pipWin||pipWin.closed){clearInterval(pipInterval);pipInterval=null;return;}
+    const el=pipWin.document.getElementById('pip-content');
+    if(el)el.innerHTML=getPIPContent();
+  },1000);
 }
-function updatePIP(){
-  if(!pipVisible)return;
-  const pip=document.getElementById('pip-list');
-  const active=timers.filter(t=>t.running||t.remaining>0);
-  if(active.length===0){pip.innerHTML='<span style="color:var(--muted);font-size:.8rem;">실행 중인 타이머 없음</span>';return;}
-  pip.innerHTML=active.map(t=>{
+
+function getPIPContent(){
+  const active=timers.filter(t=>t.remaining>0||t.running);
+  if(active.length===0)return '<div style="color:#6b7280;font-size:13px;text-align:center;padding:10px;">타이머 없음</div>';
+  return active.map(t=>{
     const m=String(Math.floor(t.remaining/60)).padStart(2,'0');
     const s=String(t.remaining%60).padStart(2,'0');
-    const cls=t.remaining<=30?'urgent':'';
-    return `<div class="pip-timer-item"><span class="pip-timer-name">${t.name}</span><span class="pip-timer-val ${cls}">${t.finished?'⏰':m+':'+s}</span></div>`;
+    const color=t.finished?'#e74c3c':t.remaining<=30?'#e74c3c':'#e8a020';
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 12px;border-bottom:1px solid #2a2e3a;">
+      <span style="color:#dde1ec;font-size:12px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.name}</span>
+      <span style="font-family:monospace;font-size:16px;font-weight:700;color:${color};">${t.finished?'⏰':m+':'+s}</span>
+    </div>`;
   }).join('');
 }
-// PIP 드래그 - 화면 밖으로도 자유롭게 이동
-(function(){
-  const el=document.getElementById('pip-overlay');
-  let dragging=false,ox=0,oy=0;
-  function startDrag(cx,cy){
-    dragging=true;
-    const rect=el.getBoundingClientRect();
-    ox=cx-rect.left; oy=cy-rect.top;
-    el.style.right='auto'; el.style.bottom='auto';
-    el.style.left=rect.left+'px'; el.style.top=rect.top+'px';
-  }
-  function moveDrag(cx,cy){
-    if(!dragging)return;
-    // 제한 없이 자유롭게 이동 (화면 밖도 가능)
-    el.style.left=(cx-ox)+'px';
-    el.style.top=(cy-oy)+'px';
-  }
-  function endDrag(){ dragging=false; }
-  // 마우스
-  el.addEventListener('mousedown',e=>{if(e.target.classList.contains('pip-close'))return;startDrag(e.clientX,e.clientY);e.preventDefault();});
-  document.addEventListener('mousemove',e=>{moveDrag(e.clientX,e.clientY);});
-  document.addEventListener('mouseup',endDrag);
-  // 터치
-  el.addEventListener('touchstart',e=>{if(e.target.classList.contains('pip-close'))return;const t=e.touches[0];startDrag(t.clientX,t.clientY);},{passive:true});
-  document.addEventListener('touchmove',e=>{if(!dragging)return;const t=e.touches[0];moveDrag(t.clientX,t.clientY);e.preventDefault();},{passive:false});
-  document.addEventListener('touchend',endDrag);
-})();
+
+function getPIPHTML(){
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>⏱️ 타이머</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#0a0c10;font-family:'Segoe UI',sans-serif;overflow:hidden;}
+  .header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#111318;border-bottom:1px solid #2a2e3a;}
+  .title{color:#e8a020;font-size:13px;font-weight:700;}
+  .close-btn{background:rgba(192,57,43,.3);border:1px solid rgba(192,57,43,.5);color:#e74c3c;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:12px;}
+  </style></head><body>
+  <div class="header"><span class="title">⏱️ 타이머</span><button class="close-btn" onclick="window.close()">✕</button></div>
+  <div id="pip-content">${getPIPContent()}</div>
+  </body></html>`;
+}
+
+function updatePIP(){
+  if(!pipWin||pipWin.closed)return;
+  const el=pipWin.document.getElementById('pip-content');
+  if(el)el.innerHTML=getPIPContent();
+}
 
 // 탭
 function switchTab(name) {
@@ -642,6 +654,28 @@ async function fetchSpot(btn,keyword,name,emoji){
 <script>
 // 아이템 시세
 const SHORTCUTS={파엘:"파워 엘릭서",마엘:"마나 엘릭서",만병:"만병통치약",새벽:"새벽의 이슬",황혼:"황혼의 이슬",일비:"일비 표창",뇌전:"뇌전수리검",장공10:"장갑 공격력 주문서 10%",장공60:"장갑 공격력 주문서 60%",노목:"노가다 목장갑",드퍼슬:"드래곤 퍼플 슬레브",드그슬:"드래곤 그린 슬레브"};
+// mapleland.gg 아이템 ID 하드코딩 (자주 쓰는 아이템)
+const ITEM_ID_MAP={
+  "파워 엘릭서":2000005,"마나 엘릭서":2000006,"만병통치약":2050004,
+  "새벽의 이슬":2022003,"황혼의 이슬":2020015,"일비 표창":2070018,
+  "뇌전수리검":2070019,"노가다 목장갑":1082140,
+  "장갑 공격력 주문서 10%":2040805,"장갑 공격력 주문서 60%":2040802,
+  "드래곤 퍼플 슬레브":1051100,"드래곤 그린 슬레브":1051102,
+  "샤프 아이즈 30":2290075,"피어싱 20":2290070,
+  "망토 힘 주문서 60%":2041005,"망토 행운 주문서 60%":2041009,
+  "귀 장식 체력 주문서 60%":2041203,"귀 장식 민첩 주문서 60%":2041207,
+  "귀 장식 행운 주문서 10%":2041204,"귀 장식 지력 주문서 10%":2041209,
+  "귀 장식 지력 주문서 60%":2041208,"귀 장식 체력 주문서 60%":2041203,
+  "투구 민첩 주문서 60%":2040503,"투구 지력 주문서 100%":2040512,
+  "신발 점프력 주문서 10%":2040712,"장갑 공격력 주문서 10%":2040805,
+  "스탠스 20":2290002,"돌진 20":2290006,
+  "엘릭서":2000004,"스태프 마력 주문서 10%":2043712,
+  "아대 공격력 주문서 10%":2043112,"아대 공격력 주문서 60%":2043111,
+  "창 공격력 주문서 10%":2044104,"석궁 공격력 주문서 10%":2044604,
+  "투구 민첩 주문서 10%":2040504,"투구 지력 주문서 10%":2040511,
+  "스태프 마력 주문서 60%":2043711,"장갑 공격력 주문서 60%":2040802,
+};
+function getItemId(name){ return ITEM_ID_MAP[name]||null; }
 function setItemSearch(name){document.getElementById('item-input').value=name;searchItem();}
 function formatPrice(n){n=parseInt(n);if(isNaN(n))return'0';return n.toLocaleString('ko-KR');}
 let selectedItem=null;
@@ -660,7 +694,7 @@ async function searchItem(){
       document.getElementById('item-error-msg').textContent=`'${keyword}' 아이템을 찾을 수 없습니다.`;errBox.classList.remove('hidden');return;
     }
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();selectedItem={name:data.name, id:data.id||data.itemId||null};showFilterUI(data);
+    const data=await res.json();selectedItem={name:data.name,id:getItemId(data.name)||data.id||data.itemId||data.item_id||null};showFilterUI(data);
   }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
   finally{btn.disabled=false;btn.innerHTML='검색';}
 }
@@ -672,7 +706,7 @@ async function fetchItemByName(name){
   try{
     const res=await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(name)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();selectedItem={name:data.name, id:data.id||data.itemId||null};showFilterUI(data);
+    const data=await res.json();selectedItem={name:data.name,id:getItemId(data.name)||data.id||data.itemId||data.item_id||null};showFilterUI(data);
   }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
   finally{btn.disabled=false;btn.innerHTML='검색';}
 }
@@ -941,9 +975,15 @@ async function deletePost(id){
   if(!pw)return;
   try{
     const res=await fetch(`${NGROK_URL}/posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({password:pw})});
-    if(!res.ok){const e=await res.json();throw new Error(e.error||'삭제 실패');}
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'삭제 실패');}
     alert('삭제됐어요!');loadPosts();
-  }catch(e){alert('오류: '+e.message);}
+  }catch(e){
+    if(e.message.includes('fetch')||e.message.includes('network')||e.message.includes('Failed')){
+      alert('서버에 연결할 수 없어요.\n\n봇 서버(터미널)가 실행 중인지 확인해주세요.');
+    } else {
+      alert('오류: '+e.message);
+    }
+  }
 }
 
 async function submitPost(){
