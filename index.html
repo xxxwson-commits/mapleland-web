@@ -238,6 +238,7 @@ footer a:hover{color:var(--accent);}
   <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')"><span>🌤️</span>날씨</button>
   <button class="tab-btn" data-tab="timer" onclick="switchTab('timer')"><span>⏱️</span>타이머</button>
   <button class="tab-btn" data-tab="farming" onclick="switchTab('farming')"><span>🗺️</span>파밍정보</button>
+  <button class="tab-btn" data-tab="calc" onclick="window.open('https://euphonious-mermaid-a22091.netlify.app','_blank')"><span>🎴</span>분배금계산기</button>
   <button class="tab-btn" data-tab="guild" onclick="switchTab('guild');loadGuildPosts()"><span>⚔️</span>길드모집</button>
   <button class="tab-btn" data-tab="board" onclick="switchTab('board');loadPosts()"><span>📋</span>문의/후기</button>
 </nav>
@@ -502,17 +503,25 @@ function updateClock() {
 }
 setInterval(updateClock,1000); updateClock();
 
-// ── 접속자 수 (폴링 방식) ──
+// ── 접속자 수 (localStorage 기반 간이 카운팅) ──
 (function(){
-  const SID='v_'+Math.random().toString(36).slice(2);
-  function poll(){
-    fetch(NGROK_URL+'/viewers?sid='+SID+'&ngrok-skip-browser-warning=1',{headers:{'ngrok-skip-browser-warning':'1'}})
-      .then(r=>r.json())
-      .then(d=>{const el=document.getElementById('online-count');if(el&&d.viewers!=null)el.textContent=d.viewers;})
-      .catch(()=>{});
+  const KEY='mrlv_visitors', SID='mrlv_'+Math.random().toString(36).slice(2), TTL=60000;
+  function heartbeat(){
+    try{
+      let d=JSON.parse(localStorage.getItem(KEY)||'{}');
+      d[SID]=Date.now();
+      Object.keys(d).forEach(k=>{if(Date.now()-d[k]>TTL)delete d[k];});
+      localStorage.setItem(KEY,JSON.stringify(d));
+      const cnt=Object.keys(d).length;
+      const el=document.getElementById('online-count');
+      if(el)el.textContent=cnt;
+    }catch(e){}
   }
-  poll();
-  setInterval(poll,30000);
+  heartbeat();
+  setInterval(heartbeat,20000);
+  window.addEventListener('beforeunload',()=>{
+    try{let d=JSON.parse(localStorage.getItem(KEY)||'{}');delete d[SID];localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}
+  });
 })();
 
 // ── PIP 타이머 (팝업 윈도우) ──
