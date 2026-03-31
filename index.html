@@ -3,1284 +3,1455 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>분배금 계산기 by fourcard</title>
-<meta name="description" content="메이플랜드 공대 분배금 계산기 by fourcard">
-<meta name="theme-color" content="#1a0a00">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="분배금 계산기">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%231a0a00'/%3E%3Cstop offset='100%25' stop-color='%232d1a00'/%3E%3C/linearGradient%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFF8DC'/%3E%3Cstop offset='50%25' stop-color='%23FFD700'/%3E%3Cstop offset='100%25' stop-color='%23B8860B'/%3E%3C/linearGradient%3E%3ClinearGradient id='g2' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFFACD'/%3E%3Cstop offset='50%25' stop-color='%23FFC200'/%3E%3Cstop offset='100%25' stop-color='%238B6914'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23bg)' rx='18'/%3E%3Cg transform='translate(50,52) rotate(-15)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g1)' stroke='%238B6914' stroke-width='1'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%231a0a00' opacity='0.85'%3E%26%23x2660%3B%3C/text%3E%3C/g%3E%3Cg transform='translate(50,52) rotate(-5)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g2)' stroke='%23DAA520' stroke-width='1'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%238B0000' opacity='0.9'%3E%26%23x2665%3B%3C/text%3E%3C/g%3E%3Cg transform='translate(50,52) rotate(5)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g1)' stroke='%238B6914' stroke-width='1'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%238B0000' opacity='0.9'%3E%26%23x2666%3B%3C/text%3E%3C/g%3E%3Cg transform='translate(50,52) rotate(15)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g2)' stroke='%23DAA520' stroke-width='1.5'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%231a0a00' opacity='0.85'%3E%26%23x2663%3B%3C/text%3E%3C/g%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%231a0a00'/%3E%3Cstop offset='100%25' stop-color='%232d1a00'/%3E%3C/linearGradient%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFF8DC'/%3E%3Cstop offset='50%25' stop-color='%23FFD700'/%3E%3Cstop offset='100%25' stop-color='%23B8860B'/%3E%3C/linearGradient%3E%3ClinearGradient id='g2' x1='1' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFFACD'/%3E%3Cstop offset='50%25' stop-color='%23FFC200'/%3E%3Cstop offset='100%25' stop-color='%238B6914'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23bg)' rx='18'/%3E%3Cg transform='translate(50,52) rotate(-15)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g1)' stroke='%238B6914' stroke-width='1'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%231a0a00' opacity='0.85'%3E%26%23x2660%3B%3C/text%3E%3C/g%3E%3Cg transform='translate(50,52) rotate(-5)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g2)' stroke='%23DAA520' stroke-width='1'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%238B0000' opacity='0.9'%3E%26%23x2665%3B%3C/text%3E%3C/g%3E%3Cg transform='translate(50,52) rotate(5)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g1)' stroke='%238B6914' stroke-width='1'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%238B0000' opacity='0.9'%3E%26%23x2666%3B%3C/text%3E%3C/g%3E%3Cg transform='translate(50,52) rotate(15)'%3E%3Crect x='-15' y='-22' width='30' height='44' rx='4' fill='url(%23g2)' stroke='%23DAA520' stroke-width='1.5'/%3E%3Ctext x='0' y='8' text-anchor='middle' font-size='18' fill='%231a0a00' opacity='0.85'%3E%26%23x2663%3B%3C/text%3E%3C/g%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<title>메랜비서 — MAPLELAND 비서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Black+Han+Sans&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-  --sky:#c8eeff;--sky2:#e8f7ff;--orange:#ffb347;--orange2:#ff8c1a;
-  --green:#7dd87d;--green2:#4caf50;--red:#ff6b6b;--red2:#e53935;
-  --white:#ffffff;--card:#ffffffee;--border:#b0d8f0;--border2:#7bbce8;
-  --text:#2d4a6b;--text2:#5a7a9a;--text3:#8aaabb;
-  --shadow:0 4px 16px rgba(100,160,220,0.18);--shadow2:0 2px 8px rgba(100,160,220,0.12);
-  --radius:16px;--radius2:10px;
+  --bg:#0a0c10;--surface:#111318;--surface2:#181b22;--border:#2a2e3a;
+  --accent:#e8a020;--green:#2ecc71;--red:#e74c3c;--text:#dde1ec;--muted:#6b7280;
+  --mono:'Share Tech Mono',monospace;--sans:'Noto Sans KR',sans-serif;--display:'Black Han Sans',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Nanum Gothic',sans-serif;background:linear-gradient(160deg,#c8eeff 0%,#e8f7ff 40%,#d4f5e0 80%,#ffe8f0 100%);min-height:100vh;color:var(--text);}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 10% 20%,rgba(255,255,255,0.5) 0%,transparent 40%),radial-gradient(circle at 90% 80%,rgba(180,240,210,0.4) 0%,transparent 40%);pointer-events:none;z-index:0;}
-.header{position:relative;z-index:10;text-align:center;padding:22px 20px 10px;}
-.header-title{font-family:'Jua',sans-serif;font-size:28px;color:#2255aa;text-shadow:0 2px 0 #fff,0 3px 6px rgba(34,85,170,0.2);letter-spacing:1px;}
-.header-stars{font-size:18px;letter-spacing:4px;margin:2px 0;color:var(--orange);}
-.header-credit{font-size:11px;color:var(--text2);margin-top:2px;}
-.header-credit a{color:var(--orange2);text-decoration:none;font-weight:700;}
-.tabs{position:relative;z-index:10;display:flex;justify-content:center;gap:6px;padding:10px 16px 0;flex-wrap:wrap;}
-.tab-btn{font-family:'Jua',sans-serif;font-size:13px;padding:8px 16px;border-radius:30px;border:2.5px solid var(--border2);background:var(--white);color:var(--text2);cursor:pointer;transition:all 0.18s;box-shadow:var(--shadow2);}
-.tab-btn:hover{background:var(--sky);color:var(--text);}
-.tab-btn.active{background:linear-gradient(135deg,#4da6ff,#2255aa);color:white;border-color:#2255aa;box-shadow:0 4px 12px rgba(34,85,170,0.3);transform:translateY(-1px);}
-.main{position:relative;z-index:10;max-width:1200px;margin:12px auto 40px;padding:0 16px;}
-.screen{display:none;}.screen.active{display:block;animation:fadeIn 0.2s ease;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+header{position:sticky;top:0;z-index:100;background:rgba(10,12,16,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px;}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:1.2rem;color:var(--accent);text-decoration:none;}
+.logo-sub{font-family:var(--mono);font-size:0.58rem;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;}
+.live-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:0.72rem;color:var(--green);}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;padding:13px 16px;background:none;border:none;color:var(--muted);font-family:var(--sans);font-size:.83rem;font-weight:500;cursor:pointer;position:relative;transition:color .2s;white-space:nowrap;}
+.tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .2s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);}
+.tab-btn.active::after{transform:scaleX(1);}
+main{position:relative;z-index:1;}
+.tab-panel{display:none;padding:16px;max-width:860px;margin:0 auto;animation:fadeIn .22s ease;}
+.tab-panel.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-.card{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);margin-bottom:14px;}
-.card-title{font-family:'Jua',sans-serif;font-size:15px;color:#2255aa;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
-.card-title::before{content:'';width:5px;height:18px;background:linear-gradient(180deg,#4da6ff,#2255aa);border-radius:3px;display:inline-block;}
-.row{display:flex;gap:14px;}.col{flex:1;min-width:0;}
-input[type=text],input[type=number],input[type=date],select{font-family:'Nanum Gothic',sans-serif;font-size:13px;padding:7px 10px;border:2px solid var(--border);border-radius:var(--radius2);background:var(--sky2);color:var(--text);outline:none;transition:border 0.15s;width:100%;}
-input:focus,select:focus{border-color:#4da6ff;background:white;}select{cursor:pointer;}
-.btn{font-family:'Jua',sans-serif;font-size:13px;padding:7px 14px;border-radius:30px;border:2px solid var(--border2);background:white;color:var(--text);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
-.btn:hover{background:var(--sky);transform:translateY(-1px);}
-.btn.primary{background:linear-gradient(135deg,#4da6ff,#2255aa);color:white;border-color:#2255aa;box-shadow:0 3px 8px rgba(34,85,170,0.25);}
-.btn.primary:hover{opacity:0.9;transform:translateY(-1px);}
-.btn.danger{background:#fff0f0;color:var(--red2);border-color:#ffb3b3;}.btn.danger:hover{background:#ffe0e0;}
-.btn.success{background:linear-gradient(135deg,#7dd87d,#4caf50);color:white;border-color:#4caf50;}
-.btn.warning{background:linear-gradient(135deg,#ffe066,#ffb347);color:#7a4f00;border-color:#ffb347;}
-.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:800;white-space:nowrap;}
-.badge-job{background:#e8f4ff;color:#2255aa;border:1px solid #b0d8f0;}
-.badge-merc{background:#fff3cd;color:#7a4f00;border:1px solid #ffd966;}
-.badge-alba{background:#fff0e8;color:#bf360c;border:1px solid #ffab91;}
-.badge-seller{background:#e8fff0;color:#1b5e20;border:1px solid #a5d6a7;}
-.badge-recruiter{background:#f3e8ff;color:#6a1b9a;border:1px solid #ce93d8;}
-.badge-guest{background:#ffe8f0;color:#c62828;border:1px solid #ef9a9a;}
-.badge-penalty{background:#fff0f0;color:var(--red2);border:1px solid #ffb3b3;}
-.badge-99{background:#f3e8ff;color:#6a1b9a;border:1px solid #ce93d8;}
-.badge-499{background:#e8f0ff;color:#1a3f9a;border:1px solid #90a8e8;}
-.badge-999{background:#fff8e1;color:#7a4f00;border:1px solid #ffd54f;}
-.badge-no{background:#e8fff0;color:#2e7d32;border:1px solid #a5d6a7;}
-.member-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1.5px dashed #d0e8f8;}
-.member-row:last-child{border-bottom:none;}
-.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#c8eeff,#90caf9);border:2px solid #4da6ff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#2255aa;flex-shrink:0;}
-.avatar.merc{background:linear-gradient(135deg,#ffe8a0,#ffd54f);border-color:#ffb347;color:#7a4f00;}
-.avatar.alba{background:linear-gradient(135deg,#ffe0d0,#ffab91);border-color:#ff7043;color:#bf360c;}
-.avatar.seller{background:linear-gradient(135deg,#b8f0d0,#69d49a);border-color:#4caf50;color:#1b5e20;}
-.avatar.recruiter{background:linear-gradient(135deg,#e8d0ff,#c084fc);border-color:#9c27b0;color:#6a1b9a;}
-.avatar.guest{background:linear-gradient(135deg,#ffd0e0,#f48fb1);border-color:#e91e63;color:#c62828;}
-.member-name{flex:1;font-size:13px;font-weight:700;}
-.metrics{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.metric{flex:1;min-width:100px;background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:12px 14px;text-align:center;box-shadow:var(--shadow2);}
-.metric-label{font-size:11px;color:var(--text2);margin-bottom:4px;}
-.metric-value{font-family:'Jua',sans-serif;font-size:17px;color:var(--text);}
-.metric-value.green{color:#2e7d32;}.metric-value.red{color:var(--red2);}.metric-value.orange{color:#e65100;}.metric-value.blue{color:#2255aa;}.metric-value.purple{color:#6a1b9a;}
-.toggle-wrap{display:flex;align-items:center;gap:6px;cursor:pointer;}
-.toggle{width:40px;height:22px;border-radius:11px;background:#ddd;position:relative;transition:background 0.2s;flex-shrink:0;border:2px solid #bbb;}
-.toggle.on{background:var(--green2);border-color:#388e3c;}
-.toggle::after{content:'';position:absolute;top:1px;left:1px;width:16px;height:16px;border-radius:50%;background:white;transition:left 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
-.toggle.on::after{left:19px;}
-.tbl{width:100%;border-collapse:collapse;font-size:12px;}
-.tbl th{background:linear-gradient(135deg,#e8f4ff,#d0e8f8);color:var(--text);font-weight:800;padding:8px 6px;text-align:center;border-bottom:2px solid var(--border2);}
-.tbl td{padding:7px 6px;border-bottom:1.5px dashed #d0e8f8;vertical-align:middle;text-align:center;}
-.tbl tr:last-child td{border-bottom:none;}.tbl tr:hover td{background:#f0f8ff;}
-.tbl.guest-tbl th{background:linear-gradient(135deg,#ffe8f0,#ffd0e0);border-bottom-color:#f48fb1;}
-.tbl.guest-tbl tr:hover td{background:#fff5f8;}
-.tbl.merc-tbl th{background:linear-gradient(135deg,#fff8e1,#ffe0b2);border-bottom-color:#ffb347;}
-.tbl.cost-tbl th{background:linear-gradient(135deg,#f0e8ff,#ddd0f8);border-bottom-color:#9c27b0;}
-.tbl.cost-tbl tr:hover td{background:#faf5ff;}
-.result-row{display:flex;align-items:center;gap:10px;padding:10px 6px;border-bottom:1.5px dashed #d0e8f8;}
-.result-row:last-child{border-bottom:none;}
-.result-amount{font-family:'Jua',sans-serif;font-size:16px;color:#2255aa;min-width:90px;text-align:right;}
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.bar-label{font-size:12px;color:var(--text2);min-width:70px;}
-.bar-track{flex:1;height:10px;background:#e0f0ff;border-radius:5px;overflow:hidden;border:1px solid var(--border);}
-.bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#4da6ff,#2255aa);transition:width 0.5s;}
-.bar-val{font-size:12px;font-weight:700;color:var(--text);min-width:75px;text-align:right;}
-.hist-row{display:flex;align-items:center;gap:8px;padding:8px 6px;border-bottom:1.5px dashed #d0e8f8;cursor:pointer;border-radius:var(--radius2);transition:background 0.15s;}
-.hist-row:hover{background:#f0f8ff;}
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:10px 0;}
-.section-label{font-size:11px;font-weight:800;color:var(--text2);letter-spacing:0.08em;margin-bottom:6px;margin-top:8px;}
-.field-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.field-label{font-size:12px;color:var(--text2);min-width:80px;flex-shrink:0;}
-.chk{width:16px;height:16px;accent-color:#4da6ff;cursor:pointer;}
-.info-box{background:#e8f4ff;border:1.5px solid var(--border2);border-radius:var(--radius2);padding:10px 14px;font-size:12px;color:var(--text2);margin-bottom:12px;}
-.backup-bar{display:flex;gap:8px;align-items:center;background:#fff8e1;border:1.5px solid #ffd54f;border-radius:var(--radius2);padding:8px 14px;margin-bottom:14px;font-size:12px;color:#7a4f00;}
-.role-info-box{background:#f0f8ff;border:1.5px solid var(--border);border-radius:var(--radius2);padding:10px 14px;font-size:12px;margin-top:8px;}
-.role-info-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
-.role-info-row:last-child{margin-bottom:0;}
-.role-info-label{font-size:11px;color:var(--text2);min-width:60px;}
-.seller-combo{position:relative;flex:1;min-width:80px;}
-.seller-combo input{width:100%;}
-.seller-dropdown{display:none;position:absolute;top:100%;left:0;right:0;background:white;border:2px solid #4da6ff;border-radius:var(--radius2);z-index:100;max-height:160px;overflow-y:auto;box-shadow:var(--shadow);}
-.seller-dropdown.open{display:block;}
-.seller-option{padding:6px 10px;font-size:13px;cursor:pointer;color:var(--text);}
-.seller-option:hover{background:var(--sky);}
-/* 사용방법 탭 */
-.guide-section{margin-bottom:18px;}
-.guide-step{display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f0f8ff;border-radius:var(--radius2);margin-bottom:8px;border-left:4px solid #4da6ff;}
-.guide-step-num{font-family:'Jua',sans-serif;font-size:18px;color:#2255aa;min-width:28px;}
-.guide-step-content{flex:1;}
-.guide-step-title{font-weight:800;font-size:13px;color:#2255aa;margin-bottom:3px;}
-.guide-step-desc{font-size:12px;color:var(--text2);line-height:1.6;}
-.term-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px dashed #d0e8f8;}
-.term-row:last-child{border-bottom:none;}
-.term-badge{min-width:70px;text-align:center;}
-.term-desc{font-size:12px;color:var(--text2);line-height:1.6;}
-.alert-box{background:#fff8e1;border:1.5px solid #ffd54f;border-radius:var(--radius2);padding:12px 16px;font-size:12px;color:#7a4f00;margin-bottom:10px;}
-.alert-box.red{background:#fff0f0;border-color:#ffb3b3;color:#c62828;}
-.alert-box.green{background:#e8fff0;border-color:#a5d6a7;color:#1b5e20;}
-/* 분배결과 히스토리 선택 */
-.raid-select-bar{display:flex;gap:8px;align-items:center;margin-bottom:12px;background:var(--card);border:2px solid var(--border);border-radius:var(--radius2);padding:10px 14px;}
-/* 패널티 퍼센트 - 너비 충분히 */
-.pen-pct-input{width:64px !important;flex:none !important;}
-.footer{text-align:center;padding:10px;font-size:11px;color:var(--text3);position:relative;z-index:10;}
-.footer span{color:var(--orange2);font-weight:800;}
-@media(max-width:700px){.row{flex-direction:column;}.metrics{gap:6px;}.metric{min-width:80px;padding:8px;}}
+.section-title{font-family:var(--display);font-size:1.2rem;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;}
+.transport-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+@media(max-width:500px){.transport-grid{grid-template-columns:1fr;}}
+.route-card{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:12px 14px;transition:border-color .3s;}
+.route-card.boarding{border-color:var(--green);}
+.route-name{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:5px;}
+.route-status{font-family:var(--mono);font-size:.85rem;}
+.status-ok{color:var(--green);}
+.status-wait{color:var(--accent);}
+.group-label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:14px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.group-label:first-child{margin-top:0;}
+.search-row{display:flex;gap:7px;margin-bottom:14px;}
+.search-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s;}
+.search-input:focus{border-color:var(--accent);}
+.search-input::placeholder{color:var(--muted);}
+.btn-primary{padding:9px 16px;background:var(--accent);border:none;border-radius:6px;color:#0a0c10;font-family:var(--sans);font-size:.88rem;font-weight:700;cursor:pointer;transition:opacity .2s;white-space:nowrap;}
+.btn-primary:hover{opacity:.85;}
+.btn-primary:disabled{opacity:.4;cursor:default;}
+.btn-secondary{padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:.85rem;cursor:pointer;transition:all .15s;}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.chip{padding:3px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .15s;}
+.chip:hover{border-color:var(--accent);color:var(--accent);}
+.spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:7px;margin-bottom:14px;}
+.spot-btn{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:11px;color:var(--text);font-family:var(--sans);font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s;text-align:left;}
+.spot-btn:hover{border-color:var(--accent);background:rgba(232,160,32,.06);}
+.error-box{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.4);border-radius:6px;padding:10px 12px;color:#e74c3c;font-size:.83rem;display:flex;align-items:flex-start;gap:7px;}
+.error-box.hidden,.hidden{display:none;}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.item-result-title{font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.item-row{display:flex;justify-content:space-between;align-items:center;padding:6px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;margin-bottom:3px;font-size:.83rem;}
+.price-sell{color:#e74c3c;font-weight:600;}
+.price-buy{color:var(--green);font-weight:600;}
+.price-high{color:var(--accent);font-weight:700;}
+.candidate-btn{display:block;width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-family:var(--sans);font-size:.85rem;cursor:pointer;text-align:left;margin-bottom:4px;transition:all .15s;}
+.candidate-btn:hover{border-color:var(--accent);background:rgba(232,160,32,.06);}
+.divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
+.weather-main{font-size:2.8rem;text-align:center;margin:6px 0 3px;}
+.weather-temp{font-family:var(--mono);font-size:2rem;text-align:center;color:var(--accent);font-weight:bold;}
+.weather-desc{text-align:center;color:var(--muted);font-size:.88rem;margin-bottom:10px;}
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.weather-stat{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;}
+.weather-stat-label{color:var(--muted);font-size:.72rem;margin-bottom:2px;}
+.weather-stat-value{font-family:var(--mono);color:var(--text);font-size:.95rem;font-weight:600;}
+.filter-grid{display:flex;flex-direction:column;gap:8px;}
+.filter-row{display:flex;align-items:center;gap:8px;}
+.filter-label{font-size:.8rem;color:var(--muted);width:85px;flex-shrink:0;}
+.filter-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text);font-size:.85rem;outline:none;min-width:0;transition:border-color .2s;}
+.filter-input:focus{border-color:var(--accent);}
+.filter-input::placeholder{color:var(--muted);}
+.filter-tilde{color:var(--muted);font-size:.85rem;flex-shrink:0;}
+/* 타이머 */
+.timer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:14px;}
+.timer-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px;position:relative;}
+.timer-card.running{border-color:var(--green);}
+.timer-card.finished{border-color:var(--red);animation:flashBorder 0.5s infinite alternate;}
+@keyframes flashBorder{from{border-color:var(--red);}to{border-color:transparent;}}
+.timer-name{font-size:.85rem;font-weight:700;color:var(--text);}
+.timer-display{font-family:var(--mono);font-size:1.5rem;color:var(--accent);text-align:center;font-weight:bold;}
+.timer-display.urgent{color:var(--red);}
+.timer-controls{display:flex;gap:5px;}
+.timer-btn{flex:1;padding:6px;border:none;border-radius:5px;font-size:.78rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.timer-btn:hover{opacity:.8;}
+.timer-btn.start{background:var(--green);color:#0a0c10;}
+.timer-btn.pause{background:var(--accent);color:#0a0c10;}
+.timer-btn.reset{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
+.timer-btn.delete{background:rgba(192,57,43,.2);border:1px solid rgba(192,57,43,.3);color:var(--red);}
+.timer-time-edit{display:flex;gap:4px;align-items:center;}
+.timer-time-input{width:42px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:4px 6px;color:var(--text);font-family:var(--mono);font-size:.85rem;text-align:center;outline:none;}
+.add-timer-card{background:var(--surface2);border:2px dashed var(--border);border-radius:8px;padding:14px;cursor:pointer;text-align:center;color:var(--muted);font-size:.85rem;transition:all .15s;}
+.add-timer-card:hover{border-color:var(--accent);color:var(--accent);}
+.timer-preset-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.timer-preset{padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .15s;}
+.timer-preset:hover{border-color:var(--accent);color:var(--accent);}
+/* PIP 타이머 */
+.pip-btn{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;padding:2px 5px;border-radius:4px;transition:color .15s;}
+.pip-btn:hover{color:var(--accent);}
+#pip-overlay{display:none;position:fixed;bottom:20px;right:20px;z-index:9999;background:rgba(10,12,16,.92);border:1px solid var(--accent);border-radius:12px;padding:12px 16px;min-width:160px;backdrop-filter:blur(8px);cursor:move;user-select:none;}
+#pip-overlay.show{display:block;}
+.pip-timer-item{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:4px;font-size:.85rem;}
+.pip-timer-name{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;}
+.pip-timer-val{font-family:var(--mono);color:var(--accent);font-weight:700;}
+.pip-timer-val.urgent{color:var(--red);}
+.pip-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.pip-title{font-size:.75rem;font-weight:700;color:var(--muted);}
+.pip-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:0;}
+/* 접속자 */
+.online-badge{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-right:8px;}
+/* 매물 클릭 링크 */
+.item-row{display:flex;justify-content:space-between;align-items:center;padding:6px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;margin-bottom:3px;font-size:.83rem;}
+.item-row.clickable{cursor:pointer;transition:border-color .15s,background .15s;}
+.item-row.clickable:hover{border-color:var(--accent);background:rgba(232,160,32,.06);}
+.item-row.sold{opacity:.45;}
+.item-row.sold::after{content:'거래완료';font-size:.68rem;color:var(--red);border:1px solid var(--red);border-radius:4px;padding:1px 5px;margin-left:6px;flex-shrink:0;}
+/* 게시판 삭제/수정 */
+.post-actions{display:flex;gap:5px;margin-top:8px;}
+.post-act-btn{padding:3px 10px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .15s;}
+.post-act-btn:hover{border-color:var(--accent);color:var(--accent);}
+.post-act-btn.del:hover{border-color:var(--red);color:var(--red);}
+.post-edit-area{margin-top:8px;display:none;}
+.post-edit-area textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--text);font-family:var(--sans);font-size:.85rem;outline:none;resize:vertical;min-height:60px;}
+.post-edit-area textarea:focus{border-color:var(--accent);}
+/* 게시판 */
+.post-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;}
+.post-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.post-category{padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700;}
+.cat-bug{background:rgba(231,76,60,.15);color:#e74c3c;border:1px solid rgba(231,76,60,.3);}
+.cat-request{background:rgba(52,152,219,.15);color:#3498db;border:1px solid rgba(52,152,219,.3);}
+.cat-review{background:rgba(46,204,113,.15);color:#2ecc71;border:1px solid rgba(46,204,113,.3);}
+.cat-general{background:rgba(232,160,32,.15);color:#e8a020;border:1px solid rgba(232,160,32,.3);}
+.post-nickname{font-weight:700;font-size:.88rem;}
+.post-date{font-size:.75rem;color:var(--muted);margin-left:auto;}
+.post-content{font-size:.88rem;line-height:1.7;color:var(--text);margin-bottom:10px;}
+.post-comments{border-top:1px solid var(--border);padding-top:10px;margin-top:4px;}
+.comment-item{background:rgba(232,160,32,.05);border:1px solid rgba(232,160,32,.2);border-radius:6px;padding:8px 10px;margin-bottom:5px;font-size:.83rem;}
+.comment-admin{font-size:.72rem;color:var(--accent);font-weight:700;margin-bottom:3px;}
+.admin-reply-row{display:flex;gap:6px;margin-top:8px;}
+.admin-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text);font-size:.83rem;outline:none;}
+.admin-input:focus{border-color:var(--accent);}
+/* 폼 */
+.form-group{margin-bottom:12px;}
+.form-label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:5px;}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--accent);}
+.form-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;resize:vertical;min-height:100px;transition:border-color .2s;}
+.form-textarea:focus{border-color:var(--accent);}
+.form-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;}
+/* 푸터 */
+footer{text-align:center;padding:20px;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);margin-top:20px;}
+footer a{color:var(--muted);text-decoration:none;}
+footer a:hover{color:var(--accent);}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+/* 초대코드 오버레이 */
+.invite-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.invite-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:90%;max-width:360px;text-align:center;}
+.invite-logo{font-family:var(--display);font-size:1.8rem;color:var(--accent);margin-bottom:6px;}
+.invite-sub{font-size:.8rem;color:var(--muted);margin-bottom:24px;}
+.invite-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px;color:var(--text);font-family:var(--mono);font-size:1rem;text-align:center;letter-spacing:.15em;outline:none;margin-bottom:10px;transition:border-color .2s;}
+.invite-input:focus{border-color:var(--accent);}
+.invite-error{font-size:.82rem;color:var(--red);min-height:20px;margin-bottom:8px;}
+.invite-welcome{font-size:.85rem;color:var(--green);min-height:20px;margin-bottom:8px;}
+/* 타이머 단축키 버튼 */
+.timer-adj-row{display:flex;gap:4px;justify-content:center;}
+.adj-btn{padding:3px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--muted);font-size:.72rem;cursor:pointer;transition:all .15s;}
+.adj-btn:hover{border-color:var(--accent);color:var(--accent);}
+.timer-auto-row{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);}
+.toggle-switch{position:relative;width:32px;height:18px;cursor:pointer;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:18px;transition:.2s;}
+.toggle-slider:before{content:'';position:absolute;width:12px;height:12px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.2s;}
+.toggle-switch input:checked+.toggle-slider{background:var(--green);}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(14px);}
+/* 관리자 코드 관리 */
+.code-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;margin-bottom:4px;font-size:.82rem;}
+.code-badge{font-family:var(--mono);color:var(--accent);font-weight:700;flex:1;}
+.code-name{color:var(--muted);font-size:.78rem;}
+.code-disabled{opacity:.4;}
+/* 파밍 카드 */
+.farming-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;}
+.farming-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.farming-spot-name{font-weight:700;font-size:.95rem;}
+.farming-zone-badge{padding:2px 8px;background:rgba(232,160,32,.15);color:var(--accent);border:1px solid rgba(232,160,32,.3);border-radius:12px;font-size:.72rem;}
+.farming-level-badge{padding:2px 8px;background:rgba(52,152,219,.15);color:#3498db;border:1px solid rgba(52,152,219,.3);border-radius:12px;font-size:.72rem;}
+.farming-section{margin-bottom:8px;}
+.farming-section-title{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.farming-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.farming-tag{padding:3px 9px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:.78rem;color:var(--text);}
+.farming-tag.drop{border-color:rgba(46,204,113,.4);color:var(--green);}
+.farming-memo{font-size:.8rem;color:var(--muted);margin-top:6px;font-style:italic;}
+/* 길드 카드 */
+.guild-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;}
+.guild-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.guild-name-badge{font-family:var(--display);font-size:1rem;color:var(--accent);}
+.guild-nick{font-size:.85rem;color:var(--muted);}
+.guild-date{font-size:.75rem;color:var(--muted);margin-left:auto;}
+.guild-content{font-size:.88rem;line-height:1.8;color:var(--text);white-space:pre-wrap;margin-bottom:10px;}
+.guild-image-el{max-width:100%;border-radius:6px;margin-bottom:10px;border:1px solid var(--border);}
+.guild-contact{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.3);border-radius:6px;font-size:.82rem;color:var(--accent);}
+.guild-image-preview-el{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);}</style>
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-stars">★ ★ ★</div>
-  <div class="header-title">🗡️ 분배금 계산기 🗡️</div>
-  <div class="header-stars">★ ★ ★</div>
-  <div class="header-credit">제작 <a href="#">fourcard</a> · 문의 디스코드 <a href="#">j_son1993</a></div>
+<header>
+  <a class="logo" href="#">
+    <svg width="24" height="24" viewBox="0 0 28 28" fill="none"><path d="M14 2L4 8v12l10 6 10-6V8L14 2z" fill="#e8a020" opacity=".15"/><path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="#e8a020" stroke-width="1.5"/><path d="M9 14L14 11L19 14L14 17Z" fill="#e8a020"/></svg>
+    메랜비서
+    <span class="logo-sub">MAPLELAND 비서</span>
+  </a>
+  <div class="live-badge">
+    <span id="kst-clock" style="font-size:.75rem;color:var(--muted)"></span>
+    <span class="online-badge" id="online-badge" title="현재 접속자">👥 <span id="online-count">1</span></span>
+    <div class="live-dot"></div>
+    <span>LIVE</span>
+  </div>
+</header>
+<nav>
+  <button class="tab-btn active" data-tab="ship" onclick="switchTab('ship')"><span>🚢</span>배/엘리베이터</button>
+  <button class="tab-btn" data-tab="spot" onclick="switchTab('spot')"><span>📖</span>사냥터 시세</button>
+  <button class="tab-btn" data-tab="item" onclick="switchTab('item')"><span>💰</span>아이템 시세</button>
+  <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')"><span>🌤️</span>날씨</button>
+  <button class="tab-btn" data-tab="timer" onclick="switchTab('timer')"><span>⏱️</span>타이머</button>
+  <button class="tab-btn" data-tab="farming" onclick="switchTab('farming')"><span>🗺️</span>파밍정보</button>
+  <button class="tab-btn" data-tab="calc" onclick="window.open('https://euphonious-mermaid-a22091.netlify.app','_blank')"><span>🎴</span>분배금계산기</button>
+  <button class="tab-btn" data-tab="guild" onclick="switchTab('guild');loadGuildPosts()"><span>⚔️</span>길드모집</button>
+  <button class="tab-btn" data-tab="board" onclick="switchTab('board');loadPosts()"><span>📋</span>문의/후기</button>
+</nav>
+<main>
+<!-- 배/엘리베이터 -->
+<div id="tab-ship" class="tab-panel active">
+  <div class="section-title">🚢 배 · 엘리베이터 시간표</div>
+  <div class="group-label">🌊 엘리니아 ↔ 오르비스</div>
+  <div class="transport-grid" id="grid-ship-elo"></div>
+  <div class="group-label">⚙️ 루디브리엄 ↔ 오르비스</div>
+  <div class="transport-grid" id="grid-ship-rudi"></div>
+  <div class="group-label">🐉 오르비스 ↔ 리프레</div>
+  <div class="transport-grid" id="grid-ship-lifre"></div>
+  <div class="group-label">🛗 엘리베이터</div>
+  <div class="transport-grid" id="grid-elevator"></div>
 </div>
-<div class="tabs">
-  <button class="tab-btn active" onclick="showTab(0)">📖 사용방법</button>
-  <button class="tab-btn" onclick="showTab(1)">⚙️ 공대 설정</button>
-  <button class="tab-btn" onclick="showTab(2)">⚔️ 원정대 입력</button>
-  <button class="tab-btn" onclick="showTab(3)">💰 분배 결과</button>
-  <button class="tab-btn" onclick="showTab(4)">📊 통계 & 히스토리</button>
+<!-- 사냥터 -->
+<div id="tab-spot" class="tab-panel">
+  <div class="section-title">📖 사냥터 시세</div>
+  <div class="spot-grid">
+    <button class="spot-btn" onclick="fetchSpot(this,'루더스호수: 까막산 입구','까막산 입구','🌋')">🌋 까막산 입구</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'루디브리엄성:시간의길<4>','시간의 길4','⏳')">⏳ 시간의 길4</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'미나르숲:큰 둥지 봉우리','큰 둥지 봉우리','🪺')">🪺 큰 둥지 봉우리</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'시계탑최하층:뒤틀린 시간의 길<4>','뒤틀린 시간의 길4','🌀')">🌀 뒤틀린 시간의 길4</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'루디브리엄성: 잃어버린시간<2>','잃어버린시간2','⌛')">⌛ 잃어버린시간2</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'미나르숲:남겨진 용의 둥지','남겨진 용의 둥지','🐲')">🐲 남겨진 용의 둥지</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'아쿠아로드:위험한 바다 협곡2','위험한 바다 협곡2','🌊')">🌊 위험한 바다 협곡2</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'미나르숲:망가진 용의 둥지','망가진 용의 둥지','🐉')">🐉 망가진 용의 둥지</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'아쿠아로드:깊은 바다 협곡2','깊은 바다 협곡2','🌊')">🌊 깊은 바다 협곡2</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'히든스트리트:블루 와이번의 둥지','블루 와이번의 둥지','🔵')">🔵 블루 와이번의 둥지</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'미나르숲: 협곡의 동쪽길','협곡의 동쪽길','🛤️')">🛤️ 협곡의 동쪽길</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'아쿠아로드:난파선의 무덤','난파선의 무덤','⚓')">⚓ 난파선의 무덤</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'히든스트리트: 관계자 외 출입금지','관계자 외 출입금지','🚫')">🚫 관계자 외 출입금지</button>
+    <button class="spot-btn" onclick="fetchSpot(this,'미나르숲:산양의 골짜기 1','산양의 골짜기 1','🐐')">🐐 산양의 골짜기 1</button>
+  </div>
+  <div id="spot-error" class="error-box hidden"><span>✕</span><div><div id="spot-error-msg"></div><div style="margin-top:3px;font-size:.78rem;color:var(--muted)">CORS 제한 — <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 에서 직접 확인하세요.</div></div></div>
+  <div id="spot-result" class="hidden"></div>
 </div>
-<div class="main">
-
-<!-- ═══ 탭0: 사용방법 ═══ -->
-<div class="screen active" id="screen-0">
-  <div class="row">
-    <div class="col">
-      <!-- 전체 흐름 -->
-      <div class="card">
-        <div class="card-title">🗺️ 전체 사용 흐름</div>
-        <div class="guide-step">
-          <div class="guide-step-num">1</div>
-          <div class="guide-step-content">
-            <div class="guide-step-title">⚙️ 공대 설정</div>
-            <div class="guide-step-desc">공대 이름, 판매자 인센 %, 손님구인 인센 금액을 입력하고 <b>멤버</b>를 추가합니다. 패널티 항목과 용병/알바 지급 방식도 여기서 설정해요.</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="guide-step-num">2</div>
-          <div class="guide-step-content">
-            <div class="guide-step-title">⚔️ 원정대 입력</div>
-            <div class="guide-step-desc">날짜, 이번 회차 참여 멤버 체크 → 드랍템/손님지불금/공대지출 입력 → 패널티 지정 → <b>이 회차 저장</b> 클릭!</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="guide-step-num">3</div>
-          <div class="guide-step-content">
-            <div class="guide-step-title">💰 분배 결과</div>
-            <div class="guide-step-desc">멤버별 최종 분배금 확인. 정산 완료된 멤버는 토글로 체크하세요. 상단 드롭다운으로 이전 회차 결과도 조회 가능합니다.</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="guide-step-num">4</div>
-          <div class="guide-step-content">
-            <div class="guide-step-title">📊 통계 & 히스토리</div>
-            <div class="guide-step-desc">전체 누적 정산금, 멤버별 수령액 통계, 회차별 히스토리를 확인할 수 있어요.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 저장 방식 안내 -->
-      <div class="card">
-        <div class="card-title">💾 저장 방식 안내</div>
-        <div class="alert-box green" style="margin-bottom:10px;">
-          ✅ <b>이 회차 저장</b> — 입력한 회차 데이터를 <b>이 브라우저 내부(localStorage)</b>에 저장합니다.<br>
-          같은 컴퓨터, 같은 브라우저에서만 유지되며 브라우저 데이터 초기화 시 삭제될 수 있어요.
-        </div>
-        <div class="alert-box" style="margin-bottom:10px;">
-          📥 <b>백업 저장</b> — 모든 데이터를 <b>JSON 파일</b>로 다운로드합니다.<br>
-          다른 기기에서 사용하거나 데이터를 보관하고 싶을 때 꼭 백업하세요!<br>
-          📤 <b>백업 불러오기</b> — 저장한 JSON 파일을 불러와 데이터를 복원합니다.
-        </div>
-        <div class="alert-box red">
-          ⚠️ <b>업데이트 시 새 파일을 드려야 합니다.</b><br>
-          업데이트 파일을 받으면 <b>백업 저장 → 새 파일에서 백업 불러오기</b> 순서로 데이터를 이전하세요.<br>
-          업데이트 문의 및 친추: <b>인게임 fourcard</b> 로 친구 추가 꼭 부탁드립니다! 🙏
-        </div>
-      </div>
+<!-- 아이템 시세 -->
+<div id="tab-item" class="tab-panel">
+  <div class="section-title">💰 아이템 시세 검색</div>
+  <div class="chip-row">
+    <div class="chip" onclick="setItemSearch('파워 엘릭서')">파엘</div>
+    <div class="chip" onclick="setItemSearch('마나 엘릭서')">마엘</div>
+    <div class="chip" onclick="setItemSearch('만병통치약')">만병</div>
+    <div class="chip" onclick="setItemSearch('새벽의 이슬')">새벽</div>
+    <div class="chip" onclick="setItemSearch('황혼의 이슬')">황혼</div>
+    <div class="chip" onclick="setItemSearch('일비 표창')">일비</div>
+    <div class="chip" onclick="setItemSearch('뇌전수리검')">뇌전</div>
+    <div class="chip" onclick="setItemSearch('장갑 공격력 주문서 10%')">장공10</div>
+    <div class="chip" onclick="setItemSearch('장갑 공격력 주문서 60%')">장공60</div>
+    <div class="chip" onclick="setItemSearch('노가다 목장갑')">노목</div>
+    <div class="chip" onclick="setItemSearch('드래곤 퍼플 슬레브')">드퍼슬</div>
+    <div class="chip" onclick="setItemSearch('드래곤 그린 슬레브')">드그슬</div>
+  </div>
+  <div class="search-row">
+    <input id="item-input" class="search-input" type="text" placeholder="아이템명 입력 (예: 파워 엘릭서, 귀민)" onkeydown="if(event.key==='Enter')searchItem()">
+    <button class="btn-primary" onclick="searchItem()" id="item-btn">검색</button>
+  </div>
+  <div id="item-error" class="error-box hidden"><span>✕</span><span id="item-error-msg"></span></div>
+  <div id="item-candidates" class="hidden"></div>
+  <div id="item-result" class="hidden"></div>
+</div>
+<!-- 날씨 -->
+<div id="tab-weather" class="tab-panel">
+  <div class="section-title">🌤️ 실시간 날씨</div>
+  <div class="chip-row">
+    <div class="chip" onclick="setWeatherSearch('서울')">서울</div>
+    <div class="chip" onclick="setWeatherSearch('부산')">부산</div>
+    <div class="chip" onclick="setWeatherSearch('인천')">인천</div>
+    <div class="chip" onclick="setWeatherSearch('대구')">대구</div>
+    <div class="chip" onclick="setWeatherSearch('광주')">광주</div>
+    <div class="chip" onclick="setWeatherSearch('대전')">대전</div>
+    <div class="chip" onclick="setWeatherSearch('제주')">제주</div>
+    <div class="chip" onclick="setWeatherSearch('강릉')">강릉</div>
+  </div>
+  <div class="search-row">
+    <input id="weather-input" class="search-input" type="text" placeholder="지역명 입력 (예: 서울)" onkeydown="if(event.key==='Enter')searchWeather()">
+    <button class="btn-primary" onclick="searchWeather()" id="weather-btn">조회</button>
+  </div>
+  <div id="weather-error" class="error-box hidden"><span>✕</span><span id="weather-error-msg"></span></div>
+  <div id="weather-result" class="hidden"></div>
+</div>
+<!-- 타이머 -->
+<div id="tab-timer" class="tab-panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+    <div class="section-title" style="margin-bottom:0;">⏱️ 스킬 타이머</div>
+    <button class="btn-secondary" style="font-size:.78rem;padding:5px 10px;" onclick="togglePIP()">📌 PIP 모드</button>
+  </div>
+  <div style="margin-bottom:10px;font-size:.82rem;color:var(--muted)">프리셋 클릭으로 빠르게 추가 · 각 타이머에서 ±30초/±5초 조정 가능</div>
+  <div class="timer-preset-row">
+    <div class="timer-preset" onclick="addTimer('한타임',60,0)">🍁 한타임 1시간</div>
+    <div class="timer-preset" onclick="addTimer('경쿠',15,0)">❄️ 경쿠 15분</div>
+    <div class="timer-preset" onclick="addTimer('사이다',5,0)">🥤 사이다 5분</div>
+    <div class="timer-preset" onclick="addTimer('전사의비약',8,0)">⚗️ 전사의비약 8분</div>
+    <div class="timer-preset" onclick="addTimer('사이다+알케',7,30)">🥤+⚗️ 사이다+알케 7분30초</div>
+    <div class="timer-preset" onclick="addTimer('전비+알케',12,0)">⚗️+⚗️ 전비+알케 12분</div>
+    <div class="timer-preset" onclick="addTimer('인피니티',10,0)">♾️ 인피니티 10분</div>
+    <div class="timer-preset" onclick="addTimer('리저렉션',30,0)">✨ 리저렉션 30분</div>
+    <div class="timer-preset" onclick="addTimer('하이퍼바디',2,35)">💪 하이퍼바디 2분35초</div>
+  </div>
+  <div class="timer-grid" id="timer-grid"></div>
+  <div class="add-timer-card" onclick="addCustomTimer()">＋ 커스텀 타이머 추가</div>
+</div>
+<!-- 문의/후기 게시판 -->
+<div id="tab-board" class="tab-panel">
+  <div class="section-title">📋 문의 · 후기 게시판</div>
+  <!-- 글쓰기 -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="font-weight:700;margin-bottom:12px;font-size:.95rem;">✏️ 글 작성</div>
+    <div class="form-group">
+      <label class="form-label">닉네임</label>
+      <input class="form-input" id="post-nickname" placeholder="닉네임 입력" maxlength="20">
     </div>
-
-    <div class="col">
-      <!-- 용어 설명 -->
-      <div class="card">
-        <div class="card-title">📚 용어 설명</div>
-        <div class="term-row">
-          <span class="term-badge"><span class="badge badge-merc">용병</span></span>
-          <span class="term-desc">공대에 고용된 멤버. 분배 대상이지만 고정금액 또는 정규멤버 기준 % 로 별도 지급 설정 가능.</span>
-        </div>
-        <div class="term-row">
-          <span class="term-badge"><span class="badge badge-alba">알바</span></span>
-          <span class="term-desc">용병과 동일한 구조. 구분이 필요할 때 사용. 지급 방식 별도 설정 가능.</span>
-        </div>
-        <div class="term-row">
-          <span class="term-badge"><span class="badge badge-guest">손님</span></span>
-          <span class="term-desc">아이템(예: 혼테일 목걸이)을 먹으러 오는 외부인. 분배 대상이 아니며, 지불한 금액이 분배 풀에 합산됨.</span>
-        </div>
-        <div class="term-row">
-          <span class="term-badge"><span class="badge badge-recruiter">손님구인</span></span>
-          <span class="term-desc">손님을 모집해온 멤버. 손님 1명당 설정된 인센 금액을 추가로 수령.</span>
-        </div>
-        <div class="term-row">
-          <span class="term-badge"><span class="badge badge-seller">판매자</span></span>
-          <span class="term-desc">드랍템 판매를 담당하는 멤버. 판매 순수익의 설정된 % 를 인센으로 수령.</span>
-        </div>
-        <div class="term-row">
-          <span class="term-badge"><span class="badge" style="background:#f0e8ff;color:#6a1b9a;border:1px solid #ce93d8;">공대지출</span></span>
-          <span class="term-desc">알버프, 영혼의메아리 등 공대가 함께 사용한 비용. 분배 풀에서 먼저 차감됨.</span>
-        </div>
-        <div class="term-row">
-          <span class="term-badge" style="font-size:11px;color:var(--red2);font-weight:800;">패널티</span>
-          <span class="term-desc">사망, 노쇼 등 제재 금액. 고정금액 또는 기본 분배금의 % 차감. 차감액은 패널티 없는 멤버에게 균등 분배.</span>
-        </div>
-      </div>
-
-      <!-- 계산 방식 -->
-      <div class="card">
-        <div class="card-title">🧮 계산 방식 요약</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.9;">
-          <b>① 분배 풀 계산</b><br>
-          드랍 순수익 + 손님 지불 실수령 − 판매자 인센 − 손님구인 인센 − 용병/알바 고정지급 − 공대지출<br><br>
-          <b>② 기본 1인당 = 분배 풀 ÷ 참여 인원수</b><br><br>
-          <b>③ 패널티 적용</b><br>
-          패널티 있는 멤버: 기본금 − 패널티 (금액 + 기본금×%)<br>
-          패널티 없는 멤버: 기본금 + (패널티 총액 ÷ 무패널티 인원)<br><br>
-          <b>④ 추가 인센 적용</b><br>
-          판매자 인센, 손님구인 인센, 용병/알바 % 지급 추가<br><br>
-          <b>⑤ 손님 지불금</b><br>
-          손님이 낸 금액도 드랍템처럼 수수료 차감 후 실수령액이 분배 풀에 합산됩니다.
-        </div>
-      </div>
-
-      <!-- FAQ -->
-      <div class="card">
-        <div class="card-title">❓ 자주 묻는 질문</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.8;">
-          <b>Q. 다른 컴퓨터에서 쓰고 싶어요.</b><br>
-          A. 백업 저장으로 JSON 파일 받아서 옮기세요.<br><br>
-          <b>Q. 파일을 새로 받으면 데이터가 사라지나요?</b><br>
-          A. 네! 반드시 백업 저장 후 새 파일에서 불러오기 하세요.<br><br>
-          <b>Q. 용병이랑 알바 차이가 뭔가요?</b><br>
-          A. 기능은 동일해요. 구분이 필요할 때 라벨만 다르게 씁니다.<br><br>
-          <b>Q. 업데이트/버그 문의는요?</b><br>
-          A. 인게임 <b style="color:#2255aa;">fourcard</b> 로 친추 후 문의해주세요! 🙏
-        </div>
-      </div>
+    <div class="form-group">
+      <label class="form-label">글 암호 <span style="color:var(--muted);font-size:.75rem">(수정·삭제 시 필요)</span></label>
+      <input class="form-input" id="post-password" type="password" placeholder="본인만 아는 암호" maxlength="20">
     </div>
+    <div class="form-group">
+      <label class="form-label">분류</label>
+      <select class="form-select" id="post-category">
+        <option value="문의">💬 문의</option>
+        <option value="버그">🐛 버그 신고</option>
+        <option value="기능요청">💡 기능 요청</option>
+        <option value="사용후기">⭐ 사용후기</option>
+        <option value="일반">📝 일반</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용 (최대 500자)</label>
+      <textarea class="form-textarea" id="post-content" placeholder="내용을 입력해주세요..." maxlength="500"></textarea>
+    </div>
+    <button class="btn-primary" onclick="submitPost()" style="width:100%">글 작성</button>
+    <div id="post-submit-msg" style="margin-top:8px;font-size:.82rem;text-align:center;"></div>
+  </div>
+  <!-- 글 목록 -->
+  <div style="font-weight:700;margin-bottom:10px;font-size:.9rem;">📌 게시글 목록</div>
+  <div id="posts-list"><div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">로딩 중...</div></div>
+  <!-- 관리자 패널 -->
+  <div style="margin-top:20px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+    <div style="font-size:.75rem;color:var(--muted);margin-bottom:6px;">🔐 관리자 모드</div>
+    <input class="form-input" id="admin-key" type="password" placeholder="관리자 키" style="margin-bottom:6px;">
+    <div style="font-size:.72rem;color:var(--muted)">댓글 작성 시 위 키를 입력하세요.</div>
   </div>
 </div>
-
-<!-- ═══ 탭1: 공대 설정 ═══ -->
-<div class="screen" id="screen-1">
-  <div class="backup-bar">
-    💾 데이터는 이 브라우저에 저장됩니다. 주기적으로 백업을 권장해요!
-    <button class="btn warning" onclick="exportData()" style="margin-left:auto;">📥 백업 저장</button>
-    <button class="btn" onclick="importData()">📤 백업 불러오기</button>
-    <input type="file" id="importFile" accept=".json" style="display:none" onchange="loadImport(event)">
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="card-title">기본 설정</div>
-        <div class="field-row"><span class="field-label">공대 이름</span><input type="text" id="guildName" placeholder="표식공대" style="flex:1;"></div>
-        <div class="field-row">
-          <span class="field-label">판매자 인센</span>
-          <input type="number" id="sellerPct" min="0" max="100" step="0.1" placeholder="5" style="width:70px;flex:none;">
-          <span style="font-size:12px;color:var(--text2);">% (순수익 기준)</span>
-        </div>
-        <div class="field-row">
-          <span class="field-label">손님구인 인센</span>
-          <input type="number" id="guestIncentive" min="0" placeholder="150" style="width:80px;flex:none;">
-          <span style="font-size:12px;color:var(--text2);">만메소 / 1명</span>
-        </div>
-        <button class="btn primary" onclick="saveSettings()" style="margin-top:6px;">✅ 설정 저장</button>
-        <div class="divider"></div>
-        <div class="section-label">현재 역할 담당자</div>
-        <div class="role-info-box" id="roleInfoBox"><div style="color:var(--text3);font-size:12px;">멤버를 추가하면 표시됩니다.</div></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">패널티 항목 설정</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:8px;">💡 금액(만)과 %(퍼센트) 하나 또는 둘 다 입력 가능. 퍼센트는 해당 멤버 기본 분배금 기준 차감.</div>
-        <div id="penaltyList"></div>
-        <div class="divider"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center;">
-          <input type="text" id="newPenaltyName" placeholder="항목명 (예: 1페 사망)" style="flex:2;min-width:100px;">
-          <input type="number" id="newPenaltyAmt" placeholder="금액(만)" style="width:80px;flex:none;" min="0">
-          <input type="number" id="newPenaltyPct" placeholder="%" class="pen-pct-input" min="0" max="100" step="0.1">
-          <span style="font-size:12px;color:var(--text2);flex:none;">%</span>
-          <button class="btn primary" onclick="addPenalty()">+ 추가</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🛡️ 용병 & 알바 설정</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:8px;">💡 고정금액: 분배 풀에서 선차감 | 퍼센트: 정규멤버 1인당 분배금 × % 지급 (패널티/보너스 별도 적용)</div>
-        <div id="mercAlbaList"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">💝 지원금 설정</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:8px;">💡 보마 지원금, 갠유 비숍 지원금 등. 분배 풀에서 먼저 차감 후 해당 멤버에게 지급됩니다.</div>
-        <div id="supportList"></div>
-        <div style="font-size:11px;color:var(--text3);margin-top:6px;">※ 지원금으로 체크된 멤버가 없으면 목록이 비어있습니다.</div>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card" style="min-height:300px;">
-        <div class="card-title">멤버 관리</div>
-        <div id="memberList"></div>
-        <div class="divider"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
-          <input type="text" id="newMemberName" placeholder="닉네임" style="flex:1;min-width:80px;">
-          <select id="newMemberJob" style="flex:1;min-width:90px;">
-            <option value="">직업 선택</option>
-            <option>다크나이트</option><option>비숍</option><option>히어로</option>
-            <option>섀도어</option><option>나로</option><option>보마</option>
-            <option>손님</option><option>기타</option>
-          </select>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;align-items:center;">
-          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="newMemberMerc" class="chk"> 용병</label>
-          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#bf360c;cursor:pointer;"><input type="checkbox" id="newMemberAlba" class="chk" style="accent-color:#ff7043;"> 알바</label>
-          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#1b5e20;cursor:pointer;"><input type="checkbox" id="newMemberSeller" class="chk" style="accent-color:#4caf50;"> 판매자</label>
-          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#6a1b9a;cursor:pointer;"><input type="checkbox" id="newMemberRecruiter" class="chk" style="accent-color:#9c27b0;"> 손님구인</label>
-          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:#6a1b9a;cursor:pointer;"><input type="checkbox" id="newMemberSupport" class="chk" style="accent-color:#ab47bc;"> 지원금</label>
-          <button class="btn primary" onclick="addMember()" style="margin-left:auto;">+ 추가</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ 탭2: 원정대 입력 ═══ -->
-<div class="screen" id="screen-2">
-  <div class="row">
-    <div class="col" style="flex:0.85;">
-      <div class="card">
-        <div class="card-title">회차 정보</div>
-        <div class="field-row"><span class="field-label">날짜</span><input type="date" id="raidDate" style="flex:1;"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">참여 멤버</div>
-        <div id="participantList"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">패널티 입력</div>
-        <div id="penaltyInputList"></div>
-      </div>
-    </div>
-
-    <div class="col" style="flex:1.5;">
-      <!-- 드랍템 -->
-      <div class="card">
-        <div class="card-title">⚔️ 드랍템</div>
-        <div style="overflow-x:auto;">
-          <table class="tbl"><thead><tr>
-            <th>아이템명</th><th>판매금액(만)</th><th>거래방식</th><th>비고(수작)</th><th>수수료</th><th>실수령</th><th>판매자</th><th></th>
-          </tr></thead><tbody id="dropBody"></tbody></table>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center;">
-          <input type="text" id="itemName" placeholder="아이템명" style="flex:1.5;min-width:90px;">
-          <input type="number" id="itemPrice" placeholder="금액(만)" style="flex:1;min-width:70px;" oninput="updateFeePreview()">
-          <select id="itemTrade" style="flex:1;min-width:60px;" onchange="updateFeePreview()">
-            <option value="택배">택배</option><option value="교환">교환</option>
-          </select>
-          <select id="itemNote" style="flex:1;min-width:70px;" onchange="updateFeePreview()">
-            <option value="노수작">노수작</option><option value="99수작">99수작</option>
-            <option value="499수작">499수작</option><option value="999수작">999수작</option>
-          </select>
-          <span id="feePreview" style="font-size:11px;color:var(--red2);min-width:70px;"></span>
-          <div class="seller-combo">
-            <input type="text" id="itemSellerInput" placeholder="판매자" autocomplete="off"
-              oninput="onSellerInput()" onfocus="onSellerFocus()" onblur="onSellerBlur()">
-            <div class="seller-dropdown" id="sellerDropdown"></div>
-          </div>
-          <button class="btn primary" onclick="addItem()">+ 추가</button>
-        </div>
-      </div>
-
-      <!-- 손님 지불 금액 (수수료 포함) -->
-      <div class="card">
-        <div class="card-title">🙋 손님 지불 금액</div>
-        <div style="overflow-x:auto;">
-          <table class="tbl guest-tbl"><thead><tr>
-            <th>손님</th><th>아이템</th><th>지불금액(만)</th><th>거래방식</th><th>비고(수작)</th><th>수수료</th><th>실수령</th><th>손님구인자</th><th></th>
-          </tr></thead><tbody id="guestPayBody"></tbody></table>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center;">
-          <input type="text" id="guestPayName" placeholder="손님 닉네임" style="flex:1;min-width:70px;">
-          <input type="text" id="guestPayItem" placeholder="아이템명" style="flex:1.2;min-width:80px;">
-          <input type="number" id="guestPayAmt" placeholder="금액(만)" style="flex:1;min-width:70px;" oninput="updateGuestFeePreview()">
-          <select id="guestPayTrade" style="flex:1;min-width:60px;" onchange="updateGuestFeePreview()">
-            <option value="택배">택배</option><option value="교환">교환</option>
-          </select>
-          <select id="guestPayNote" style="flex:1;min-width:70px;" onchange="updateGuestFeePreview()">
-            <option value="노수작">노수작</option><option value="99수작">99수작</option>
-            <option value="499수작">499수작</option><option value="999수작">999수작</option>
-          </select>
-          <span id="guestFeePreview" style="font-size:11px;color:var(--red2);min-width:70px;"></span>
-          <div class="seller-combo">
-            <input type="text" id="guestRecruiterInput" placeholder="손님구인자" autocomplete="off"
-              oninput="onRecruiterInput()" onfocus="onRecruiterFocus()" onblur="onRecruiterBlur()">
-            <div class="seller-dropdown" id="recruiterDropdown"></div>
-          </div>
-          <button class="btn primary" onclick="addGuestPay()" style="background:linear-gradient(135deg,#f48fb1,#e91e63);border-color:#c2185b;">+ 추가</button>
-        </div>
-        <div style="font-size:11px;color:var(--text2);margin-top:6px;">💡 손님 실수령액(수수료 차감 후)이 분배 풀에 합산됩니다.</div>
-      </div>
-
-      <!-- 공대 지출 -->
-      <div class="card">
-        <div class="card-title">💸 공대 지출</div>
-        <div style="overflow-x:auto;">
-          <table class="tbl cost-tbl"><thead><tr>
-            <th>항목명</th><th>금액(만)</th><th></th>
-          </tr></thead><tbody id="costBody"></tbody></table>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:10px;align-items:center;">
-          <input type="text" id="costName" placeholder="항목명 (예: 알버프, 영혼의메아리)" style="flex:2;">
-          <input type="number" id="costAmt" placeholder="금액(만)" style="flex:1;min-width:80px;">
-          <button class="btn primary" onclick="addCost()" style="background:linear-gradient(135deg,#c084fc,#9c27b0);border-color:#7b1fa2;">+ 추가</button>
-        </div>
-        <div style="font-size:11px;color:var(--text2);margin-top:6px;">💡 공대가 함께 쓴 비용. 분배 풀에서 먼저 차감됩니다.</div>
-      </div>
-
-      <div style="text-align:center;margin-top:4px;">
-        <button class="btn success" style="font-size:15px;padding:10px 36px;" onclick="saveRaid()">💾 이 회차 저장</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ 탭3: 분배 결과 ═══ -->
-<div class="screen" id="screen-3">
-  <!-- 히스토리 선택 바 -->
-  <div class="raid-select-bar">
-    <span style="font-size:13px;font-weight:700;color:#2255aa;white-space:nowrap;">📋 회차 선택</span>
-    <select id="raidSelectDropdown" onchange="onRaidSelect(this.value)" style="flex:1;">
-      <option value="">저장된 회차가 없습니다</option>
+<!-- 파밍 정보 -->
+<div id="tab-farming" class="tab-panel">
+  <div class="section-title">🗺️ 파밍 정보</div>
+  <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;">
+    <input class="search-input" id="farming-search" placeholder="몹명 또는 아이템명 검색..." style="flex:1;min-width:160px;" oninput="filterFarming()">
+    <select class="form-select" id="farming-zone-filter" style="width:auto;" onchange="filterFarming()">
+      <option value="">전체 구역</option>
     </select>
-    <button class="btn danger" onclick="deleteCurrentRaid()" style="padding:6px 12px;white-space:nowrap;">🗑️ 삭제</button>
   </div>
-  <div class="info-box" id="resultInfo">저장된 회차를 선택하거나, 원정대 입력 후 저장하면 결과가 표시됩니다.</div>
-  <div id="resultArea" style="display:none;">
-    <div class="metrics" id="resultMetrics"></div>
-    <div class="row">
-      <div class="col" style="flex:1.3;">
-        <div class="card">
-          <div class="card-title">멤버별 최종 분배금</div>
-          <div id="resultMemberList"></div>
-        </div>
+  <div id="farming-list"></div>
+
+  <!-- 관리자 추가 -->
+  <div style="margin-top:20px;">
+    <div style="font-weight:700;font-size:.9rem;margin-bottom:10px;color:var(--muted);">🔐 파밍 정보 관리 (관리자)</div>
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">관리자 키</label>
+        <input class="form-input" id="farming-admin-key" type="password" placeholder="관리자 키">
       </div>
-      <div class="col">
-        <div class="card">
-          <div class="card-title">계산 상세</div>
-          <div id="resultDetail"></div>
-        </div>
+      <div class="form-group">
+        <label class="form-label">구역</label>
+        <input class="form-input" id="farming-zone" placeholder="예: 미나르숲">
       </div>
+      <div class="form-group">
+        <label class="form-label">사냥터명</label>
+        <input class="form-input" id="farming-spot" placeholder="예: 큰 둥지 봉우리">
+      </div>
+      <div class="form-group">
+        <label class="form-label">추천 레벨</label>
+        <input class="form-input" id="farming-level" placeholder="예: 100~120">
+      </div>
+      <div class="form-group">
+        <label class="form-label">몹 이름 (쉼표로 구분)</label>
+        <input class="form-input" id="farming-mobs" placeholder="예: 와이번, 블루 와이번">
+      </div>
+      <div class="form-group">
+        <label class="form-label">주요 드랍 아이템 (쉼표로 구분)</label>
+        <textarea class="form-textarea" id="farming-drops" style="min-height:70px;" placeholder="예: 드래곤 스킨, 와이번 스케일, 망토 공격력 주문서 60%"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">메모</label>
+        <input class="form-input" id="farming-memo" placeholder="예: 경험치 효율 최상, 파티 추천">
+      </div>
+      <button class="btn-primary" onclick="addFarmingSpot()" style="width:100%;">파밍 정보 추가</button>
+      <div id="farming-add-msg" style="margin-top:8px;font-size:.82rem;text-align:center;"></div>
     </div>
   </div>
 </div>
 
-<!-- ═══ 탭4: 통계 & 히스토리 ═══ -->
-<div class="screen" id="screen-4">
-  <div class="metrics" id="statMetrics"></div>
-  <div class="row">
-    <div class="col" style="flex:1.2;">
-      <div class="card">
-        <div class="card-title">회차 히스토리</div>
-        <div style="display:flex;gap:6px;margin-bottom:10px;">
-          <select id="filterPeriod" onchange="renderHistory()" style="flex:1;">
-            <option value="all">전체</option><option value="week">이번 주</option><option value="month">이번 달</option>
-          </select>
-        </div>
-        <div id="historyList"></div>
-      </div>
+<!-- 길드 모집 -->
+<div id="tab-guild" class="tab-panel">
+  <div class="section-title">⚔️ 길드원 모집</div>
+
+  <!-- 글쓰기 -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="font-weight:700;margin-bottom:12px;font-size:.95rem;">📝 모집 공고 작성</div>
+    <div class="form-group">
+      <label class="form-label">길드명</label>
+      <input class="form-input" id="guild-name" placeholder="길드명" maxlength="20">
     </div>
-    <div class="col">
-      <div class="card">
-        <div class="card-title">멤버별 누적 수령액</div>
-        <div id="memberStatBars"></div>
-      </div>
-      <div class="card" style="margin-top:14px;">
-        <div class="card-title">패널티 이력</div>
-        <div id="penaltyHistory"></div>
-      </div>
+    <div class="form-group">
+      <label class="form-label">대표자 닉네임</label>
+      <input class="form-input" id="guild-nickname" placeholder="닉네임" maxlength="20">
     </div>
+    <div class="form-group">
+      <label class="form-label">글 암호 <span style="color:var(--muted);font-size:.75rem">(수정·삭제 시 필요)</span></label>
+      <input class="form-input" id="guild-password" type="password" placeholder="본인만 아는 암호" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label">모집 내용 (최대 2000자)</label>
+      <textarea class="form-textarea" id="guild-content" style="min-height:160px;" placeholder="길드 소개, 모집 조건, 활동 시간 등을 자유롭게 적어주세요..." maxlength="2000"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">포스터/이미지 (선택)</label>
+      <input type="file" id="guild-image" accept="image/*" style="display:none;" onchange="previewGuildImage(event)">
+      <button class="btn-secondary" onclick="document.getElementById('guild-image').click()" style="width:100%;padding:10px;">🖼️ 이미지 첨부</button>
+      <div id="guild-image-preview" style="margin-top:8px;"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">연락처 (디스코드 ID 등)</label>
+      <input class="form-input" id="guild-contact" placeholder="예: fourcard#1234" maxlength="50">
+    </div>
+    <button class="btn-primary" onclick="submitGuildPost()" style="width:100%;">모집 공고 등록</button>
+    <div id="guild-submit-msg" style="margin-top:8px;font-size:.82rem;text-align:center;"></div>
   </div>
+
+  <!-- 목록 -->
+  <div style="font-weight:700;margin-bottom:10px;font-size:.9rem;">📌 모집 공고 목록</div>
+  <div id="guild-list"><div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">로딩 중...</div></div>
 </div>
-
-</div><!-- /main -->
-<div class="footer">제작 <span>fourcard</span> · 문의 디스코드 <span>j_son1993</span> · 인게임 친추 <span>fourcard</span> · 메이플랜드 분배금 계산기</div>
-
+<div id="pip-overlay">
+  <div class="pip-header">
+    <span class="pip-title">⏱️ 타이머</span>
+    <button class="pip-close" onclick="togglePIP()">✕</button>
+  </div>
+  <div id="pip-list"><span style="color:var(--muted);font-size:.8rem;">실행 중인 타이머 없음</span></div>
+</div>
+<footer>
+  <div style="margin-bottom:4px;">제작 · 운영: 표식길드 <strong style="color:var(--accent)">fourcard</strong></div>
+  <div style="margin-bottom:4px;">후원계좌: 신한 110-376-464404 손x원</div>
+  <div>© 2026 메랜비서 · 문의 디스코드 j_son1993</div>
+</footer>
 <script>
-// ══════════════════════════════════════════
-//  데이터
-// ══════════════════════════════════════════
-let cfg={
-  guildName:'',sellerPct:5,guestIncentive:150,
-  penalties:[
-    {id:1,name:'1페 사망',amount:500,pct:0},{id:2,name:'2페 사망',amount:300,pct:0},
-    {id:3,name:'3회이상 사망',amount:200,pct:0},{id:4,name:'노쇼',amount:1000,pct:0},{id:5,name:'지각',amount:100,pct:0},
-  ],
-  mercAlbaSettings:{},members:[],nextPenaltyId:6,nextMemberId:1,
-};
-let raids=[];
-// cur: 현재 입력 중인 회차
-let cur={date:'',participants:[],items:[],guestPays:[],costs:[],penaltyMap:{}};
-// 현재 결과에 표시 중인 회차 인덱스 (raids 배열 기준)
-let viewingRaidIdx=-1;
+const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.dev";
+const WEATHER_KEY = "43f5d732250dd4c5facd4a20c479c1e6";
+const IS_PROD = location.hostname !== 'localhost' && location.hostname !== '127.0.0.1';
 
-// ══════════════════════════════════════════
-//  localStorage
-// ══════════════════════════════════════════
-function save(){localStorage.setItem('mpl_cfg',JSON.stringify(cfg));localStorage.setItem('mpl_raids',JSON.stringify(raids));}
-function load(){
-  try{
-    const c=localStorage.getItem('mpl_cfg');
-    if(c){cfg=JSON.parse(c);cfg.penalties=cfg.penalties.map(p=>({...p,pct:p.pct||0}));if(!cfg.mercAlbaSettings)cfg.mercAlbaSettings={};if(!cfg.supportSettings)cfg.supportSettings={};}
-    const r=localStorage.getItem('mpl_raids');if(r)raids=JSON.parse(r);
-  }catch(e){}
-}
-function exportData(){
-  const blob=new Blob([JSON.stringify({cfg,raids},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='분배금백업_'+new Date().toISOString().slice(0,10)+'.json';a.click();
-}
-function importData(){document.getElementById('importFile').click();}
-function loadImport(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.cfg)cfg=d.cfg;if(d.raids)raids=d.raids;save();renderAll();alert('✅ 백업 불러오기 완료!');}catch{alert('❌ 파일을 읽을 수 없어요.');}};
-  reader.readAsText(file);e.target.value='';
+async function proxyFetch(url) {
+  if (IS_PROD) { const r = await fetch('/api/proxy?url='+encodeURIComponent(url)); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); }
+  else { const r = await fetch('https://corsproxy.io/?'+encodeURIComponent(url)); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); }
 }
 
-// ══════════════════════════════════════════
-//  수수료 계산
-// ══════════════════════════════════════════
-const FEE_BRACKETS=[
-  {min:10000,exchange:0.06,delivery:0.07},{min:2500,exchange:0.05,delivery:0.06},
-  {min:1000,exchange:0.04,delivery:0.05},{min:500,exchange:0.03,delivery:0.04},
-  {min:100,exchange:0.018,delivery:0.027},{min:10,exchange:0.008,delivery:0.012},{min:0,exchange:0,delivery:0},
-];
-function getRate(price,trade){const b=FEE_BRACKETS.find(b=>price>=b.min);return trade==='택배'?b.delivery:b.exchange;}
-const NOTE_UNIT={'노수작':0,'99수작':99,'499수작':499,'999수작':999};
-function calcFee(price,trade,note){
-  if(trade==='택배')return Math.round(price*getRate(price,'택배')*10)/10;
-  const unit=NOTE_UNIT[note];
-  if(!unit)return Math.round(price*getRate(price,'교환')*10)/10;
-  let fee=0,remaining=price;
-  for(let i=0;i<Math.ceil(price/unit);i++){const chunk=Math.min(unit,remaining);fee+=chunk*getRate(chunk,'교환');remaining-=chunk;}
-  return Math.round(fee*10)/10;
+// KST 시계
+function updateClock() {
+  const kst = new Date(Date.now()+9*3600000);
+  document.getElementById('kst-clock').textContent = `KST ${String(kst.getUTCHours()).padStart(2,'0')}:${String(kst.getUTCMinutes()).padStart(2,'0')}:${String(kst.getUTCSeconds()).padStart(2,'0')}`;
 }
-function updateFeePreview(){
-  const price=parseFloat(document.getElementById('itemPrice').value)||0;
-  const trade=document.getElementById('itemTrade').value;
-  const note=document.getElementById('itemNote').value;
-  if(!price){document.getElementById('feePreview').textContent='';return;}
-  document.getElementById('feePreview').textContent=`수수료 -${fmt(calcFee(price,trade,note))}만`;
-}
-function updateGuestFeePreview(){
-  const price=parseFloat(document.getElementById('guestPayAmt').value)||0;
-  const trade=document.getElementById('guestPayTrade').value;
-  const note=document.getElementById('guestPayNote').value;
-  if(!price){document.getElementById('guestFeePreview').textContent='';return;}
-  document.getElementById('guestFeePreview').textContent=`수수료 -${fmt(calcFee(price,trade,note))}만`;
-}
+setInterval(updateClock,1000); updateClock();
 
-// ══════════════════════════════════════════
-//  유틸
-// ══════════════════════════════════════════
-function fmt(n){if(n===undefined||n===null||isNaN(n))return'0';return parseFloat(n.toFixed(1)).toLocaleString('ko-KR');}
-function noteClass(note){return{'99수작':'badge-99','499수작':'badge-499','999수작':'badge-999','노수작':'badge-no'}[note]||'badge-no';}
-function getMember(id){return cfg.members.find(m=>m.id==id);}
-function getMemberByName(name){return cfg.members.find(m=>m.name===name);}
-function getAvatar(name){return name?name[0]:'?';}
-function avatarClass(m){
-  if(!m)return'';
-  if(m.job==='손님')return'guest';
-  if(m.isSeller)return'seller';
-  if(m.isRecruiter)return'recruiter';
-  if(m.isAlba)return'alba';
-  if(m.isMerc)return'merc';
-  return'';
-}
-function isMercOrAlba(m){return m&&(m.isMerc||m.isAlba)&&m.job!=='손님';}
-function tradeBadge(trade){return trade==='택배'?'background:#fff3cd;color:#7a4f00;border:1px solid #ffd966':'background:#e8f4ff;color:#2255aa;border:1px solid #90c8f0';}
-
-// ══════════════════════════════════════════
-//  콤보박스
-// ══════════════════════════════════════════
-let sellerBlurT=null,recruiterBlurT=null;
-function getParticipantNames(){return cur.participants.map(id=>getMember(id)).filter(Boolean).map(m=>m.name);}
-function renderDDList(ddId,names,fn){
-  const dd=document.getElementById(ddId);
-  if(!names.length){dd.classList.remove('open');return;}
-  dd.innerHTML=names.map(n=>`<div class="seller-option" onmousedown="${fn}('${n.replace(/'/g,"\\'")}'">${n}</div>`).join('');
-  dd.classList.add('open');
-}
-function onSellerInput(){const v=document.getElementById('itemSellerInput').value.trim().toLowerCase();const n=getParticipantNames();renderDDList('sellerDropdown',v?n.filter(x=>x.toLowerCase().includes(v)):n,'selectSeller');}
-function onSellerFocus(){clearTimeout(sellerBlurT);renderDDList('sellerDropdown',getParticipantNames(),'selectSeller');}
-function onSellerBlur(){sellerBlurT=setTimeout(()=>document.getElementById('sellerDropdown').classList.remove('open'),200);}
-function selectSeller(name){document.getElementById('itemSellerInput').value=name;document.getElementById('sellerDropdown').classList.remove('open');}
-function onRecruiterInput(){const v=document.getElementById('guestRecruiterInput').value.trim().toLowerCase();const n=getParticipantNames();renderDDList('recruiterDropdown',v?n.filter(x=>x.toLowerCase().includes(v)):n,'selectRecruiter');}
-function onRecruiterFocus(){clearTimeout(recruiterBlurT);renderDDList('recruiterDropdown',getParticipantNames(),'selectRecruiter');}
-function onRecruiterBlur(){recruiterBlurT=setTimeout(()=>document.getElementById('recruiterDropdown').classList.remove('open'),200);}
-function selectRecruiter(name){document.getElementById('guestRecruiterInput').value=name;document.getElementById('recruiterDropdown').classList.remove('open');}
-
-// ══════════════════════════════════════════
-//  탭 전환
-// ══════════════════════════════════════════
-function showTab(i){
-  document.querySelectorAll('.tab-btn').forEach((t,j)=>t.classList.toggle('active',i===j));
-  document.querySelectorAll('.screen').forEach((s,j)=>s.classList.toggle('active',i===j));
-  if(i===2)renderRaidInput();
-  if(i===3){renderRaidSelectDropdown();renderResult();}
-  if(i===4)renderStats();
-}
-
-// ══════════════════════════════════════════
-//  탭1: 공대 설정
-// ══════════════════════════════════════════
-function renderSettings(){
-  document.getElementById('guildName').value=cfg.guildName;
-  document.getElementById('sellerPct').value=cfg.sellerPct;
-  document.getElementById('guestIncentive').value=cfg.guestIncentive;
-  renderPenaltyList();renderMercAlbaSettings();renderSupportSettings();renderMemberList();renderRoleInfo();
-}
-function renderRoleInfo(){
-  const el=document.getElementById('roleInfoBox');
-  const sellers=cfg.members.filter(m=>m.isSeller);
-  const recruiters=cfg.members.filter(m=>m.isRecruiter);
-  const mercs=cfg.members.filter(m=>m.isMerc&&!m.isAlba&&m.job!=='손님');
-  const albas=cfg.members.filter(m=>m.isAlba&&m.job!=='손님');
-  const supports=cfg.members.filter(m=>m.isSupport);
-  const guests=cfg.members.filter(m=>m.job==='손님');
-  if(!sellers.length&&!recruiters.length&&!mercs.length&&!albas.length&&!supports.length&&!guests.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">역할이 지정된 멤버가 없습니다.</div>';return;}
-  let html='';
-  if(sellers.length)html+=`<div class="role-info-row"><span class="role-info-label">🟢 판매자</span>${sellers.map(m=>`<span class="badge badge-seller">${m.name}</span>`).join(' ')}</div>`;
-  if(recruiters.length)html+=`<div class="role-info-row"><span class="role-info-label">🟣 손님구인</span>${recruiters.map(m=>`<span class="badge badge-recruiter">${m.name}</span>`).join(' ')}</div>`;
-  if(mercs.length)html+=`<div class="role-info-row"><span class="role-info-label">🟡 용병</span>${mercs.map(m=>`<span class="badge badge-merc">${m.name}</span>`).join(' ')}</div>`;
-  if(albas.length)html+=`<div class="role-info-row"><span class="role-info-label">🟠 알바</span>${albas.map(m=>`<span class="badge badge-alba">${m.name}</span>`).join(' ')}</div>`;
-  if(supports.length)html+=`<div class="role-info-row"><span class="role-info-label">💝 지원금</span>${supports.map(m=>`<span class="badge" style="background:#f3e8ff;color:#6a1b9a;border:1px solid #ce93d8;">${m.name}</span>`).join(' ')}</div>`;
-  if(guests.length)html+=`<div class="role-info-row"><span class="role-info-label">🔴 손님</span>${guests.map(m=>`<span class="badge badge-guest">${m.name}</span>`).join(' ')}</div>`;
-  el.innerHTML=html;
-}
-function renderPenaltyList(){
-  const el=document.getElementById('penaltyList');
-  if(!cfg.penalties.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">패널티 항목이 없습니다.</div>';return;}
-  el.innerHTML=cfg.penalties.map(p=>`
-    <div class="field-row" style="flex-wrap:wrap;">
-      <input type="text" value="${p.name}" onchange="updatePenaltyName(${p.id},this.value)" style="flex:1.5;min-width:100px;">
-      <input type="number" value="${p.amount||0}" onchange="updatePenaltyAmt(${p.id},this.value)" placeholder="금액(만)" style="width:78px;flex:none;" min="0">
-      <span style="font-size:11px;color:var(--text2);flex:none;">만</span>
-      <input type="number" value="${p.pct||0}" onchange="updatePenaltyPct(${p.id},this.value)" placeholder="%" class="pen-pct-input" min="0" max="100" step="0.1">
-      <span style="font-size:11px;color:var(--text2);flex:none;">%</span>
-      <button class="btn danger" onclick="removePenalty(${p.id})" style="padding:4px 8px;">✕</button>
-    </div>`).join('');
-}
-function saveSettings(){
-  cfg.guildName=document.getElementById('guildName').value;
-  cfg.sellerPct=parseFloat(document.getElementById('sellerPct').value)||0;
-  cfg.guestIncentive=parseFloat(document.getElementById('guestIncentive').value)||0;
-  save();alert('✅ 설정이 저장되었습니다!');
-}
-function addPenalty(){
-  const name=document.getElementById('newPenaltyName').value.trim();
-  const amt=parseFloat(document.getElementById('newPenaltyAmt').value)||0;
-  const pct=parseFloat(document.getElementById('newPenaltyPct').value)||0;
-  if(!name){alert('항목명을 입력해주세요.');return;}
-  cfg.penalties.push({id:cfg.nextPenaltyId++,name,amount:amt,pct});
-  document.getElementById('newPenaltyName').value='';document.getElementById('newPenaltyAmt').value='';document.getElementById('newPenaltyPct').value='';
-  save();renderPenaltyList();
-}
-function removePenalty(id){cfg.penalties=cfg.penalties.filter(p=>p.id!==id);save();renderPenaltyList();}
-function updatePenaltyName(id,v){const p=cfg.penalties.find(p=>p.id===id);if(p){p.name=v;save();}}
-function updatePenaltyAmt(id,v){const p=cfg.penalties.find(p=>p.id===id);if(p){p.amount=parseFloat(v)||0;save();}}
-function updatePenaltyPct(id,v){const p=cfg.penalties.find(p=>p.id===id);if(p){p.pct=parseFloat(v)||0;save();}}
-function renderMercAlbaSettings(){
-  const el=document.getElementById('mercAlbaList');
-  const mercAlbas=cfg.members.filter(m=>isMercOrAlba(m));
-  if(!mercAlbas.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">용병/알바 멤버가 없습니다.</div>';return;}
-  if(!cfg.mercAlbaSettings)cfg.mercAlbaSettings={};
-  el.innerHTML=`<table class="tbl merc-tbl" style="margin-bottom:6px;"><thead><tr>
-    <th>닉네임</th><th>구분</th><th>지급방식</th><th>금액(만)</th><th>%(1인 기준)</th>
-  </tr></thead><tbody>
-  ${mercAlbas.map(m=>{
-    const s=cfg.mercAlbaSettings[m.id]||{type:'fixed',value:0};
-    return `<tr>
-      <td style="font-weight:700;text-align:left;">${m.name}</td>
-      <td>${m.isAlba?'<span class="badge badge-alba">알바</span>':'<span class="badge badge-merc">용병</span>'}</td>
-      <td><select onchange="updateMercAlbaType(${m.id},this.value)" style="font-size:11px;padding:4px 6px;">
-        <option value="fixed" ${s.type==='fixed'?'selected':''}>고정금액</option>
-        <option value="pct" ${s.type==='pct'?'selected':''}>퍼센트</option>
-      </select></td>
-      <td>${s.type==='fixed'?`<input type="number" value="${s.value||0}" onchange="updateMercAlbaValue(${m.id},this.value)" style="width:70px;font-size:12px;padding:4px;" min="0">`:'-'}</td>
-      <td>${s.type==='pct'?`<div style="display:flex;align-items:center;gap:3px;justify-content:center;"><input type="number" value="${s.value||0}" onchange="updateMercAlbaValue(${m.id},this.value)" style="width:60px;font-size:12px;padding:4px;" min="0" max="200" step="0.1"><span style="font-size:11px;">%</span></div>`:'-'}</td>
-    </tr>`;
-  }).join('')}</tbody></table>`;
-}
-function updateMercAlbaType(id,type){if(!cfg.mercAlbaSettings)cfg.mercAlbaSettings={};cfg.mercAlbaSettings[id]={type,value:0};save();renderMercAlbaSettings();}
-function updateMercAlbaValue(id,v){if(!cfg.mercAlbaSettings)cfg.mercAlbaSettings={};if(!cfg.mercAlbaSettings[id])cfg.mercAlbaSettings[id]={type:'fixed',value:0};cfg.mercAlbaSettings[id].value=parseFloat(v)||0;save();}
-function renderMemberList(){
-  const el=document.getElementById('memberList');
-  if(!cfg.members.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;padding:8px 0;">멤버가 없습니다.</div>';return;}
-  el.innerHTML=cfg.members.map(m=>{
-    const ac=avatarClass(m);
-    const roles=[m.isSeller?'<span class="badge badge-seller">판매자</span>':'',m.isRecruiter?'<span class="badge badge-recruiter">손님구인</span>':'',m.isMerc&&!m.isAlba?'<span class="badge badge-merc">용병</span>':'',m.isAlba?'<span class="badge badge-alba">알바</span>':'',m.job==='손님'?'<span class="badge badge-guest">손님</span>':''].filter(Boolean).join('');
-    return `<div class="member-row"><div class="avatar ${ac}">${getAvatar(m.name)}</div><div class="member-name">${m.name}</div><span class="badge badge-job">${m.job}</span>${roles}<button class="btn danger" onclick="removeMember(${m.id})" style="padding:4px 8px;margin-left:auto;">✕</button></div>`;
-  }).join('');
-}
-function addMember(){
-  const name=document.getElementById('newMemberName').value.trim();
-  const job=document.getElementById('newMemberJob').value;
-  const isMerc=document.getElementById('newMemberMerc').checked;
-  const isAlba=document.getElementById('newMemberAlba').checked;
-  const isSeller=document.getElementById('newMemberSeller').checked;
-  const isRecruiter=document.getElementById('newMemberRecruiter').checked;
-  const isSupport=document.getElementById('newMemberSupport').checked;
-  if(!name||!job){alert('닉네임과 직업을 입력해주세요.');return;}
-  cfg.members.push({id:cfg.nextMemberId++,name,job,isMerc,isAlba,isSeller,isRecruiter,isSupport});
-  document.getElementById('newMemberName').value='';document.getElementById('newMemberJob').value='';
-  ['newMemberMerc','newMemberAlba','newMemberSeller','newMemberRecruiter','newMemberSupport'].forEach(id=>document.getElementById(id).checked=false);
-  save();renderMemberList();renderRoleInfo();renderMercAlbaSettings();renderSupportSettings();renderParticipants();renderPenaltyInputs();
-}
-function removeMember(id){
-  cfg.members=cfg.members.filter(m=>m.id!==id);cur.participants=cur.participants.filter(x=>x!==id);
-  if(cfg.mercAlbaSettings)delete cfg.mercAlbaSettings[id];
-  if(cfg.supportSettings)delete cfg.supportSettings[id];
-  save();renderMemberList();renderRoleInfo();renderMercAlbaSettings();renderSupportSettings();renderParticipants();renderPenaltyInputs();
-}
-
-// 지원금 설정 렌더
-function renderSupportSettings(){
-  const el=document.getElementById('supportList');
-  if(!el)return;
-  const supportMembers=cfg.members.filter(m=>m.isSupport);
-  if(!supportMembers.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">지원금 멤버가 없습니다.</div>';return;}
-  if(!cfg.supportSettings)cfg.supportSettings={};
-  el.innerHTML=`<table class="tbl" style="margin-bottom:6px;"><thead><tr>
-    <th>닉네임</th><th>직업</th><th>지원금액(만)</th>
-  </tr></thead><tbody>
-  ${supportMembers.map(m=>{
-    const v=cfg.supportSettings[m.id]||0;
-    return `<tr>
-      <td style="font-weight:700;text-align:left;">${m.name}</td>
-      <td><span class="badge badge-job">${m.job}</span></td>
-      <td><div style="display:flex;align-items:center;gap:4px;justify-content:center;">
-        <input type="number" value="${v}" onchange="updateSupportValue(${m.id},this.value)" style="width:80px;font-size:12px;padding:4px;" min="0">
-        <span style="font-size:11px;color:var(--text2);">만</span>
-      </div></td>
-    </tr>`;
-  }).join('')}</tbody></table>`;
-}
-function updateSupportValue(id,v){
-  if(!cfg.supportSettings)cfg.supportSettings={};
-  cfg.supportSettings[id]=parseFloat(v)||0;
-  save();
-}
-
-// 회차 삭제
-function deleteCurrentRaid(){
-  if(viewingRaidIdx<0||!raids[viewingRaidIdx]){alert('삭제할 회차를 선택해주세요.');return;}
-  const r=raids[viewingRaidIdx];
-  if(!confirm(`${r.date} 회차를 삭제할까요? 이 작업은 되돌릴 수 없어요.`))return;
-  raids.splice(viewingRaidIdx,1);
-  viewingRaidIdx=-1;
-  save();
-  renderRaidSelectDropdown();
-  renderResult();
-  alert('✅ 삭제되었습니다!');
-}
-
-// ══════════════════════════════════════════
-//  탭2: 원정대 입력
-// ══════════════════════════════════════════
-function renderRaidInput(){
-  if(!cur.date)cur.date=new Date().toISOString().slice(0,10);
-  document.getElementById('raidDate').value=cur.date;
-  renderParticipants();renderPenaltyInputs();renderDropTable();renderGuestPayTable();renderCostTable();
-}
-function renderParticipants(){
-  const el=document.getElementById('participantList');
-  const nonGuests=cfg.members.filter(m=>m.job!=='손님');
-  if(!nonGuests.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">공대 설정에서 멤버를 먼저 추가해주세요.</div>';return;}
-  el.innerHTML=nonGuests.map(m=>{
-    const checked=cur.participants.includes(m.id)?'checked':'';
-    const roles=[m.isSeller?'<span class="badge badge-seller">판매자</span>':'',m.isRecruiter?'<span class="badge badge-recruiter">손님구인</span>':'',m.isMerc&&!m.isAlba?'<span class="badge badge-merc">용병</span>':'',m.isAlba?'<span class="badge badge-alba">알바</span>':''].filter(Boolean).join('');
-    return `<div class="member-row"><input type="checkbox" class="chk" ${checked} onchange="toggleParticipant(${m.id},this.checked)"><div class="avatar ${avatarClass(m)}">${getAvatar(m.name)}</div><div class="member-name">${m.name}</div><span class="badge badge-job">${m.job}</span>${roles}</div>`;
-  }).join('');
-}
-function toggleParticipant(id,checked){if(checked){if(!cur.participants.includes(id))cur.participants.push(id);}else{cur.participants=cur.participants.filter(x=>x!==id);}renderPenaltyInputs();}
-function renderPenaltyInputs(){
-  const el=document.getElementById('penaltyInputList');
-  const parts=cur.participants.map(id=>getMember(id)).filter(Boolean);
-  if(!parts.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">참여 멤버를 먼저 체크해주세요.</div>';return;}
-  el.innerHTML=parts.map(m=>{
-    const sel=cur.penaltyMap[m.id]||'';
-    const opts='<option value="">패널티 없음</option>'+cfg.penalties.map(p=>{
-      const desc=[];if(p.amount)desc.push(`-${fmt(p.amount)}만`);if(p.pct)desc.push(`-${p.pct}%`);
-      return `<option value="${p.id}" ${sel==p.id?'selected':''}>${p.name} (${desc.join(', ')||'없음'})</option>`;
-    }).join('');
-    return `<div class="member-row"><div class="avatar ${avatarClass(m)}">${getAvatar(m.name)}</div><div class="member-name">${m.name}</div><select onchange="setPenalty(${m.id},this.value)" style="flex:1;">${opts}</select></div>`;
-  }).join('');
-}
-function setPenalty(memberId,penaltyId){cur.penaltyMap[memberId]=penaltyId?parseInt(penaltyId):'';}
-function renderDropTable(){
-  const tbody=document.getElementById('dropBody');
-  if(!cur.items.length){tbody.innerHTML='<tr><td colspan="8" style="color:var(--text3);padding:16px;">아이템을 추가해주세요.</td></tr>';return;}
-  tbody.innerHTML=cur.items.map((it,idx)=>`<tr>
-    <td style="text-align:left;">${it.name}</td><td>${fmt(it.price)}만</td>
-    <td><span class="badge" style="${tradeBadge(it.trade)}">${it.trade}</span></td>
-    <td><span class="badge ${noteClass(it.note)}">${it.note}</span></td>
-    <td style="color:var(--red2);">-${fmt(it.fee)}만</td>
-    <td style="color:#2e7d32;font-weight:700;">${fmt(it.net)}만</td>
-    <td>${it.sellerName||'-'}</td>
-    <td><button class="btn danger" onclick="removeItem(${idx})" style="padding:3px 8px;">✕</button></td>
-  </tr>`).join('');
-}
-function addItem(){
-  const name=document.getElementById('itemName').value.trim();
-  const price=parseFloat(document.getElementById('itemPrice').value)||0;
-  const trade=document.getElementById('itemTrade').value;
-  const note=document.getElementById('itemNote').value;
-  const sellerName=document.getElementById('itemSellerInput').value.trim()||null;
-  const seller=sellerName?getMemberByName(sellerName)?.id:null;
-  if(!name||!price){alert('아이템명과 금액을 입력해주세요.');return;}
-  const fee=calcFee(price,trade,note);
-  const net=Math.round((price-fee)*10)/10;
-  cur.items.push({name,price,trade,note,fee,net,seller,sellerName});
-  document.getElementById('itemName').value='';document.getElementById('itemPrice').value='';
-  document.getElementById('itemSellerInput').value='';document.getElementById('feePreview').textContent='';
-  renderDropTable();
-}
-function removeItem(idx){cur.items.splice(idx,1);renderDropTable();}
-
-// 손님 지불 (수수료 포함)
-function renderGuestPayTable(){
-  const tbody=document.getElementById('guestPayBody');
-  if(!cur.guestPays||!cur.guestPays.length){tbody.innerHTML='<tr><td colspan="9" style="color:var(--text3);padding:16px;">손님 내역을 추가해주세요.</td></tr>';return;}
-  tbody.innerHTML=cur.guestPays.map((gp,idx)=>`<tr>
-    <td style="font-weight:700;">${gp.name}</td>
-    <td>${gp.item||'-'}</td>
-    <td>${fmt(gp.amount)}만</td>
-    <td><span class="badge" style="${tradeBadge(gp.trade||'택배')}">${gp.trade||'택배'}</span></td>
-    <td><span class="badge ${noteClass(gp.note||'노수작')}">${gp.note||'노수작'}</span></td>
-    <td style="color:var(--red2);">-${fmt(gp.fee||0)}만</td>
-    <td style="color:#2e7d32;font-weight:700;">${fmt(gp.net||gp.amount)}만</td>
-    <td>${gp.recruiterName||'-'}</td>
-    <td><button class="btn danger" onclick="removeGuestPay(${idx})" style="padding:3px 8px;">✕</button></td>
-  </tr>`).join('');
-}
-function addGuestPay(){
-  const name=document.getElementById('guestPayName').value.trim();
-  const item=document.getElementById('guestPayItem').value.trim();
-  const amount=parseFloat(document.getElementById('guestPayAmt').value)||0;
-  const trade=document.getElementById('guestPayTrade').value;
-  const note=document.getElementById('guestPayNote').value;
-  const recruiterName=document.getElementById('guestRecruiterInput').value.trim()||null;
-  if(!name||!amount){alert('손님 닉네임과 지불 금액을 입력해주세요.');return;}
-  const fee=calcFee(amount,trade,note);
-  const net=Math.round((amount-fee)*10)/10;
-  if(!cur.guestPays)cur.guestPays=[];
-  cur.guestPays.push({name,item,amount,trade,note,fee,net,recruiterName});
-  document.getElementById('guestPayName').value='';document.getElementById('guestPayItem').value='';
-  document.getElementById('guestPayAmt').value='';document.getElementById('guestRecruiterInput').value='';
-  document.getElementById('guestFeePreview').textContent='';
-  renderGuestPayTable();
-}
-function removeGuestPay(idx){cur.guestPays.splice(idx,1);renderGuestPayTable();}
-
-// 공대 지출
-function renderCostTable(){
-  const tbody=document.getElementById('costBody');
-  if(!cur.costs||!cur.costs.length){tbody.innerHTML='<tr><td colspan="3" style="color:var(--text3);padding:14px;">공대 지출 내역을 추가해주세요.</td></tr>';return;}
-  tbody.innerHTML=cur.costs.map((c,idx)=>`<tr>
-    <td style="text-align:left;">${c.name}</td>
-    <td style="color:#6a1b9a;font-weight:700;">${fmt(c.amount)}만</td>
-    <td><button class="btn danger" onclick="removeCost(${idx})" style="padding:3px 8px;">✕</button></td>
-  </tr>`).join('');
-}
-function addCost(){
-  const name=document.getElementById('costName').value.trim();
-  const amount=parseFloat(document.getElementById('costAmt').value)||0;
-  if(!name||!amount){alert('항목명과 금액을 입력해주세요.');return;}
-  if(!cur.costs)cur.costs=[];
-  cur.costs.push({name,amount});
-  document.getElementById('costName').value='';document.getElementById('costAmt').value='';
-  renderCostTable();
-}
-function removeCost(idx){cur.costs.splice(idx,1);renderCostTable();}
-
-function saveRaid(){
-  cur.date=document.getElementById('raidDate').value;
-  if(!cur.date){alert('날짜를 선택해주세요.');return;}
-  if(!cur.participants.length){alert('참여 멤버를 체크해주세요.');return;}
-  if(!cur.items.length&&(!cur.guestPays||!cur.guestPays.length)){alert('드랍템 또는 손님 지불 내역을 추가해주세요.');return;}
-  const existing=raids.findIndex(r=>r.date===cur.date);
-  if(existing>=0){if(!confirm(`${cur.date} 회차가 이미 있습니다. 덮어쓸까요?`))return;raids.splice(existing,1);}
-  const raidData=calcRaid(cur);
-  raids.push({...JSON.parse(JSON.stringify(cur)),...raidData,savedAt:new Date().toISOString()});
-  raids.sort((a,b)=>a.date.localeCompare(b.date));
-  save();alert('✅ 저장되었습니다!');showTab(3);
-}
-
-// ══════════════════════════════════════════
-//  핵심 계산 로직
-// ══════════════════════════════════════════
-function calcRaid(raidCur){
-  const parts=raidCur.participants.map(id=>getMember(id)).filter(Boolean);
-  const n=parts.length;if(!n)return{};
-
-  const totalSale=raidCur.items.reduce((s,it)=>s+it.price,0);
-  const totalFee=raidCur.items.reduce((s,it)=>s+it.fee,0);
-  const totalNet=raidCur.items.reduce((s,it)=>s+it.net,0);
-
-  // 손님: net(실수령) 기준으로 풀에 합산
-  const guestPays=raidCur.guestPays||[];
-  const totalGuestPay=guestPays.reduce((s,gp)=>s+(gp.amount||0),0);
-  const totalGuestNet=guestPays.reduce((s,gp)=>s+(gp.net!=null?gp.net:gp.amount||0),0);
-  const totalGuestFee=guestPays.reduce((s,gp)=>s+(gp.fee||0),0);
-
-  // 공대 지출
-  const costs=raidCur.costs||[];
-  const totalCost=costs.reduce((s,c)=>s+(c.amount||0),0);
-
-  // 판매자 인센
-  const sellerIncentiveMap={};
-  raidCur.items.forEach(it=>{
-    if(!it.seller)return;
-    if(!sellerIncentiveMap[it.seller])sellerIncentiveMap[it.seller]=0;
-    sellerIncentiveMap[it.seller]+=it.net*(cfg.sellerPct/100);
-  });
-  const totalSellerIncentive=Object.values(sellerIncentiveMap).reduce((s,v)=>s+v,0);
-
-  // 손님구인 인센
-  const recruiterIncentiveMap={};
-  guestPays.forEach(gp=>{
-    if(!gp.recruiterName)return;
-    const m=getMemberByName(gp.recruiterName);if(!m)return;
-    if(!recruiterIncentiveMap[m.id])recruiterIncentiveMap[m.id]=0;
-    recruiterIncentiveMap[m.id]+=cfg.guestIncentive;
-  });
-  const totalRecruiterIncentive=Object.values(recruiterIncentiveMap).reduce((s,v)=>s+v,0);
-
-  // 용병/알바 고정지급
-  const settings=cfg.mercAlbaSettings||{};
-  const mercAlbaFixed={};
-  parts.forEach(m=>{
-    if(!isMercOrAlba(m))return;
-    const s=settings[m.id]||{type:'fixed',value:0};
-    if(s.type==='fixed'&&s.value>0)mercAlbaFixed[m.id]=s.value;
-  });
-  const totalMercAlbaFixed=Object.values(mercAlbaFixed).reduce((s,v)=>s+v,0);
-
-  // 분배 풀 = 드랍 순수익 + 손님 실수령 - 판매자인센 - 손님구인인센 - 용병고정 - 공대지출
-  const pool=totalNet+totalGuestNet-totalSellerIncentive-totalRecruiterIncentive-totalMercAlbaFixed-totalCost;
-
-  // 지원금 차감 (분배 풀에서 선차감)
-  const supportSettings=cfg.supportSettings||{};
-  const supportMap={}; // memberId → 지원금액
-  parts.forEach(m=>{
-    if(!m.isSupport)return;
-    const sv=supportSettings[m.id]||0;
-    if(sv>0)supportMap[m.id]=sv;
-  });
-  const totalSupport=Object.values(supportMap).reduce((s,v)=>s+v,0);
-
-  // 분배 풀 재계산 (지원금 포함)
-  const poolFinal=pool-totalSupport;
-
-  // 기본 1인당 (지원금 차감 후)
-  const basePerPersonFinal=poolFinal/n;
-
-  // 패널티 재계산 (basePerPersonFinal 기준)
-  const penaltyAmtMapFinal={};let penaltyPoolFinal=0;
-  parts.forEach(m=>{
-    const pid=raidCur.penaltyMap?raidCur.penaltyMap[m.id]:null;if(!pid)return;
-    const pen=cfg.penalties.find(p=>p.id==pid);if(!pen)return;
-    let total=(pen.amount||0);
-    if(pen.pct&&pen.pct>0)total+=basePerPersonFinal*(pen.pct/100);
-    penaltyAmtMapFinal[m.id]=Math.round(total*10)/10;
-    penaltyPoolFinal+=penaltyAmtMapFinal[m.id];
-  });
-  const noPenaltyCountFinal=parts.filter(m=>!penaltyAmtMapFinal[m.id]).length;
-  const bonusPerNoPenaltyFinal=noPenaltyCountFinal?penaltyPoolFinal/noPenaltyCountFinal:0;
-
-  // 용병/알바 퍼센트 지급 (패널티없음 기준)
-  const regularNoPenaltyBase=basePerPersonFinal+bonusPerNoPenaltyFinal;
-  const mercAlbaPct={};
-  parts.forEach(m=>{
-    if(!isMercOrAlba(m))return;
-    const s=settings[m.id]||{type:'fixed',value:0};
-    if(s.type==='pct'&&s.value>0)mercAlbaPct[m.id]=Math.round(regularNoPenaltyBase*(s.value/100)*10)/10;
-  });
-
-  // 최종 분배
-  const finalMap={};
-  parts.forEach(m=>{
-    // 지원금 멤버: 지원금만 지급
-    if(supportMap[m.id]!=null){
-      finalMap[m.id]=supportMap[m.id];
-      return;
-    }
-    if(isMercOrAlba(m)){
-      // 용병/알바: 고정/퍼센트 + 패널티/보너스 적용
-      let amt=basePerPersonFinal;
-      if(mercAlbaFixed[m.id]!=null){
-        // 고정지급이면 고정금액 + 패널티/보너스
-        amt=mercAlbaFixed[m.id];
-        if(penaltyAmtMapFinal[m.id])amt-=penaltyAmtMapFinal[m.id];
-        else amt+=bonusPerNoPenaltyFinal;
-      } else if(mercAlbaPct[m.id]!=null){
-        // 퍼센트 지급이면 이미 패널티없음 기준으로 계산됨
-        amt=mercAlbaPct[m.id];
-        if(penaltyAmtMapFinal[m.id])amt-=penaltyAmtMapFinal[m.id];
-      } else {
-        if(penaltyAmtMapFinal[m.id])amt-=penaltyAmtMapFinal[m.id];
-        else amt+=bonusPerNoPenaltyFinal;
-      }
-      finalMap[m.id]=Math.round(amt*10)/10;
-      return;
-    }
-    let amt=basePerPersonFinal;
-    if(penaltyAmtMapFinal[m.id])amt-=penaltyAmtMapFinal[m.id];
-    else amt+=bonusPerNoPenaltyFinal;
-    if(sellerIncentiveMap[m.id])amt+=sellerIncentiveMap[m.id];
-    if(recruiterIncentiveMap[m.id])amt+=recruiterIncentiveMap[m.id];
-    finalMap[m.id]=Math.round(amt*10)/10;
-  });
-
-  return{
-    totalSale:Math.round(totalSale*10)/10,totalFee:Math.round(totalFee*10)/10,totalNet:Math.round(totalNet*10)/10,
-    totalGuestPay:Math.round(totalGuestPay*10)/10,totalGuestFee:Math.round(totalGuestFee*10)/10,totalGuestNet:Math.round(totalGuestNet*10)/10,
-    totalCost:Math.round(totalCost*10)/10,
-    totalSellerIncentive:Math.round(totalSellerIncentive*10)/10,
-    totalRecruiterIncentive:Math.round(totalRecruiterIncentive*10)/10,
-    totalMercAlbaFixed:Math.round(totalMercAlbaFixed*10)/10,
-    totalSupport:Math.round(totalSupport*10)/10,
-    pool:Math.round(pool*10)/10,
-    poolFinal:Math.round(poolFinal*10)/10,
-    penaltyPool:Math.round(penaltyPoolFinal*10)/10,
-    bonusPerNoPenalty:Math.round(bonusPerNoPenaltyFinal*10)/10,
-    basePerPerson:Math.round(basePerPersonFinal*10)/10,
-    sellerIncentiveMap,recruiterIncentiveMap,
-    penaltyAmtMap:penaltyAmtMapFinal,
-    mercAlbaFixed,mercAlbaPct,supportMap,
-    finalMap,participants:raidCur.participants,
-  };
-}
-
-// ══════════════════════════════════════════
-//  탭3: 분배 결과
-// ══════════════════════════════════════════
-function renderRaidSelectDropdown(){
-  const sel=document.getElementById('raidSelectDropdown');
-  const sorted=[...raids].sort((a,b)=>b.date.localeCompare(a.date));
-  if(!sorted.length){sel.innerHTML='<option value="">저장된 회차가 없습니다</option>';return;}
-  sel.innerHTML=sorted.map((r,i)=>{
-    const realIdx=raids.indexOf(r);
-    return `<option value="${realIdx}" ${realIdx===viewingRaidIdx?'selected':''}>${r.date} — 1인 ${fmt(r.basePerPerson)}만 (${r.participants?r.participants.length:0}명)</option>`;
-  }).join('');
-  // 기본: 가장 최신 회차
-  if(viewingRaidIdx<0&&raids.length){viewingRaidIdx=raids.indexOf(sorted[0]);sel.value=viewingRaidIdx;}
-}
-function onRaidSelect(idx){viewingRaidIdx=parseInt(idx);renderResult();}
-function renderResult(){
-  renderRaidSelectDropdown();
-  if(!raids.length||viewingRaidIdx<0){
-    document.getElementById('resultInfo').style.display='';document.getElementById('resultArea').style.display='none';return;
+// ── 접속자 수 (localStorage 기반 간이 카운팅) ──
+(function(){
+  const KEY='mrlv_visitors', SID='mrlv_'+Math.random().toString(36).slice(2), TTL=60000;
+  function heartbeat(){
+    try{
+      let d=JSON.parse(localStorage.getItem(KEY)||'{}');
+      d[SID]=Date.now();
+      Object.keys(d).forEach(k=>{if(Date.now()-d[k]>TTL)delete d[k];});
+      localStorage.setItem(KEY,JSON.stringify(d));
+      const cnt=Object.keys(d).length;
+      const el=document.getElementById('online-count');
+      if(el)el.textContent=cnt;
+    }catch(e){}
   }
-  document.getElementById('resultInfo').style.display='none';document.getElementById('resultArea').style.display='';
-  const r=raids[viewingRaidIdx];
-  const parts=r.participants.map(id=>getMember(id)).filter(Boolean);
+  heartbeat();
+  setInterval(heartbeat,20000);
+  window.addEventListener('beforeunload',()=>{
+    try{let d=JSON.parse(localStorage.getItem(KEY)||'{}');delete d[SID];localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}
+  });
+})();
 
-  document.getElementById('resultMetrics').innerHTML=`
-    <div class="metric"><div class="metric-label">📅 날짜</div><div class="metric-value blue" style="font-size:14px;">${r.date}</div></div>
-    <div class="metric"><div class="metric-label">드랍 판매금</div><div class="metric-value">${fmt(r.totalSale)}만</div></div>
-    <div class="metric"><div class="metric-label">손님 지불금</div><div class="metric-value purple">+${fmt(r.totalGuestPay||0)}만</div></div>
-    <div class="metric"><div class="metric-label">수수료 합계</div><div class="metric-value red">-${fmt((r.totalFee||0)+(r.totalGuestFee||0))}만</div></div>
-    <div class="metric"><div class="metric-label">공대 지출</div><div class="metric-value orange">-${fmt(r.totalCost||0)}만</div></div>
-    <div class="metric"><div class="metric-label">지원금</div><div class="metric-value purple">-${fmt(r.totalSupport||0)}만</div></div>
-    <div class="metric"><div class="metric-label">패널티 풀</div><div class="metric-value orange">±${fmt(r.penaltyPool||0)}만</div></div>
-    <div class="metric"><div class="metric-label">기본 1인당</div><div class="metric-value green">${fmt(r.basePerPerson)}만</div></div>
-  `;
+// ── PIP 타이머 (팝업 윈도우) ──
+let pipWin=null;
+let pipInterval=null;
 
-  document.getElementById('resultMemberList').innerHTML=parts.map(m=>{
-    const final=r.finalMap?(r.finalMap[m.id]??0):0;
-    const penalty=r.penaltyAmtMap?r.penaltyAmtMap[m.id]:null;
-    const sellerBonus=r.sellerIncentiveMap?r.sellerIncentiveMap[m.id]:null;
-    const recruiterBonus=r.recruiterIncentiveMap?r.recruiterIncentiveMap[m.id]:null;
-    const settledKey=`settled_${r.date}_${m.id}`;
-    const settled=localStorage.getItem(settledKey)==='1';
-    const isMA=isMercOrAlba(m);
-    const isSupport=r.supportMap&&r.supportMap[m.id]!=null;
-    let subLines=[];
-    if(isSupport){
-      subLines.push(`<span style="color:#6a1b9a;">지원금 ${fmt(r.supportMap[m.id])}만</span>`);
-    } else if(isMA){
-      const fv=r.mercAlbaFixed?r.mercAlbaFixed[m.id]:null;
-      const pv=r.mercAlbaPct?r.mercAlbaPct[m.id]:null;
-      if(fv!=null)subLines.push(`<span style="color:#bf360c;">고정 ${fmt(fv)}만</span>`);
-      else if(pv!=null)subLines.push(`<span style="color:#bf360c;">퍼센트 ${fmt(pv)}만</span>`);
-      else subLines.push(`<span style="color:var(--text2);">균등분배</span>`);
-      // 용병도 패널티/보너스 표시
-      if(penalty)subLines.push(`<span style="color:var(--red2);">패널티 -${fmt(penalty)}만</span>`);
-      else subLines.push(`<span style="color:#2e7d32;">패널티없음 보너스 +${fmt(r.bonusPerNoPenalty||0)}만</span>`);
-    }else{
-      if(penalty)subLines.push(`<span style="color:var(--red2);">패널티 -${fmt(penalty)}만</span>`);
-      else subLines.push(`<span style="color:#2e7d32;">패널티없음 보너스 +${fmt(r.bonusPerNoPenalty||0)}만</span>`);
-      if(sellerBonus)subLines.push(`<span style="color:#1b5e20;">판매자인센 +${fmt(sellerBonus)}만</span>`);
-      if(recruiterBonus)subLines.push(`<span style="color:#6a1b9a;">손님구인인센 +${fmt(recruiterBonus)}만</span>`);
+function togglePIP(){
+  if(pipWin&&!pipWin.closed){
+    pipWin.close();
+    pipWin=null;
+    if(pipInterval){clearInterval(pipInterval);pipInterval=null;}
+    return;
+  }
+  // 팝업 윈도우 오픈 (바탕화면으로 드래그 가능)
+  const w=220,h=timers.length>0?Math.min(60+timers.length*44,320):120;
+  const left=window.screen.width-w-20;
+  const top=window.screen.height-h-60;
+  pipWin=window.open('','_blank',`width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,status=no,titlebar=no`);
+  if(!pipWin){alert('팝업이 차단되었습니다. 브라우저에서 팝업 허용 후 다시 시도해주세요.');return;}
+  pipWin.document.write(getPIPHTML());
+  pipWin.document.close();
+  // 1초마다 팝업 내용 갱신
+  pipInterval=setInterval(()=>{
+    if(!pipWin||pipWin.closed){clearInterval(pipInterval);pipInterval=null;return;}
+    const el=pipWin.document.getElementById('pip-content');
+    if(el)el.innerHTML=getPIPContent();
+  },1000);
+}
+
+function getPIPContent(){
+  const active=timers.filter(t=>t.remaining>0||t.running);
+  if(active.length===0)return '<div style="color:#6b7280;font-size:13px;text-align:center;padding:10px;">타이머 없음</div>';
+  return active.map(t=>{
+    const m=String(Math.floor(t.remaining/60)).padStart(2,'0');
+    const s=String(t.remaining%60).padStart(2,'0');
+    const color=t.finished?'#e74c3c':t.remaining<=30?'#e74c3c':'#e8a020';
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 12px;border-bottom:1px solid #2a2e3a;">
+      <span style="color:#dde1ec;font-size:12px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.name}</span>
+      <span style="font-family:monospace;font-size:16px;font-weight:700;color:${color};">${t.finished?'⏰':m+':'+s}</span>
+    </div>`;
+  }).join('');
+}
+
+function getPIPHTML(){
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>⏱️ 타이머</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#0a0c10;font-family:'Segoe UI',sans-serif;overflow:hidden;}
+  .header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#111318;border-bottom:1px solid #2a2e3a;}
+  .title{color:#e8a020;font-size:13px;font-weight:700;}
+  .close-btn{background:rgba(192,57,43,.3);border:1px solid rgba(192,57,43,.5);color:#e74c3c;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:12px;}
+  </style></head><body>
+  <div class="header"><span class="title">⏱️ 타이머</span><button class="close-btn" onclick="window.close()">✕</button></div>
+  <div id="pip-content">${getPIPContent()}</div>
+  </body></html>`;
+}
+
+function updatePIP(){
+  if(!pipWin||pipWin.closed)return;
+  const el=pipWin.document.getElementById('pip-content');
+  if(el)el.innerHTML=getPIPContent();
+}
+
+// 탭
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+}
+
+// 배/엘리베이터
+const SHIPS=[
+  {key:'엘리니아',display:'엘리니아→오르비스',interval:15,board:5,emoji:'🌿',group:'elo'},
+  {key:'오르비스엘',display:'오르비스→엘리니아',interval:15,board:5,emoji:'☁️',group:'elo'},
+  {key:'루디오르비스',display:'루디브리엄→오르비스',interval:10,board:5,emoji:'⚙️',group:'rudi'},
+  {key:'오르비스루디',display:'오르비스→루디브리엄',interval:10,board:5,emoji:'⚙️',group:'rudi'},
+  {key:'오르비스리프레',display:'오르비스→리프레',interval:10,board:5,emoji:'🐉',group:'lifre'},
+  {key:'리프레오르비스',display:'리프레→오르비스',interval:10,board:5,emoji:'🐉',group:'lifre'},
+];
+const ELEVS=[{name:'루디브리엄→아랫마을',emoji:'⬇️',offset:0},{name:'아랫마을→루디브리엄',emoji:'⬆️',offset:120}];
+function shipInfo(r){const n=new Date(),tot=n.getHours()*3600+n.getMinutes()*60+n.getSeconds(),iv=r.interval*60,rem=iv-(tot%iv),nt=tot+rem,dep=`${String(Math.floor(nt/3600)%24).padStart(2,'0')}:${String(Math.floor((nt%3600)/60)).padStart(2,'0')}`;return{rem,nb:rem-r.board*60,boarding:rem<=r.board*60,dep};}
+function elevInfo(off){const kst=Math.floor(Date.now()/1000)+9*3600,iv=240,bb=60,rem=iv-((kst-off)%iv),nt=kst+rem,dep=`${String(Math.floor(nt/3600)%24).padStart(2,'0')}:${String(Math.floor((nt%3600)/60)).padStart(2,'0')}`;return{rem,nb:rem-bb,boarding:rem<=bb,dep};}
+function fmtT(s){s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),ss=s%60;return m>0?`${m}분 ${String(ss).padStart(2,'0')}초`:`${ss}초`;}
+function initTransport(){['elo','rudi','lifre'].forEach(g=>{const c=document.getElementById('grid-ship-'+g);SHIPS.filter(r=>r.group===g).forEach(r=>{const d=document.createElement('div');d.className='route-card';d.id='ship-'+r.key;d.innerHTML=`<div class="route-name">${r.emoji} ${r.display}</div><div class="route-status" id="st-${r.key}">...</div>`;c.appendChild(d);});});const ec=document.getElementById('grid-elevator');ELEVS.forEach((r,i)=>{const d=document.createElement('div');d.className='route-card';d.id='elev-'+i;d.innerHTML=`<div class="route-name">${r.emoji} ${r.name}</div><div class="route-status" id="est-${i}">...</div>`;ec.appendChild(d);});}
+function updateTransport(){SHIPS.forEach(r=>{const info=shipInfo(r),card=document.getElementById('ship-'+r.key),el=document.getElementById('st-'+r.key);if(!el)return;if(info.boarding){card.classList.add('boarding');el.className='route-status status-ok';el.innerHTML=`🟢 탑승 가능! · 출발까지 <strong>${fmtT(info.rem)}</strong>`;}else{card.classList.remove('boarding');el.className='route-status status-wait';el.innerHTML=`⏳ <strong>${fmtT(info.nb)}</strong> 후 탑승 · 출발 <strong>${info.dep}</strong>`;}});ELEVS.forEach((r,i)=>{const info=elevInfo(r.offset),card=document.getElementById('elev-'+i),el=document.getElementById('est-'+i);if(!el)return;if(info.boarding){card.classList.add('boarding');el.className='route-status status-ok';el.innerHTML=`🟢 탑승 가능! · 출발까지 <strong>${fmtT(info.rem)}</strong>`;}else{card.classList.remove('boarding');el.className='route-status status-wait';el.innerHTML=`⏳ <strong>${fmtT(info.nb)}</strong> 후 탑승 · 출발 <strong>${info.dep}</strong>`;}});}
+initTransport();updateTransport();setInterval(updateTransport,1000);
+
+// 사냥터
+function fmtP(p){const n=parseInt(p);if(isNaN(n))return'?';if(n>=100000000){const u=Math.floor(n/100000000),m=Math.floor((n%100000000)/10000);return m>0?`${u}억 ${m}만`:`${u}억`;}if(n>=10000)return Math.floor(n/10000)+'만';return n.toLocaleString('ko-KR');}
+function sColor(c){return c==='Yellow'?'yellow':c==='Green'?'green':c==='Red'?'red':'white';}
+function toKST(d){if(!d)return'';const x=new Date(d+'Z');const h=(x.getUTCHours()+9)%24;return`${String(h).padStart(2,'0')}:${String(x.getUTCMinutes()).padStart(2,'0')}`;}
+function exAll(json,key){const r=[],re=new RegExp(`"${key}"\\s*:\\s*"?([^",}]+)"?`,'g');let m;while((m=re.exec(json))!==null)r.push(m[1].trim());return r;}
+function exComments(json){const r=[],re=/"comment"\s*:\s*"((?:[^"\\]|\\.)*)"/g;let m;while((m=re.exec(json))!==null)r.push(m[1].trim());return r;}
+async function fetchSpot(btn,keyword,name,emoji){
+  const errBox=document.getElementById('spot-error'),resBox=document.getElementById('spot-result');
+  errBox.classList.add('hidden');resBox.classList.add('hidden');
+  const orig=btn.innerHTML;btn.disabled=true;btn.innerHTML=`<span class="spinner"></span> 조회 중...`;
+  // mashop.kr 자리 시세: /jari/맵이름(인코딩) - keyword가 실제 맵 풀이름
+  const shopUrl=`https://mashop.kr/jari/${encodeURIComponent(keyword)}`;
+  try{
+    const enc=encodeURIComponent(keyword);
+    const [listRaw,statRaw]=await Promise.all([proxyFetch(`https://api.mashop.kr/api/maps?keyword=${enc}`),proxyFetch(`https://api.mashop.kr/api/maps/price-stat?keyword=${enc}`)]);
+    const prices=exAll(listRaw,'price'),tradeTypes=exAll(listRaw,'tradeType'),createTimes=exAll(listRaw,'createTime'),statPrices=exAll(statRaw,'price'),statTimes=exAll(statRaw,'dateTime'),memos=exComments(listRaw);
+    // sold 상태 파싱
+    const soldArr=[];const soldRe=/"status"\s*:\s*"?([^",}]+)"?/g;let sm;const listArr=listRaw.match(/"status"\s*:\s*"?([^",}]+)"?/g)||[];listArr.forEach(s=>{const v=s.replace(/.*:\s*"?/,'').replace(/"$/,'').trim();soldArr.push(v);});
+    let html=`<div class="card"><div style="font-weight:700;margin-bottom:10px;">${emoji} ${name} <a href="${shopUrl}" target="_blank" style="font-size:.72rem;color:var(--accent);text-decoration:none;margin-left:6px;">↗ mashop.kr</a></div>`;
+    if(statPrices.length>0){html+=`<div class="item-result-title">📊 시간대별 평균가</div>`;const from=Math.max(0,statPrices.length-3);for(let i=from;i<statPrices.length;i++){const h=statTimes[i]?statTimes[i].substring(11,16):'??:??';html+=`<div class="item-row"><span>${h}</span><span class="price-high">${fmtP(statPrices[i])}</span></div>`;}html+=`<hr class="divider">`;}
+    html+=`<div class="item-result-title">💸 판매 매물 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;let sc=0;
+    for(let j=0;j<prices.length&&sc<5;j++){
+      if((tradeTypes[j]||'SELL')!=='SELL')continue;
+      const isSold=soldArr[j]==='SOLD'||soldArr[j]==='sold';
+      const timeStr=createTimes[j]?`🕐${toKST(createTimes[j])}`:'';
+      const memoStr=memos[j]?`· ${memos[j]}`:'';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${shopUrl}','_blank')"><span class="price-sell">${fmtP(prices[j])}</span><span style="color:var(--muted);font-size:.76rem">${timeStr} ${memoStr}</span></div>`;sc++;
     }
-    return `<div class="result-row">
-      <div class="avatar ${avatarClass(m)}">${getAvatar(m.name)}</div>
-      <div style="flex:1;">
-        <div style="font-size:13px;font-weight:700;">${m.name} <span style="font-size:10px;color:var(--text2);">${m.job}</span>${isMA?`<span class="badge ${m.isAlba?'badge-alba':'badge-merc'}" style="margin-left:4px;">${m.isAlba?'알바':'용병'}</span>`:''}</div>
-        <div style="font-size:10px;margin-top:2px;">${subLines.join(' · ')}</div>
+    if(sc===0)html+=`<div class="item-row"><span style="color:var(--muted)">판매 매물 없음</span></div>`;
+    html+=`<hr class="divider"><div class="item-result-title">🛒 구매 희망가 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;let bc=0;
+    for(let k=0;k<prices.length&&bc<5;k++){
+      if(tradeTypes[k]!=='BUY')continue;
+      const isSold=soldArr[k]==='SOLD'||soldArr[k]==='sold';
+      const timeStr=createTimes[k]?`🕐${toKST(createTimes[k])}`:'';
+      const memoStr=memos[k]?`· ${memos[k]}`:'';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${shopUrl}','_blank')"><span class="price-buy">${fmtP(prices[k])}</span><span style="color:var(--muted);font-size:.76rem">${timeStr} ${memoStr}</span></div>`;bc++;
+    }
+    if(bc===0)html+=`<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
+    html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--muted)">♡ <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 기준</div></div>`;
+    resBox.innerHTML=html;resBox.classList.remove('hidden');
+  }catch(e){document.getElementById('spot-error-msg').textContent='조회 실패: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML=orig;}
+}
+</script>
+<script>
+// 아이템 시세
+const SHORTCUTS={파엘:"파워 엘릭서",마엘:"마나 엘릭서",만병:"만병통치약",새벽:"새벽의 이슬",황혼:"황혼의 이슬",일비:"일비 표창",뇌전:"뇌전수리검",장공10:"장갑 공격력 주문서 10%",장공60:"장갑 공격력 주문서 60%",노목:"노가다 목장갑",드퍼슬:"드래곤 퍼플 슬레브",드그슬:"드래곤 그린 슬레브"};
+// mapleland.gg 아이템 ID — 검색 키워드 기준 (직접 확인된 값)
+const ITEM_ID_MAP={
+  // 포션
+  "파워 엘릭서":2000005, "마나 엘릭서":2000006, "엘릭서":2000004, "만병통치약":2050004,
+  "새벽의 이슬":2020014, "황혼의 이슬":2020015,
+  // 표창/수리검
+  "일비 표창":2070006, "뇌전수리검":2070005, "뇌전 수리검":2070005,
+  // 장갑
+  "노가다 목장갑":1082002,
+  "장갑 공격력 주문서 10%":2040805, "장갑 공격력 주문서 60%":2040804,
+  // 무기 (드래곤)
+  "드래곤 퍼플 슬레브":1472052, "드래곤 그린 슬레브":1472051,
+  // 마스터리북
+  "샤프 아이즈 30":2290053, "샤프 아이즈 20":2290052,
+  "피어싱 20":2290070, "피어싱 30":2290071,
+  "스탠스 20":2290006, "스탠스 30":2290007,
+  "돌진 20":2290002,
+  // 망토
+  "망토 힘 주문서 60%":2041013, "망토 행운 주문서 60%":2041022,
+  "망토 지력 주문서 60%":2041016, "망토 지력 주문서 10%":2041017,
+  // 귀 장식
+  "귀 장식 민첩 주문서 60%":2040317, "귀 장식 지력 주문서 60%":2040301,
+  "귀 장식 체력 주문서 60%":2040326, "귀 장식 지력 주문서 10%":2040302,
+  "귀 장식 행운 주문서 10%":2040303,
+  // 투구
+  "투구 민첩 주문서 60%":2040029, "투구 민첩 주문서 10%":2040030,
+  "투구 지력 주문서 60%":2040025, "투구 지력 주문서 10%":2040026,
+  "투구 지력 주문서 100%":2040024,
+  // 신발
+  "신발 점프력 주문서 10%":2040705,
+  // 아대/석궁/창
+  "아대 공격력 주문서 10%":2044702, "아대 공격력 주문서 60%":2044701,
+  "석궁 공격력 주문서 10%":2044602, "석궁 공격력 주문서 60%":2044601,
+  "창 공격력 주문서 10%":2044302, "창 공격력 주문서 60%":2044301,
+  // 스태프
+  "스태프 마력 주문서 10%":2043802, "스태프 마력 주문서 60%":2043801,
+};
+function getItemId(name){ return ITEM_ID_MAP[name]||null; }
+// 검색 시 사용한 원본 키워드도 저장
+let lastSearchKeyword='';
+function setItemSearch(name){document.getElementById('item-input').value=name;searchItem();}
+function formatPrice(n){n=parseInt(n);if(isNaN(n))return'0';return n.toLocaleString('ko-KR');}
+let selectedItem=null;
+
+async function searchItem(){
+  let keyword=document.getElementById('item-input').value.trim();if(!keyword)return;
+  const origKeyword=keyword;
+  if(SHORTCUTS[keyword])keyword=SHORTCUTS[keyword];
+  lastSearchKeyword=keyword;
+  const errBox=document.getElementById('item-error'),candBox=document.getElementById('item-candidates'),resultBox=document.getElementById('item-result');
+  errBox.classList.add('hidden');candBox.classList.add('hidden');resultBox.classList.add('hidden');
+  const btn=document.getElementById('item-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  try{
+    const res=await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(keyword)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+    if(res.status===404){
+      const res2=await fetch(`${NGROK_URL}/search?q=${encodeURIComponent(keyword)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+      if(res2.ok){const d=await res2.json();if(d.items&&d.items.length>0){candBox.innerHTML=`<div class="item-result-title" style="margin-bottom:6px">검색 결과 ${d.items.length}개 — 선택하세요</div>`;d.items.forEach(item=>{const b=document.createElement('button');b.className='candidate-btn';b.textContent=item.name;b.onclick=()=>fetchItemByName(item.name);candBox.appendChild(b);});candBox.classList.remove('hidden');return;}}
+      document.getElementById('item-error-msg').textContent=`'${keyword}' 아이템을 찾을 수 없습니다.`;errBox.classList.remove('hidden');return;
+    }
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+    console.log('[서버응답 전체]', JSON.stringify(data).slice(0,500)); // 콘솔에서 실제 구조 확인
+    // ID: 검색 키워드로 먼저, 그다음 서버 응답 여러 필드명 시도
+    const itemId=getItemId(keyword)||getItemId(data.name)||data.id||data.itemId||data.item_id||data.itemid||data.maple_id||null;
+    selectedItem={name:data.name,id:itemId};
+    showFilterUI(data);
+  }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML='검색';}
+}
+
+async function fetchItemByName(name){
+  document.getElementById('item-candidates').classList.add('hidden');
+  const errBox=document.getElementById('item-error'),btn=document.getElementById('item-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  try{
+    const res=await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(name)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();selectedItem={name:data.name,id:getItemId(data.name)||data.id||data.itemId||data.item_id||null};showFilterUI(data);
+  }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML='검색';}
+}
+
+function showFilterUI(data){
+  const resultBox=document.getElementById('item-result');
+  resultBox.innerHTML=`
+    <div style="font-weight:700;font-size:1rem;margin-bottom:14px;">📦 ${data.name}</div>
+    <div class="filter-grid">
+      <div class="filter-row"><span class="filter-label">💰 가격</span><input class="filter-input" id="f-lowprice" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highprice" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">⚔️ 공격력</span><input class="filter-input" id="f-lowpad" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highpad" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">✨ 마력</span><input class="filter-input" id="f-lowmad" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highmad" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">📊 합마</span><input class="filter-input" id="f-lowhapma" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highhapma" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">🔨 작횟수</span><input class="filter-input" id="f-lowupgrade" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highupgrade" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">🔧 남은업횟</span><input class="filter-input" id="f-lowtuc" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-hightuc" placeholder="최대" type="number"></div>
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:12px;" id="filter-apply-btn" onclick="applyFilter()">🔍 필터 적용</button>
+    <div id="filter-result" style="margin-top:12px;"></div>`;
+  resultBox.className='card';resultBox.classList.remove('hidden');
+  renderTradeResult(data,document.getElementById('filter-result'));
+}
+
+async function applyFilter(){
+  if(!selectedItem)return;
+  const btn=document.getElementById('filter-apply-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 조회 중...';
+  const fields={'f-lowprice':'lowPrice','f-highprice':'highPrice','f-lowpad':'lowincPAD','f-highpad':'highincPAD','f-lowmad':'lowincMAD','f-highmad':'highincMAD','f-lowhapma':'lowHapma','f-highhapma':'highHapma','f-lowupgrade':'lowUpgrade','f-highupgrade':'highUpgrade','f-lowtuc':'lowTuc','f-hightuc':'highTuc'};
+  const params=new URLSearchParams({q:selectedItem.name});
+  for(const [id,param] of Object.entries(fields)){const val=document.getElementById(id)?.value.trim();if(val)params.set(param,val);}
+  try{
+    const res=await fetch(`${NGROK_URL}/item?${params.toString()}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    renderTradeResult(await res.json(),document.getElementById('filter-result'));
+  }catch(e){const fr=document.getElementById('filter-result');if(fr)fr.innerHTML=`<div class="error-box">✕ 오류: ${e.message}</div>`;}
+  finally{btn.disabled=false;btn.innerHTML='🔍 필터 적용';}
+}
+
+function renderTradeResult(data,container){
+  if(!container)return;
+  const itemName=selectedItem?selectedItem.name:'';
+  const itemId=selectedItem?selectedItem.id:null;
+  // 디버그: 콘솔에서 실제 서버 응답 구조 확인 가능
+  console.log('[아이템시세] selectedItem:', selectedItem, '| data keys:', Object.keys(data));
+  // ID 있으면 정확한 페이지, 없으면 이름으로 검색 페이지 (엉뚱한 페이지 절대 안 감)
+  const ggUrl=itemId
+    ? `https://mapleland.gg/item/${itemId}`
+    : `https://mapleland.gg/items?search=${encodeURIComponent(itemName)}`;
+  let html=`<div class="item-result-title" style="margin-top:8px;">💸 팝니다 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;
+  if(data.sell&&data.sell.length>0){
+    data.sell.slice(0,5).forEach(e=>{
+      const price=formatPrice(e.itemPrice||0);
+      const comment=e.comment?` · ${e.comment}`:'';
+      const pad=e.incPAD?` 공+${e.incPAD}`:'';
+      const mad=e.incMAD?` 마+${e.incMAD}`:'';
+      const tuc=e.tuc!==undefined?` 남${e.tuc}`:'';
+      const timeStr=e.updatedAt?` 🕐${toKST(e.updatedAt)}`:(e.createdAt?` 🕐${toKST(e.createdAt)}`:'');
+      const isSold=e.status==='SOLD'||e.status==='sold';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${ggUrl}','_blank')"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${pad}${mad}${tuc}${timeStr}${comment}</span></div>`;
+    });
+  } else html+=`<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
+  html+=`<hr class="divider"><div class="item-result-title">🛒 삽니다 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;
+  if(data.buy&&data.buy.length>0){
+    data.buy.slice(0,5).forEach(e=>{
+      const price=formatPrice(e.itemPrice||0);
+      const comment=e.comment?` · ${e.comment}`:'';
+      const timeStr=e.updatedAt?` 🕐${toKST(e.updatedAt)}`:(e.createdAt?` 🕐${toKST(e.createdAt)}`:'');
+      const isSold=e.status==='SOLD'||e.status==='sold';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${ggUrl}','_blank')"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${timeStr}${comment}</span></div>`;
+    });
+  } else html+=`<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
+  html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--muted)">♡ <a href="${ggUrl}" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
+  container.innerHTML=html;
+}
+
+// 날씨
+const REGIONS={서울:'Seoul',부산:'Busan',대구:'Daegu',인천:'Incheon',광주:'Gwangju',대전:'Daejeon',울산:'Ulsan',세종:'Sejong',수원:'Suwon',고양:'Goyang',용인:'Yongin',창원:'Changwon',성남:'Seongnam',청주:'Cheongju',전주:'Jeonju',안산:'Ansan',안양:'Anyang',남양주:'Namyangju',화성:'Hwaseong',부천:'Bucheon',경산:'Gyeongsan',구미:'Gumi',포항:'Pohang',경주:'Gyeongju',춘천:'Chuncheon',원주:'Wonju',강릉:'Gangneung',속초:'Sokcho',제주:'Jeju',서귀포:'Seogwipo',목포:'Mokpo',여수:'Yeosu',순천:'Suncheon',군산:'Gunsan',익산:'Iksan',천안:'Cheonan',아산:'Asan',평택:'Pyeongtaek',김해:'Gimhae',거제:'Geoje',양산:'Yangsan',진주:'Jinju',통영:'Tongyeong',의정부:'Uijeongbu'};
+function wEmoji(id){if(id>=200&&id<300)return'⛈️';if(id>=300&&id<400)return'🌦️';if(id>=500&&id<600)return'🌧️';if(id>=600&&id<700)return'❄️';if(id>=700&&id<800)return'🌫️';if(id===800)return'☀️';if(id===801)return'🌤️';if(id===802)return'⛅';if(id>=803)return'☁️';return'🌤️';}
+function setWeatherSearch(r){document.getElementById('weather-input').value=r;searchWeather();}
+async function searchWeather(){
+  const region=document.getElementById('weather-input').value.trim();if(!region)return;
+  const errBox=document.getElementById('weather-error'),resBox=document.getElementById('weather-result');
+  errBox.classList.add('hidden');resBox.classList.add('hidden');
+  const btn=document.getElementById('weather-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  try{
+    const raw=await proxyFetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(REGIONS[region]||region)},KR&appid=${WEATHER_KEY}&units=metric&lang=kr`);
+    const d=JSON.parse(raw);if(d.cod!==200){document.getElementById('weather-error-msg').textContent=`'${region}' 날씨 정보를 찾을 수 없어요.`;errBox.classList.remove('hidden');return;}
+    const kst=new Date(Date.now()+9*3600000),ts=`${String(kst.getUTCHours()).padStart(2,'0')}:${String(kst.getUTCMinutes()).padStart(2,'0')}`;
+    const dirs=['북','북동','동','남동','남','남서','서','북서'],wd=dirs[Math.round((d.wind.deg||0)/45)%8];
+    resBox.innerHTML=`<div class="card"><div class="weather-main">${wEmoji(d.weather[0].id)}</div><div class="weather-temp">${d.main.temp.toFixed(1)}°C</div><div class="weather-desc">${region} · ${d.weather[0].description} · ${ts} KST</div><div class="weather-grid"><div class="weather-stat"><div class="weather-stat-label">체감</div><div class="weather-stat-value">${d.main.feels_like.toFixed(1)}°C</div></div><div class="weather-stat"><div class="weather-stat-label">습도</div><div class="weather-stat-value">${d.main.humidity}%</div></div><div class="weather-stat"><div class="weather-stat-label">바람</div><div class="weather-stat-value">${d.wind.speed.toFixed(1)}m/s ${wd}풍</div></div><div class="weather-stat"><div class="weather-stat-label">가시거리</div><div class="weather-stat-value">${d.visibility?(d.visibility/1000).toFixed(1)+'km':'정보없음'}</div></div></div></div>`;
+    resBox.classList.remove('hidden');
+  }catch(e){document.getElementById('weather-error-msg').textContent='날씨 조회 실패: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML='조회';}
+}
+</script>
+<script>
+// 타이머
+let timers = [];
+let timerInterval = null;
+
+function beep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    for(let i=0;i<3;i++){
+      const osc=ctx.createOscillator(),gain=ctx.createGain();
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.frequency.value=880;osc.type='sine';
+      gain.gain.setValueAtTime(0.3,ctx.currentTime+i*0.4);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.4+0.3);
+      osc.start(ctx.currentTime+i*0.4);osc.stop(ctx.currentTime+i*0.4+0.3);
+    }
+  } catch(e) {}
+}
+
+function addTimer(name, mins, secs) {
+  const id = Date.now();
+  timers.push({ id, name, totalSec: mins*60+secs, remaining: mins*60+secs, running: false, finished: false, autoRestart: false });
+  renderTimers();
+  if(!timerInterval) timerInterval = setInterval(tickTimers, 1000);
+}
+
+function addCustomTimer() {
+  const name = prompt('타이머 이름:') || '커스텀';
+  const mins = parseInt(prompt('분:') || '0') || 0;
+  const secs = parseInt(prompt('초:') || '0') || 0;
+  if(mins === 0 && secs === 0) return;
+  addTimer(name, mins, secs);
+}
+
+function tickTimers() {
+  let anyActive = false;
+  timers.forEach(t => {
+    if(t.running && !t.finished) {
+      t.remaining--;
+      anyActive = true;
+      if(t.remaining <= 0) {
+        t.remaining = 0;
+        beep();
+        if(t.autoRestart) {
+          t.finished = true;
+          setTimeout(() => { t.remaining = t.totalSec; t.finished = false; renderTimers(); }, 1500);
+        } else {
+          t.finished = true; t.running = false;
+        }
+      }
+    }
+    if(t.running) anyActive = true;
+  });
+  renderTimers();
+  updatePIP();
+  if(!anyActive) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function startTimer(id) { const t=timers.find(t=>t.id===id);if(!t)return;t.running=true;t.finished=false;if(!timerInterval)timerInterval=setInterval(tickTimers,1000);renderTimers(); }
+function pauseTimer(id) { const t=timers.find(t=>t.id===id);if(t){t.running=false;renderTimers();} }
+function resetTimer(id) { const t=timers.find(t=>t.id===id);if(t){t.running=false;t.finished=false;t.remaining=t.totalSec;renderTimers();} }
+function deleteTimer(id) { timers=timers.filter(t=>t.id!==id);renderTimers(); }
+function toggleAutoRestart(id) { const t=timers.find(t=>t.id===id);if(t){t.autoRestart=!t.autoRestart;renderTimers();} }
+function adjustTimer(id, delta) { const t=timers.find(t=>t.id===id);if(!t)return;t.remaining=Math.max(0,t.remaining+delta);t.totalSec=Math.max(1,t.totalSec+delta);renderTimers(); }
+function updateTimerTime(id) {
+  const t=timers.find(t=>t.id===id);if(!t)return;
+  const m=parseInt(document.getElementById(`tm-${id}`)?.value)||0;
+  const s=parseInt(document.getElementById(`ts-${id}`)?.value)||0;
+  t.totalSec=m*60+s;t.remaining=m*60+s;t.running=false;t.finished=false;
+  renderTimers();
+}
+
+function fmtTimer(sec){const m=Math.floor(sec/60),s=sec%60;return`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+
+function renderTimers() {
+  const grid=document.getElementById('timer-grid');
+  if(timers.length===0){grid.innerHTML='';return;}
+  grid.innerHTML=timers.map(t=>{
+    const urgent=t.remaining<=10&&!t.finished;
+    return `<div class="timer-card ${t.running?'running':''} ${t.finished?'finished':''}">
+      <div class="timer-name">${t.name}</div>
+      <div class="timer-display ${urgent||t.finished?'urgent':''}">${t.finished?'⏰ 종료!':fmtTimer(t.remaining)}</div>
+      <div class="timer-adj-row">
+        <button class="adj-btn" onclick="adjustTimer(${t.id},-30)">-30초</button>
+        <button class="adj-btn" onclick="adjustTimer(${t.id},-5)">-5초</button>
+        <button class="adj-btn" onclick="adjustTimer(${t.id},5)">+5초</button>
+        <button class="adj-btn" onclick="adjustTimer(${t.id},30)">+30초</button>
       </div>
-      <div class="result-amount">${fmt(final)}만</div>
-      <div class="toggle-wrap" onclick="toggleSettled('${r.date}',${m.id})">
-        <div class="toggle ${settled?'on':''}" id="tog_${r.date}_${m.id}"></div>
-        <span style="font-size:11px;color:var(--text2);">${settled?'정산완료':'미정산'}</span>
+      <div class="timer-time-edit">
+        <input class="timer-time-input" id="tm-${t.id}" value="${Math.floor(t.totalSec/60)}" min="0" max="999" type="number">
+        <span style="color:var(--muted);font-size:.8rem;">분</span>
+        <input class="timer-time-input" id="ts-${t.id}" value="${t.totalSec%60}" min="0" max="59" type="number">
+        <span style="color:var(--muted);font-size:.8rem;">초</span>
+        <button class="btn-secondary" style="padding:4px 8px;font-size:.72rem;" onclick="updateTimerTime(${t.id})">설정</button>
+      </div>
+      <div class="timer-auto-row">
+        <label class="toggle-switch"><input type="checkbox" ${t.autoRestart?'checked':''} onchange="toggleAutoRestart(${t.id})"><span class="toggle-slider"></span></label>
+        <span>자동 재시작</span>
+      </div>
+      <div class="timer-controls">
+        ${t.running?`<button class="timer-btn pause" onclick="pauseTimer(${t.id})">⏸ 일시정지</button>`:`<button class="timer-btn start" onclick="startTimer(${t.id})">▶ 시작</button>`}
+        <button class="timer-btn reset" onclick="resetTimer(${t.id})">↺</button>
+        <button class="timer-btn delete" onclick="deleteTimer(${t.id})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// 게시판
+async function loadPosts() {
+  const list=document.getElementById('posts-list');
+  list.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:.85rem;">불러오는 중...</div>';
+  try{
+    const res=await fetch(`${NGROK_URL}/posts`,{headers:{'ngrok-skip-browser-warning':'1'}});
+    if(!res.ok)throw new Error('서버 연결 실패');
+    const posts=await res.json();
+    if(posts.length===0){list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">아직 게시글이 없어요. 첫 번째 글을 작성해보세요! 😊</div>';return;}
+    const catClass={'문의':'cat-general','버그':'cat-bug','기능요청':'cat-request','사용후기':'cat-review','일반':'cat-general'};
+    const catEmoji={'문의':'💬','버그':'🐛','기능요청':'💡','사용후기':'⭐','일반':'📝'};
+    list.innerHTML=posts.map(p=>`
+      <div class="post-card" id="post-card-${p.id}">
+        <div class="post-header">
+          <span class="post-category ${catClass[p.category]||'cat-general'}">${catEmoji[p.category]||'📝'} ${p.category}</span>
+          <span class="post-nickname">${p.nickname}</span>
+          <span class="post-date">${new Date(p.createdAt).toLocaleDateString('ko-KR')}</span>
+        </div>
+        <div class="post-content" id="post-content-${p.id}">${p.content.replace(/\n/g,'<br>')}</div>
+        ${p.comments&&p.comments.length>0?`
+          <div class="post-comments">
+            ${p.comments.map(c=>`<div class="comment-item"><div class="comment-admin">🔑 fourcard (운영자)</div>${c.content.replace(/\n/g,'<br>')}</div>`).join('')}
+          </div>`:''
+        }
+        <div class="admin-reply-row">
+          <input class="admin-input" id="comment-${p.id}" placeholder="관리자 답글 (관리자 키 필요)">
+          <button class="btn-secondary" style="padding:7px 12px;font-size:.8rem;" onclick="submitComment(${p.id})">답글</button>
+        </div>
+        <div class="post-actions">
+          <button class="post-act-btn" onclick="toggleEditPost(${p.id})">✏️ 수정</button>
+          <button class="post-act-btn del" onclick="deletePost(${p.id})">🗑️ 삭제</button>
+        </div>
+        <div class="post-edit-area" id="edit-area-${p.id}">
+          <textarea id="edit-text-${p.id}">${p.content}</textarea>
+          <div style="display:flex;gap:6px;margin-top:5px;">
+            <input class="form-input" id="edit-pw-${p.id}" type="password" placeholder="글 작성 시 설정한 암호" style="flex:1;">
+            <button class="btn-primary" style="padding:6px 12px;font-size:.8rem;" onclick="submitEditPost(${p.id})">저장</button>
+            <button class="btn-secondary" style="padding:6px 10px;font-size:.8rem;" onclick="toggleEditPost(${p.id})">취소</button>
+          </div>
+          <div id="edit-msg-${p.id}" style="font-size:.78rem;margin-top:4px;"></div>
+        </div>
+      </div>`).join('');
+  }catch(e){list.innerHTML=`<div class="error-box"><span>✕</span><span>게시판 로드 실패: ${e.message}<br><small>봇 서버가 실행 중인지 확인해주세요.</small></span></div>`;}
+}
+
+function toggleEditPost(id){
+  const area=document.getElementById(`edit-area-${id}`);
+  area.style.display=area.style.display==='none'||area.style.display===''?'block':'none';
+}
+
+async function submitEditPost(id){
+  const content=document.getElementById(`edit-text-${id}`).value.trim();
+  const pw=document.getElementById(`edit-pw-${id}`).value.trim();
+  const msg=document.getElementById(`edit-msg-${id}`);
+  if(!content||!pw){msg.style.color='#e74c3c';msg.textContent='내용과 암호를 입력해주세요.';return;}
+  try{
+    const res=await fetch(`${NGROK_URL}/posts/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({content,password:pw})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'실패');}
+    msg.style.color='var(--green)';msg.textContent='✓ 수정됐어요!';
+    setTimeout(()=>loadPosts(),800);
+  }catch(e){msg.style.color='#e74c3c';msg.textContent='오류: '+e.message;}
+}
+
+async function deletePost(id){
+  const pw=prompt('글 삭제를 위해 작성 시 설정한 암호를 입력하세요:');
+  if(!pw)return;
+  try{
+    const res=await fetch(`${NGROK_URL}/posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({password:pw})});
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'삭제 실패');}
+    alert('삭제됐어요!');loadPosts();
+  }catch(e){
+    if(e.message.includes('fetch')||e.message.includes('network')||e.message.includes('Failed')){
+      alert('서버에 연결할 수 없어요.\n\n봇 서버(터미널)가 실행 중인지 확인해주세요.');
+    } else {
+      alert('오류: '+e.message);
+    }
+  }
+}
+
+async function submitPost(){
+  const nickname=document.getElementById('post-nickname').value.trim();
+  const password=document.getElementById('post-password').value.trim();
+  const category=document.getElementById('post-category').value;
+  const content=document.getElementById('post-content').value.trim();
+  const msg=document.getElementById('post-submit-msg');
+  if(!nickname){msg.style.color='#e74c3c';msg.textContent='닉네임을 입력해주세요.';return;}
+  if(!password){msg.style.color='#e74c3c';msg.textContent='글 암호를 설정해주세요.';return;}
+  if(!content){msg.style.color='#e74c3c';msg.textContent='내용을 입력해주세요.';return;}
+  msg.style.color='var(--muted)';msg.textContent='전송 중...';
+  try{
+    const res=await fetch(`${NGROK_URL}/posts`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({nickname,category,content,password})});
+    if(!res.ok)throw new Error('전송 실패');
+    msg.style.color='var(--green)';msg.textContent='✓ 글이 작성되었습니다!';
+    document.getElementById('post-content').value='';
+    loadPosts();
+    setTimeout(()=>msg.textContent='',3000);
+  }catch(e){msg.style.color='#e74c3c';msg.textContent='오류: '+e.message;}
+}
+
+async function submitComment(postId){
+  const content=document.getElementById(`comment-${postId}`).value.trim();
+  const adminKey=document.getElementById('admin-key').value.trim();
+  if(!content){alert('댓글 내용을 입력하세요.');return;}
+  if(!adminKey){alert('관리자 키를 입력하세요.');return;}
+  try{
+    const res=await fetch(`${NGROK_URL}/posts/${postId}/comment`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({content,adminKey})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'실패');}
+    document.getElementById(`comment-${postId}`).value='';
+    loadPosts();
+  }catch(e){alert('오류: '+e.message);}
+}
+</script>
+<script>
+// ══════════════════════════
+// 파밍 정보
+// ══════════════════════════
+
+// maplestory.io 몹 이미지 (GMS v62)
+const MOB_IMG = id => `https://maplestory.io/api/GMS/62/mob/${id}/render/stand`;
+
+// 몹 이름 → ID 매핑 (이미지 직접 확인 기준)
+const MOB_ID_MAP = {
+  // 미나르숲/용의둥지
+  '스켈레곤': 8190003,
+  '스켈로스': 8190004,
+  '네스트골렘': 8190005,
+  // 아쿠아로드
+  '폭렬 망둥이집': 8140555,
+  '샤크': 8150100,
+  '콜드샤크': 8150101,
+  // 울프 스파이더
+  '울프 스파이더': 9400545,
+  '라이칸스로프': 8140000,
+  '화이트팽': 5140000,
+  '좀비 머쉬맘': 6300005,
+  '좀비버섯': 2230116,
+  '주니어 부기': 3230301,
+  // 숲/시계탑
+  '버크': 8140110,
+  '듀얼 버크': 8140111,
+  '바이킹': 8141000,
+  '그린코니언': 8150200,
+  '다크코니언': 8150201,
+  // 루더스호수/폐광 (이미지 확인된 ID)
+  '월묘': 4230300,       // Moon Bunny
+  '다크 엑스텀프': 2130100, // Dark Axe Stump
+  '호돌이': 5100003,     // Hodori
+  '마이너 좀비': 5130108, // Miner Zombie
+  '플라이아이': 4230107,  // Flyeye
+  // 루디브리엄
+  '마스터 크로노스': 8200001, // Master Chronos (루디브리엄)
+  '울트라 그레이': 4230119,
+  '원로 그레이': 4230117,
+  // 무릉도원
+  '천록': 5120505,       // Reindeer
+  '묘선': 7220002,
+  '아이스 드레이크': 6230600,
+  '다크 드레이크': 6230601,
+  // 마가티아
+  '미스릴 뮤테': 4110302,       // Mithril Mutae
+  '강화된 미스릴 뮤테': 5110300, // Reinforced Mithril Mutae
+};
+
+// 실시간 가격 캐시 (5시간 TTL)
+const PRICE_CACHE = {};
+const PRICE_TTL = 5 * 60 * 60 * 1000;
+
+async function fetchLivePrice(itemName) {
+  const cached = PRICE_CACHE[itemName];
+  if (cached && Date.now() - cached.ts < PRICE_TTL) return cached.price;
+  try {
+    const res = await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(itemName)}`, {
+      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const sells = data.sell || [];
+    if (!sells.length) return null;
+    const price = sells[0].itemPrice;
+    PRICE_CACHE[itemName] = { price, ts: Date.now() };
+    return price;
+  } catch(e) { return null; }
+}
+
+function fmtPriceNum(n) {
+  if (!n || isNaN(n)) return null;
+  n = parseInt(n);
+  if (n >= 100000000) { const u=Math.floor(n/100000000), m=Math.floor((n%100000000)/10000); return m>0?`${u}억 ${m}만`:`${u}억`; }
+  if (n >= 10000) return Math.floor(n/10000)+'만';
+  return n.toLocaleString('ko-KR');
+}
+
+async function updateDropPrices() {
+  const cards = document.querySelectorAll('.drop-card[data-item]');
+  for (const card of cards) {
+    const itemName = card.dataset.item;
+    if (!itemName) continue;
+    const loadEl = card.querySelector('.drop-loading');
+    const liveEl = card.querySelector('.drop-live');
+    if (loadEl) loadEl.textContent = '조회 중...';
+    const price = await fetchLivePrice(itemName);
+    if (price !== null) {
+      const fmt = fmtPriceNum(price);
+      const priceEl = card.querySelector('.drop-price');
+      if (priceEl && fmt) priceEl.textContent = '💰 ' + fmt;
+      if (liveEl) { liveEl.textContent = '✓ 실시간'; liveEl.style.display = 'block'; }
+    }
+    if (loadEl) loadEl.textContent = '';
+  }
+}
+
+const DEFAULT_FARMING = [
+  { id:1, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"110~113",
+    mobs:[{name:"스켈로스",lv:113},{name:"네스트골렘",lv:110}],
+    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.001%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.004%"}] },
+  { id:2, zone:"미나르숲", spot:"남겨진 용의 둥지1", level:"110~113",
+    mobs:[{name:"스켈레곤",lv:110},{name:"스켈로스",lv:113}],
+    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"피어싱 20",price:"11,313,333",rate:"0.0001%"},{name:"장갑 공격력 주문서 10%",price:"6,360,557",rate:"0.004%"}] },
+  { id:3, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~102",
+    mobs:[{name:"폭렬 망둥이집",lv:90},{name:"샤크",lv:100},{name:"콜드샤크",lv:102}],
+    drops:[{name:"샤프 아이즈 20",price:"166,100,000",rate:"0.004%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.006%"},{name:"망토 행운 주문서 60%",price:"2,545,580",rate:"0.006%"}] },
+  { id:4, zone:"폐광/숲", spot:"울프 스파이더의 굴", level:"80",
+    mobs:[{name:"울프 스파이더",lv:80}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.004%"},{name:"청갑충",price:"옵션에 따라 상이",rate:"0.004%"}] },
+  { id:5, zone:"폐광/숲", spot:"폐광: 늑대의영역3", level:"58~80",
+    mobs:[{name:"라이칸스로프",lv:80},{name:"화이트팽",lv:58}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.2%"}] },
+  { id:6, zone:"폐광/숲", spot:"던전: 머쉬맘의 무덤", level:"24~65",
+    mobs:[{name:"좀비 머쉬맘",lv:65},{name:"좀비버섯",lv:24},{name:"주니어 부기",lv:35}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.06%"},{name:"창 공격력 주문서 10%",price:"1,970,866",rate:"0.006%"},{name:"아대 공격력 주문서 60%",price:"1,102,448",rate:"0.4%"}] },
+  { id:7, zone:"폐광/숲", spot:"숲의 갈림길", level:"85~88",
+    mobs:[{name:"버크",lv:85},{name:"듀얼 버크",lv:88}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"귀 장식 행운 주문서 10%",price:"4,392,000",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.002%"}] },
+  { id:8, zone:"시계탑", spot:"시계탑최하층: 뒤틀린 시간의 길<4>", level:"93",
+    mobs:[{name:"바이킹",lv:93}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.006%"},{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.004%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.004%"}] },
+  { id:9, zone:"미나르숲", spot:"미나르숲: 사라진 숲", level:"100~105",
+    mobs:[{name:"그린코니언",lv:100},{name:"다크코니언",lv:105}],
+    drops:[{name:"스탠스 20",price:"47,868,750",rate:"0.0004%"},{name:"귀 장식 지력 주문서 10%",price:"5,595,451",rate:"0.001%"},{name:"돌진 20",price:"1,819,384",rate:"0.002%"}] },
+  { id:10, zone:"루더스호수", spot:"루더스호수: 까막산 입구", level:"10~57",
+    mobs:[{name:"월묘",lv:45},{name:"다크 엑스텀프",lv:10}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"노란색 우산",price:"옵션에 따라 상이",rate:"0.008%"}] },
+  { id:11, zone:"루더스호수", spot:"루더스호수: 옹달샘", level:"10~50",
+    mobs:[{name:"월묘",lv:45},{name:"호돌이",lv:50},{name:"다크 엑스텀프",lv:10}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"}] },
+  { id:12, zone:"루더스호수", spot:"폐광: 폐광4", level:"41~57",
+    mobs:[{name:"마이너 좀비",lv:57},{name:"플라이아이",lv:41}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"망토 힘 주문서 10%",price:"1,695,937",rate:"0.004%"},{name:"좀비의 잃어버린 금니",price:"20,627",rate:"4%"}] },
+  { id:13, zone:"루디브리엄", spot:"루디브리엄성: 잃어버린시간<2>", level:"46",
+    mobs:[{name:"마스터 크로노스",lv:46}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}] },
+  { id:14, zone:"루디브리엄", spot:"시간의길<4>", level:"46",
+    mobs:[{name:"마스터 크로노스",lv:46}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}] },
+  { id:15, zone:"루디브리엄", spot:"루더스호수: 콜란초원5", level:"45~49",
+    mobs:[{name:"울트라 그레이",lv:45},{name:"원로 그레이",lv:49}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"투구 민첩 주문서 10%",price:"7,320,000",rate:"0.006%"},{name:"스태프 마력 주문서 60%",price:"496,920",rate:"0.008%"}] },
+  { id:16, zone:"무릉도원", spot:"무릉도원: 안개 낀 숲", level:"55~58",
+    mobs:[{name:"천록",lv:58}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}] },
+  { id:17, zone:"무릉도원", spot:"무릉도원: 요괴의 숲", level:"55~66",
+    mobs:[{name:"묘선",lv:66}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"귀 장식 지력 주문서 60%",price:"1,421,590",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}] },
+  { id:18, zone:"무릉도원", spot:"던전: 차가운 요람", level:"64~68",
+    mobs:[{name:"아이스 드레이크",lv:64},{name:"다크 드레이크",lv:68}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.004%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.006%"}] },
+  { id:19, zone:"마가티아", spot:"알카드노 연구소: 연구소 A-1 구역", level:"47~50",
+    mobs:[{name:"미스릴 뮤테",lv:47},{name:"강화된 미스릴 뮤테",lv:50}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 민첩 주문서 100%",price:"11,081,250",rate:"0.007%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.007%"}] },
+];
+
+let farmingData = DEFAULT_FARMING;
+
+function filterFarming() {
+  const q = document.getElementById('farming-search').value.toLowerCase();
+  const zone = document.getElementById('farming-zone-filter').value;
+  const filtered = farmingData.filter(f => {
+    const matchZone = !zone || f.zone === zone;
+    const matchQ = !q || f.spot.toLowerCase().includes(q)
+      || f.mobs.some(m => (m.name||m).toLowerCase().includes(q))
+      || f.drops.some(d => (d.name||d).toLowerCase().includes(q));
+    return matchZone && matchQ;
+  });
+  renderFarming(filtered);
+}
+
+function renderFarming(data) {
+  const list = document.getElementById('farming-list');
+  if (!data || data.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px;">검색 결과가 없어요.</div>';
+    return;
+  }
+  list.innerHTML = data.map(f => {
+    // 몹 이미지 렌더
+    const mobsHtml = f.mobs.map(m => {
+      const name = m.name || m;
+      const lv = m.lv || '';
+      const mobId = MOB_ID_MAP[name];
+      const imgHtml = mobId
+        ? `<img style="width:56px;height:56px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));"
+             src="${MOB_IMG(mobId)}" alt="${name}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <div style="display:none;width:56px;height:56px;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:1.5rem;">👾</div>`
+        : `<div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:1.5rem;">👾</div>`;
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;min-width:64px;">
+        ${imgHtml}
+        <span style="font-size:.7rem;color:var(--muted);text-align:center;max-width:72px;">${name}${lv?`<br><span style="font-size:.65rem">Lv.${lv}</span>`:''}
+        </span>
+      </div>`;
+    }).join('');
+
+    // 드랍 카드 렌더
+    const dropsHtml = f.drops.map(d => {
+      const name = d.name || d;
+      const price = d.price || '-';
+      const rate = d.rate || '';
+      const canFetch = price !== '옵션에 따라 상이';
+      return `<div style="background:var(--surface);border:1px solid rgba(46,204,113,.25);border-radius:7px;padding:9px 12px;min-width:130px;flex:1;"
+        ${canFetch ? `class="drop-card" data-item="${name}"` : ''}>
+        <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:4px;">📜 ${name}</div>
+        <div class="drop-price" style="font-family:var(--mono);font-size:.78rem;color:var(--accent);margin-bottom:1px;">💰 ${price}</div>
+        <div style="font-family:var(--mono);font-size:.74rem;color:var(--muted);">${rate}</div>
+        ${canFetch ? `<div class="drop-loading" style="font-size:.68rem;color:var(--muted);"></div>
+        <div class="drop-live" style="display:none;font-size:.68rem;color:var(--green);">✓ 실시간</div>` : ''}
+      </div>`;
+    }).join('');
+
+    return `<div class="farming-card">
+      <div class="farming-header">
+        <span class="farming-spot-name">🗺️ ${f.spot}</span>
+        <span class="farming-zone-badge">${f.zone}</span>
+        <span class="farming-level-badge">Lv. ${f.level}</span>
+      </div>
+      <div class="farming-section">
+        <div class="farming-section-title">👾 몹</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;">${mobsHtml}</div>
+      </div>
+      <div class="farming-section" style="margin-top:10px;">
+        <div class="farming-section-title">💎 주요 드랍</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;">${dropsHtml}</div>
       </div>
     </div>`;
   }).join('');
 
-  let detail=`
-    <div class="field-row"><span class="field-label">드랍 판매금</span><span style="font-size:13px;font-weight:700;">${fmt(r.totalSale)}만</span></div>
-    <div class="field-row"><span class="field-label">드랍 수수료</span><span style="font-size:13px;color:var(--red2);">-${fmt(r.totalFee||0)}만</span></div>
-    <div class="field-row"><span class="field-label">드랍 순수익</span><span style="font-size:13px;font-weight:700;">${fmt(r.totalNet||0)}만</span></div>`;
-  if(r.totalGuestPay)detail+=`
-    <div class="field-row"><span class="field-label">손님 지불금</span><span style="font-size:13px;color:#6a1b9a;">${fmt(r.totalGuestPay)}만</span></div>
-    <div class="field-row"><span class="field-label">손님 수수료</span><span style="font-size:13px;color:var(--red2);">-${fmt(r.totalGuestFee||0)}만</span></div>
-    <div class="field-row"><span class="field-label">손님 실수령</span><span style="font-size:13px;color:#6a1b9a;font-weight:700;">+${fmt(r.totalGuestNet||0)}만</span></div>`;
-  detail+=`<div class="divider"></div>`;
-  if(r.totalSellerIncentive)detail+=`<div class="field-row"><span class="field-label">판매자 인센</span><span style="font-size:13px;color:var(--red2);">-${fmt(r.totalSellerIncentive)}만</span></div>`;
-  if(r.totalRecruiterIncentive)detail+=`<div class="field-row"><span class="field-label">손님구인 인센</span><span style="font-size:13px;color:var(--red2);">-${fmt(r.totalRecruiterIncentive)}만</span></div>`;
-  if(r.totalMercAlbaFixed)detail+=`<div class="field-row"><span class="field-label">용병/알바 고정</span><span style="font-size:13px;color:#e65100;">-${fmt(r.totalMercAlbaFixed)}만</span></div>`;
-  if(r.totalSupport)detail+=`<div class="field-row"><span class="field-label">지원금 합계</span><span style="font-size:13px;color:#6a1b9a;">-${fmt(r.totalSupport)}만</span></div>`;
-  if(r.totalCost)detail+=`<div class="field-row"><span class="field-label">공대 지출</span><span style="font-size:13px;color:#6a1b9a;">-${fmt(r.totalCost)}만</span></div>`;
-  detail+=`<div class="field-row"><span class="field-label">분배 풀</span><span style="font-size:13px;font-weight:700;color:#2255aa;">${fmt(r.pool||0)}만</span></div>
-    <div class="divider"></div><div class="section-label">패널티 내역</div>`;
-  parts.forEach(m=>{
-    if(r.penaltyAmtMap&&r.penaltyAmtMap[m.id]){
-      const pid=r.penaltyMap?r.penaltyMap[m.id]:null;
-      const pen=pid?cfg.penalties.find(p=>p.id==pid):null;
-      const desc=pen?[pen.amount?fmt(pen.amount)+'만':'',pen.pct?`${pen.pct}%`:''].filter(Boolean).join(' + '):'';
-      detail+=`<div class="field-row"><span class="field-label" style="color:var(--red2);">${m.name}</span><span style="font-size:12px;color:var(--red2);">-${fmt(r.penaltyAmtMap[m.id])}만 (${desc})</span></div>`;
-    }
-  });
-  if(r.penaltyPool)detail+=`<div class="field-row"><span class="field-label" style="color:#2e7d32;">무패널티 보너스</span><span style="font-size:12px;color:#2e7d32;">+${fmt(r.bonusPerNoPenalty)}만/인</span></div>`;
-  if(r.guestPays&&r.guestPays.length){
-    detail+=`<div class="divider"></div><div class="section-label">손님 내역</div>`;
-    r.guestPays.forEach(gp=>{detail+=`<div class="field-row"><span class="field-label" style="color:#c62828;">${gp.name}</span><span style="font-size:12px;">${gp.item||''} ${fmt(gp.amount)}만 → 실수령 ${fmt(gp.net!=null?gp.net:gp.amount)}만${gp.recruiterName?` (구인:${gp.recruiterName})`:''}</span></div>`;});
-  }
-  if(r.costs&&r.costs.length){
-    detail+=`<div class="divider"></div><div class="section-label">공대 지출 내역</div>`;
-    r.costs.forEach(c=>{detail+=`<div class="field-row"><span class="field-label" style="color:#6a1b9a;">${c.name}</span><span style="font-size:12px;color:#6a1b9a;">-${fmt(c.amount)}만</span></div>`;});
-  }
-  document.getElementById('resultDetail').innerHTML=detail;
-}
-function toggleSettled(date,memberId){
-  const key=`settled_${date}_${memberId}`;const now=localStorage.getItem(key)==='1';
-  localStorage.setItem(key,now?'0':'1');
-  const tog=document.getElementById(`tog_${date}_${memberId}`);
-  if(tog){tog.classList.toggle('on',!now);tog.nextElementSibling.textContent=!now?'정산완료':'미정산';}
+  // 렌더 완료 후 실시간 가격 갱신
+  updateDropPrices();
 }
 
-// ══════════════════════════════════════════
-//  탭4: 통계 & 히스토리
-// ══════════════════════════════════════════
-function renderStats(){
-  const total=raids.reduce((s,r)=>s+(r.totalSale||0)+(r.totalGuestPay||0),0);
-  const now=new Date();
-  const ym=now.toISOString().slice(0,7);
-  const weekAgo=new Date(now-7*86400000);
-  const monthTotal=raids.filter(r=>r.date&&r.date.startsWith(ym)).reduce((s,r)=>s+(r.totalSale||0)+(r.totalGuestPay||0),0);
-  const weekTotal=raids.filter(r=>r.date&&new Date(r.date)>=weekAgo).reduce((s,r)=>s+(r.totalSale||0)+(r.totalGuestPay||0),0);
-  document.getElementById('statMetrics').innerHTML=`
-    <div class="metric"><div class="metric-label">전체 누적 정산금</div><div class="metric-value blue">${fmt(total)}만</div></div>
-    <div class="metric"><div class="metric-label">이번 달</div><div class="metric-value">${fmt(monthTotal)}만</div></div>
-    <div class="metric"><div class="metric-label">이번 주</div><div class="metric-value">${fmt(weekTotal)}만</div></div>
-    <div class="metric"><div class="metric-label">총 회차</div><div class="metric-value">${raids.length}회</div></div>`;
-  renderHistory();renderMemberStats();renderPenaltyHistoryList();
+function initFarming() {
+  const zones = [...new Set(farmingData.map(f => f.zone))];
+  const sel = document.getElementById('farming-zone-filter');
+  zones.forEach(z => { const o = document.createElement('option'); o.value=z; o.textContent=z; sel.appendChild(o); });
+  renderFarming(farmingData);
+  // 5시간마다 자동 가격 갱신
+  setInterval(updateDropPrices, 5 * 60 * 60 * 1000);
 }
-function renderHistory(){
-  const filter=document.getElementById('filterPeriod').value;
-  const now=new Date();const weekAgo=new Date(now-7*86400000);const ym=now.toISOString().slice(0,7);
-  let list=[...raids].sort((a,b)=>b.date.localeCompare(a.date));
-  if(filter==='week')list=list.filter(r=>new Date(r.date)>=weekAgo);
-  else if(filter==='month')list=list.filter(r=>r.date&&r.date.startsWith(ym));
-  const el=document.getElementById('historyList');
-  if(!list.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;padding:12px 0;">기록이 없습니다.</div>';return;}
-  el.innerHTML=list.map(r=>`
-    <div class="hist-row" onclick="viewRaidFromHistory('${r.date}')">
-      <div style="font-size:12px;color:var(--text2);min-width:70px;">${r.date}</div>
-      <div style="flex:1;font-weight:700;">${fmt((r.totalSale||0)+(r.totalGuestPay||0))}만</div>
-      <div style="font-size:12px;color:#2e7d32;">1인 ${fmt(r.basePerPerson)}만</div>
-      <div style="font-size:11px;color:var(--text3);">${r.participants?r.participants.length:0}명${r.guestPays&&r.guestPays.length?` · 손님${r.guestPays.length}`:''}</div>
-      <div style="font-size:11px;color:var(--orange2);">▶</div>
-    </div>`).join('');
+initFarming();
+
+async function addFarmingSpot() {
+  const adminKey = document.getElementById('farming-admin-key').value.trim();
+  const zone = document.getElementById('farming-zone').value.trim();
+  const spot = document.getElementById('farming-spot').value.trim();
+  const level = document.getElementById('farming-level').value.trim();
+  const mobs = document.getElementById('farming-mobs').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const drops = document.getElementById('farming-drops').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const memo = document.getElementById('farming-memo').value.trim();
+  const msg = document.getElementById('farming-add-msg');
+
+  if (adminKey !== 'fourcard2024') { msg.style.color='#e74c3c'; msg.textContent='관리자 키가 틀렸어요.'; return; }
+  if (!zone||!spot||!level||mobs.length===0||drops.length===0) { msg.style.color='#e74c3c'; msg.textContent='모든 항목을 입력해주세요.'; return; }
+
+  const newEntry = { id: Date.now(), zone, spot, level,
+    mobs: mobs.map(m => ({ name: m, lv: '' })),
+    drops: drops.map(d => ({ name: d, price: '-', rate: '-' })) };
+  farmingData.push(newEntry);
+
+  // 봇 서버에도 저장 시도
+  try {
+    await fetch(`${NGROK_URL}/farming`, { method:'POST', headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'}, body: JSON.stringify({adminKey, entry: newEntry}) });
+  } catch(e) {}
+
+  msg.style.color='var(--green)'; msg.textContent='✓ 추가됐어요!';
+  document.getElementById('farming-zone').value='';
+  document.getElementById('farming-spot').value='';
+  document.getElementById('farming-level').value='';
+  document.getElementById('farming-mobs').value='';
+  document.getElementById('farming-drops').value='';
+  document.getElementById('farming-memo').value='';
+
+  // 구역 필터 업데이트
+  const zones = [...new Set(farmingData.map(f=>f.zone))];
+  const sel = document.getElementById('farming-zone-filter');
+  sel.innerHTML = '<option value="">전체 구역</option>';
+  zones.forEach(z => { const o=document.createElement('option'); o.value=z; o.textContent=z; sel.appendChild(o); });
+  filterFarming();
+  setTimeout(()=>msg.textContent='', 3000);
 }
-function viewRaidFromHistory(date){
-  const idx=raids.findIndex(r=>r.date===date);
-  if(idx<0)return;
-  viewingRaidIdx=idx;
-  showTab(3);
+
+// ══════════════════════════
+// 길드 모집 게시판
+// ══════════════════════════
+let guildImageBase64 = null;
+
+function previewGuildImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    guildImageBase64 = e.target.result;
+    document.getElementById('guild-image-preview').innerHTML =
+      `<img src="${e.target.result}" class="guild-image-preview-el"><div style="font-size:.75rem;color:var(--green);margin-top:4px;">✓ 이미지 첨부됨</div>`;
+  };
+  reader.readAsDataURL(file);
 }
-function renderMemberStats(){
-  const el=document.getElementById('memberStatBars');
-  if(!cfg.members.length||!raids.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">데이터 없음</div>';return;}
-  const totals={};cfg.members.forEach(m=>{totals[m.id]=0;});
-  raids.forEach(r=>{if(!r.finalMap)return;Object.entries(r.finalMap).forEach(([id,v])=>{totals[id]=(totals[id]||0)+v;});});
-  const max=Math.max(...Object.values(totals),1);
-  const colors=['#4da6ff','#1D9E75','#7F77DD','#D85A30','#ff8fb1','#ffb347'];
-  el.innerHTML=cfg.members.filter(m=>m.job!=='손님').map((m,i)=>{
-    const v=totals[m.id]||0;
-    return `<div class="bar-row"><span class="bar-label">${m.name}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/max*100)}%;background:${colors[i%colors.length]};"></div></div><span class="bar-val">${fmt(v)}만</span></div>`;
-  }).join('');
-}
-function renderPenaltyHistoryList(){
-  const el=document.getElementById('penaltyHistory');
-  const rows=[];
-  raids.forEach(r=>{
-    if(!r.penaltyAmtMap)return;
-    Object.entries(r.penaltyAmtMap).forEach(([mid,amt])=>{
-      const m=getMember(parseInt(mid));
-      const pid=r.penaltyMap?r.penaltyMap[mid]:null;
-      const pen=pid?cfg.penalties.find(p=>p.id==pid):null;
-      rows.push({date:r.date,name:m?m.name:'?',penName:pen?pen.name:'패널티',amt});
+
+async function submitGuildPost() {
+  const guildName = document.getElementById('guild-name').value.trim();
+  const nickname = document.getElementById('guild-nickname').value.trim();
+  const password = document.getElementById('guild-password').value.trim();
+  const content = document.getElementById('guild-content').value.trim();
+  const contact = document.getElementById('guild-contact').value.trim();
+  const msg = document.getElementById('guild-submit-msg');
+
+  if (!guildName) { msg.style.color='#e74c3c'; msg.textContent='길드명을 입력해주세요.'; return; }
+  if (!nickname) { msg.style.color='#e74c3c'; msg.textContent='닉네임을 입력해주세요.'; return; }
+  if (!password) { msg.style.color='#e74c3c'; msg.textContent='글 암호를 설정해주세요.'; return; }
+  if (!content) { msg.style.color='#e74c3c'; msg.textContent='내용을 입력해주세요.'; return; }
+
+  msg.style.color='var(--muted)'; msg.textContent='등록 중...';
+  try {
+    const res = await fetch(`${NGROK_URL}/guild-posts`, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'ngrok-skip-browser-warning':'1' },
+      body: JSON.stringify({ guildName, nickname, content, contact, image: guildImageBase64, password })
     });
-  });
-  rows.sort((a,b)=>b.date.localeCompare(a.date));
-  if(!rows.length){el.innerHTML='<div style="color:var(--text3);font-size:12px;">패널티 이력 없음</div>';return;}
-  el.innerHTML=rows.slice(0,20).map(row=>`
-    <div class="hist-row" style="cursor:default;">
-      <span style="font-size:11px;color:var(--text2);min-width:70px;">${row.date}</span>
-      <span style="flex:1;font-size:13px;font-weight:700;">${row.name}</span>
-      <span class="badge badge-penalty">${row.penName}</span>
-      <span style="font-size:12px;color:var(--red2);font-weight:700;">-${fmt(row.amt)}만</span>
-    </div>`).join('');
+    if (!res.ok) throw new Error('서버 오류');
+    msg.style.color='var(--green)'; msg.textContent='✓ 모집 공고가 등록됐어요!';
+    document.getElementById('guild-name').value='';
+    document.getElementById('guild-nickname').value='';
+    document.getElementById('guild-content').value='';
+    document.getElementById('guild-contact').value='';
+    document.getElementById('guild-image-preview').innerHTML='';
+    guildImageBase64 = null;
+    loadGuildPosts();
+    setTimeout(()=>msg.textContent='', 3000);
+  } catch(e) { msg.style.color='#e74c3c'; msg.textContent='오류: '+e.message; }
 }
 
-// ══════════════════════════════════════════
-//  초기화
-// ══════════════════════════════════════════
-function renderAll(){renderSettings();renderRaidInput();}
-load();renderAll();
+async function loadGuildPosts() {
+  const list = document.getElementById('guild-list');
+  list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:20px;font-size:.85rem;">불러오는 중...</div>';
+  try {
+    const res = await fetch(`${NGROK_URL}/guild-posts`, { headers:{'ngrok-skip-browser-warning':'1'} });
+    if (!res.ok) throw new Error('서버 연결 실패');
+    const posts = await res.json();
+    if (posts.length === 0) { list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">아직 모집 공고가 없어요. 첫 번째 공고를 올려보세요! ⚔️</div>'; return; }
+    list.innerHTML = posts.map(p => `
+      <div class="guild-card" id="guild-card-${p.id}">
+        <div class="guild-header">
+          <span class="guild-name-badge">⚔️ ${p.guildName}</span>
+          <span class="guild-nick">${p.nickname}</span>
+          <span class="guild-date">${new Date(p.createdAt).toLocaleDateString('ko-KR')}</span>
+        </div>
+        ${p.image ? `<img src="${p.image}" class="guild-image-el" alt="길드 포스터">` : ''}
+        <div class="guild-content" id="guild-content-${p.id}">${p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        ${p.contact ? `<div class="guild-contact">💬 ${p.contact}</div>` : ''}
+        <div class="post-actions" style="margin-top:10px;">
+          <button class="post-act-btn" onclick="toggleEditGuild(${p.id})">✏️ 수정</button>
+          <button class="post-act-btn del" onclick="deleteGuild(${p.id})">🗑️ 삭제</button>
+        </div>
+        <div class="post-edit-area" id="guild-edit-area-${p.id}">
+          <textarea id="guild-edit-text-${p.id}" style="min-height:80px;">${p.content}</textarea>
+          <div style="display:flex;gap:6px;margin-top:5px;">
+            <input class="form-input" id="guild-edit-pw-${p.id}" type="password" placeholder="작성 시 설정한 암호" style="flex:1;">
+            <button class="btn-primary" style="padding:6px 12px;font-size:.8rem;" onclick="submitEditGuild(${p.id})">저장</button>
+            <button class="btn-secondary" style="padding:6px 10px;font-size:.8rem;" onclick="toggleEditGuild(${p.id})">취소</button>
+          </div>
+          <div id="guild-edit-msg-${p.id}" style="font-size:.78rem;margin-top:4px;"></div>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    list.innerHTML = `<div class="error-box"><span>✕</span><span>로드 실패: ${e.message}<br><small>봇 서버가 실행 중인지 확인해주세요.</small></span></div>`;
+  }
+}
+
+function toggleEditGuild(id){
+  const area=document.getElementById(`guild-edit-area-${id}`);
+  area.style.display=area.style.display==='block'?'none':'block';
+}
+
+async function submitEditGuild(id){
+  const content=document.getElementById(`guild-edit-text-${id}`).value.trim();
+  const pw=document.getElementById(`guild-edit-pw-${id}`).value.trim();
+  const msg=document.getElementById(`guild-edit-msg-${id}`);
+  if(!content||!pw){msg.style.color='#e74c3c';msg.textContent='내용과 암호를 입력해주세요.';return;}
+  try{
+    const res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({content,password:pw})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'실패');}
+    msg.style.color='var(--green)';msg.textContent='✓ 수정됐어요!';
+    setTimeout(()=>loadGuildPosts(),800);
+  }catch(e){msg.style.color='#e74c3c';msg.textContent='오류: '+e.message;}
+}
+
+async function deleteGuild(id){
+  const pw=prompt('삭제를 위해 작성 시 설정한 암호를 입력하세요:\n(관리자라면 관리자 키를 입력하세요)');
+  if(!pw)return;
+  try{
+    // 일반 암호로 시도
+    let res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({password:pw})});
+    // 실패 시 관리자 키로 재시도
+    if(!res.ok){
+      res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({adminKey:pw,password:pw})});
+    }
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'삭제 실패');}
+    alert('삭제됐어요!');loadGuildPosts();
+  }catch(e){alert('오류: '+e.message+'\n\n서버가 꺼져 있거나 암호가 다릅니다.');}
+}
 </script>
 </body>
 </html>
