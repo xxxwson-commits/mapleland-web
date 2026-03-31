@@ -654,35 +654,55 @@ async function fetchSpot(btn,keyword,name,emoji){
 <script>
 // 아이템 시세
 const SHORTCUTS={파엘:"파워 엘릭서",마엘:"마나 엘릭서",만병:"만병통치약",새벽:"새벽의 이슬",황혼:"황혼의 이슬",일비:"일비 표창",뇌전:"뇌전수리검",장공10:"장갑 공격력 주문서 10%",장공60:"장갑 공격력 주문서 60%",노목:"노가다 목장갑",드퍼슬:"드래곤 퍼플 슬레브",드그슬:"드래곤 그린 슬레브"};
-// mapleland.gg 아이템 ID 하드코딩 (자주 쓰는 아이템)
+// mapleland.gg 아이템 ID — 검색 키워드 기준 (직접 확인된 값)
 const ITEM_ID_MAP={
-  "파워 엘릭서":2000005,"마나 엘릭서":2000006,"만병통치약":2050004,
-  "새벽의 이슬":2022003,"황혼의 이슬":2020015,"일비 표창":2070018,
-  "뇌전수리검":2070019,"노가다 목장갑":1082140,
-  "장갑 공격력 주문서 10%":2040805,"장갑 공격력 주문서 60%":2040802,
-  "드래곤 퍼플 슬레브":1051100,"드래곤 그린 슬레브":1051102,
-  "샤프 아이즈 30":2290075,"피어싱 20":2290070,
-  "망토 힘 주문서 60%":2041005,"망토 행운 주문서 60%":2041009,
-  "귀 장식 체력 주문서 60%":2041203,"귀 장식 민첩 주문서 60%":2041207,
-  "귀 장식 행운 주문서 10%":2041204,"귀 장식 지력 주문서 10%":2041209,
-  "귀 장식 지력 주문서 60%":2041208,"귀 장식 체력 주문서 60%":2041203,
-  "투구 민첩 주문서 60%":2040503,"투구 지력 주문서 100%":2040512,
-  "신발 점프력 주문서 10%":2040712,"장갑 공격력 주문서 10%":2040805,
-  "스탠스 20":2290002,"돌진 20":2290006,
-  "엘릭서":2000004,"스태프 마력 주문서 10%":2043712,
-  "아대 공격력 주문서 10%":2043112,"아대 공격력 주문서 60%":2043111,
-  "창 공격력 주문서 10%":2044104,"석궁 공격력 주문서 10%":2044604,
-  "투구 민첩 주문서 10%":2040504,"투구 지력 주문서 10%":2040511,
-  "스태프 마력 주문서 60%":2043711,"장갑 공격력 주문서 60%":2040802,
+  // 포션
+  "파워 엘릭서":2000005, "마나 엘릭서":2000006, "엘릭서":2000004, "만병통치약":2050004,
+  "새벽의 이슬":2020014, "황혼의 이슬":2020015,
+  // 표창/수리검
+  "일비 표창":2070006, "뇌전수리검":2070005, "뇌전 수리검":2070005,
+  // 장갑
+  "노가다 목장갑":1082002,
+  "장갑 공격력 주문서 10%":2040805, "장갑 공격력 주문서 60%":2040804,
+  // 무기 (드래곤)
+  "드래곤 퍼플 슬레브":1472052, "드래곤 그린 슬레브":1472051,
+  // 마스터리북
+  "샤프 아이즈 30":2290053, "샤프 아이즈 20":2290052,
+  "피어싱 20":2290070, "피어싱 30":2290071,
+  "스탠스 20":2290006, "스탠스 30":2290007,
+  "돌진 20":2290002,
+  // 망토
+  "망토 힘 주문서 60%":2041013, "망토 행운 주문서 60%":2041022,
+  "망토 지력 주문서 60%":2041016, "망토 지력 주문서 10%":2041017,
+  // 귀 장식
+  "귀 장식 민첩 주문서 60%":2040317, "귀 장식 지력 주문서 60%":2040301,
+  "귀 장식 체력 주문서 60%":2040326, "귀 장식 지력 주문서 10%":2040302,
+  "귀 장식 행운 주문서 10%":2040303,
+  // 투구
+  "투구 민첩 주문서 60%":2040029, "투구 민첩 주문서 10%":2040030,
+  "투구 지력 주문서 60%":2040025, "투구 지력 주문서 10%":2040026,
+  "투구 지력 주문서 100%":2040024,
+  // 신발
+  "신발 점프력 주문서 10%":2040705,
+  // 아대/석궁/창
+  "아대 공격력 주문서 10%":2044702, "아대 공격력 주문서 60%":2044701,
+  "석궁 공격력 주문서 10%":2044602, "석궁 공격력 주문서 60%":2044601,
+  "창 공격력 주문서 10%":2044302, "창 공격력 주문서 60%":2044301,
+  // 스태프
+  "스태프 마력 주문서 10%":2043802, "스태프 마력 주문서 60%":2043801,
 };
 function getItemId(name){ return ITEM_ID_MAP[name]||null; }
+// 검색 시 사용한 원본 키워드도 저장
+let lastSearchKeyword='';
 function setItemSearch(name){document.getElementById('item-input').value=name;searchItem();}
 function formatPrice(n){n=parseInt(n);if(isNaN(n))return'0';return n.toLocaleString('ko-KR');}
 let selectedItem=null;
 
 async function searchItem(){
   let keyword=document.getElementById('item-input').value.trim();if(!keyword)return;
+  const origKeyword=keyword;
   if(SHORTCUTS[keyword])keyword=SHORTCUTS[keyword];
+  lastSearchKeyword=keyword;
   const errBox=document.getElementById('item-error'),candBox=document.getElementById('item-candidates'),resultBox=document.getElementById('item-result');
   errBox.classList.add('hidden');candBox.classList.add('hidden');resultBox.classList.add('hidden');
   const btn=document.getElementById('item-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
@@ -694,7 +714,12 @@ async function searchItem(){
       document.getElementById('item-error-msg').textContent=`'${keyword}' 아이템을 찾을 수 없습니다.`;errBox.classList.remove('hidden');return;
     }
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();selectedItem={name:data.name,id:getItemId(data.name)||data.id||data.itemId||data.item_id||null};showFilterUI(data);
+    const data=await res.json();
+    console.log('[서버응답 전체]', JSON.stringify(data).slice(0,500)); // 콘솔에서 실제 구조 확인
+    // ID: 검색 키워드로 먼저, 그다음 서버 응답 여러 필드명 시도
+    const itemId=getItemId(keyword)||getItemId(data.name)||data.id||data.itemId||data.item_id||data.itemid||data.maple_id||null;
+    selectedItem={name:data.name,id:itemId};
+    showFilterUI(data);
   }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
   finally{btn.disabled=false;btn.innerHTML='검색';}
 }
@@ -748,10 +773,12 @@ function renderTradeResult(data,container){
   if(!container)return;
   const itemName=selectedItem?selectedItem.name:'';
   const itemId=selectedItem?selectedItem.id:null;
-  // mapleland.gg: ID 있으면 /item/{id}, 없으면 시장 메인
+  // 디버그: 콘솔에서 실제 서버 응답 구조 확인 가능
+  console.log('[아이템시세] selectedItem:', selectedItem, '| data keys:', Object.keys(data));
+  // ID 있으면 정확한 페이지, 없으면 이름으로 검색 페이지 (엉뚱한 페이지 절대 안 감)
   const ggUrl=itemId
     ? `https://mapleland.gg/item/${itemId}`
-    : `https://mapleland.gg/market`;
+    : `https://mapleland.gg/items?search=${encodeURIComponent(itemName)}`;
   let html=`<div class="item-result-title" style="margin-top:8px;">💸 팝니다 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;
   if(data.sell&&data.sell.length>0){
     data.sell.slice(0,5).forEach(e=>{
