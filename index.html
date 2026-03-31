@@ -502,25 +502,17 @@ function updateClock() {
 }
 setInterval(updateClock,1000); updateClock();
 
-// ── 접속자 수 (SSE 실시간 카운팅) ──
+// ── 접속자 수 (폴링 방식) ──
 (function(){
-  function connectSSE(){
-    try{
-      const es=new EventSource(NGROK_URL+'/viewers?ngrok-skip-browser-warning=1');
-      es.onmessage=function(e){
-        try{
-          const data=JSON.parse(e.data);
-          const el=document.getElementById('online-count');
-          if(el&&data.viewers!=null)el.textContent=data.viewers;
-        }catch(err){}
-      };
-      es.onerror=function(){
-        es.close();
-        setTimeout(connectSSE,5000);
-      };
-    }catch(e){}
+  const SID='v_'+Math.random().toString(36).slice(2);
+  function poll(){
+    fetch(NGROK_URL+'/viewers?sid='+SID+'&ngrok-skip-browser-warning=1',{headers:{'ngrok-skip-browser-warning':'1'}})
+      .then(r=>r.json())
+      .then(d=>{const el=document.getElementById('online-count');if(el&&d.viewers!=null)el.textContent=d.viewers;})
+      .catch(()=>{});
   }
-  connectSSE();
+  poll();
+  setInterval(poll,30000);
 })();
 
 // ── PIP 타이머 (팝업 윈도우) ──
