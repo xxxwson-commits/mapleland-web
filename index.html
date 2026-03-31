@@ -506,7 +506,7 @@ setInterval(updateClock,1000); updateClock();
 (function(){
   function connectSSE(){
     try{
-      const es=new EventSource(NGROK_URL+'/viewers');
+      const es=new EventSource(NGROK_URL+'/viewers?ngrok-skip-browser-warning=1');
       es.onmessage=function(e){
         try{
           const data=JSON.parse(e.data);
