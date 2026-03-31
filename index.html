@@ -108,6 +108,34 @@ main{position:relative;z-index:1;}
 .timer-preset-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
 .timer-preset{padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .15s;}
 .timer-preset:hover{border-color:var(--accent);color:var(--accent);}
+/* PIP 타이머 */
+.pip-btn{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;padding:2px 5px;border-radius:4px;transition:color .15s;}
+.pip-btn:hover{color:var(--accent);}
+#pip-overlay{display:none;position:fixed;bottom:20px;right:20px;z-index:9999;background:rgba(10,12,16,.92);border:1px solid var(--accent);border-radius:12px;padding:12px 16px;min-width:160px;backdrop-filter:blur(8px);cursor:move;user-select:none;}
+#pip-overlay.show{display:block;}
+.pip-timer-item{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:4px;font-size:.85rem;}
+.pip-timer-name{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;}
+.pip-timer-val{font-family:var(--mono);color:var(--accent);font-weight:700;}
+.pip-timer-val.urgent{color:var(--red);}
+.pip-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.pip-title{font-size:.75rem;font-weight:700;color:var(--muted);}
+.pip-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:0;}
+/* 접속자 */
+.online-badge{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-right:8px;}
+/* 매물 클릭 링크 */
+.item-row{display:flex;justify-content:space-between;align-items:center;padding:6px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;margin-bottom:3px;font-size:.83rem;}
+.item-row.clickable{cursor:pointer;transition:border-color .15s,background .15s;}
+.item-row.clickable:hover{border-color:var(--accent);background:rgba(232,160,32,.06);}
+.item-row.sold{opacity:.45;}
+.item-row.sold::after{content:'거래완료';font-size:.68rem;color:var(--red);border:1px solid var(--red);border-radius:4px;padding:1px 5px;margin-left:6px;flex-shrink:0;}
+/* 게시판 삭제/수정 */
+.post-actions{display:flex;gap:5px;margin-top:8px;}
+.post-act-btn{padding:3px 10px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .15s;}
+.post-act-btn:hover{border-color:var(--accent);color:var(--accent);}
+.post-act-btn.del:hover{border-color:var(--red);color:var(--red);}
+.post-edit-area{margin-top:8px;display:none;}
+.post-edit-area textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--text);font-family:var(--sans);font-size:.85rem;outline:none;resize:vertical;min-height:60px;}
+.post-edit-area textarea:focus{border-color:var(--accent);}
 /* 게시판 */
 .post-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;}
 .post-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
@@ -177,21 +205,6 @@ footer a:hover{color:var(--accent);}
 .farming-tag{padding:3px 9px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:.78rem;color:var(--text);}
 .farming-tag.drop{border-color:rgba(46,204,113,.4);color:var(--green);}
 .farming-memo{font-size:.8rem;color:var(--muted);margin-top:6px;font-style:italic;}
-/* 몹 이미지 */
-.mob-list{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:4px;}
-.mob-item{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:60px;}
-.mob-img{width:60px;height:60px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));}
-.mob-img-placeholder{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;}
-.mob-name-label{font-size:.72rem;color:var(--muted);text-align:center;max-width:70px;word-break:keep-all;}
-/* 드랍 카드 */
-.drop-card-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
-.drop-card{background:var(--surface);border:1px solid rgba(46,204,113,.25);border-radius:7px;padding:9px 12px;min-width:130px;cursor:pointer;transition:border-color .15s,background .15s;position:relative;}
-.drop-card:hover{border-color:rgba(46,204,113,.6);background:rgba(46,204,113,.05);}
-.drop-card-name{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:4px;}
-.drop-card-price{font-family:var(--mono);font-size:.78rem;color:var(--accent);margin-bottom:1px;}
-.drop-card-rate{font-family:var(--mono);font-size:.74rem;color:var(--muted);}
-.drop-card-live{font-size:.68rem;color:var(--green);margin-top:3px;}
-.drop-card-loading{font-size:.7rem;color:var(--muted);margin-top:3px;}
 /* 길드 카드 */
 .guild-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;}
 .guild-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
@@ -213,13 +226,14 @@ footer a:hover{color:var(--accent);}
   </a>
   <div class="live-badge">
     <span id="kst-clock" style="font-size:.75rem;color:var(--muted)"></span>
+    <span class="online-badge" id="online-badge" title="현재 접속자">👥 <span id="online-count">1</span></span>
     <div class="live-dot"></div>
     <span>LIVE</span>
   </div>
 </header>
 <nav>
   <button class="tab-btn active" data-tab="ship" onclick="switchTab('ship')"><span>🚢</span>배/엘리베이터</button>
-  <button class="tab-btn" data-tab="spot" onclick="switchTab('spot')"><span>📖</span>사냥터</button>
+  <button class="tab-btn" data-tab="spot" onclick="switchTab('spot')"><span>📖</span>사냥터 시세</button>
   <button class="tab-btn" data-tab="item" onclick="switchTab('item')"><span>💰</span>아이템 시세</button>
   <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')"><span>🌤️</span>날씨</button>
   <button class="tab-btn" data-tab="timer" onclick="switchTab('timer')"><span>⏱️</span>타이머</button>
@@ -309,7 +323,10 @@ footer a:hover{color:var(--accent);}
 </div>
 <!-- 타이머 -->
 <div id="tab-timer" class="tab-panel">
-  <div class="section-title">⏱️ 스킬 타이머</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+    <div class="section-title" style="margin-bottom:0;">⏱️ 스킬 타이머</div>
+    <button class="btn-secondary" style="font-size:.78rem;padding:5px 10px;" onclick="togglePIP()">📌 PIP 모드</button>
+  </div>
   <div style="margin-bottom:10px;font-size:.82rem;color:var(--muted)">프리셋 클릭으로 빠르게 추가 · 각 타이머에서 ±30초/±5초 조정 가능</div>
   <div class="timer-preset-row">
     <div class="timer-preset" onclick="addTimer('한타임',60,0)">🍁 한타임 1시간</div>
@@ -334,6 +351,10 @@ footer a:hover{color:var(--accent);}
     <div class="form-group">
       <label class="form-label">닉네임</label>
       <input class="form-input" id="post-nickname" placeholder="닉네임 입력" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label">글 암호 <span style="color:var(--muted);font-size:.75rem">(수정·삭제 시 필요)</span></label>
+      <input class="form-input" id="post-password" type="password" placeholder="본인만 아는 암호" maxlength="20">
     </div>
     <div class="form-group">
       <label class="form-label">분류</label>
@@ -427,6 +448,10 @@ footer a:hover{color:var(--accent);}
       <input class="form-input" id="guild-nickname" placeholder="닉네임" maxlength="20">
     </div>
     <div class="form-group">
+      <label class="form-label">글 암호 <span style="color:var(--muted);font-size:.75rem">(수정·삭제 시 필요)</span></label>
+      <input class="form-input" id="guild-password" type="password" placeholder="본인만 아는 암호" maxlength="20">
+    </div>
+    <div class="form-group">
       <label class="form-label">모집 내용 (최대 2000자)</label>
       <textarea class="form-textarea" id="guild-content" style="min-height:160px;" placeholder="길드 소개, 모집 조건, 활동 시간 등을 자유롭게 적어주세요..." maxlength="2000"></textarea>
     </div>
@@ -447,6 +472,13 @@ footer a:hover{color:var(--accent);}
   <!-- 목록 -->
   <div style="font-weight:700;margin-bottom:10px;font-size:.9rem;">📌 모집 공고 목록</div>
   <div id="guild-list"><div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">로딩 중...</div></div>
+</div>
+<div id="pip-overlay">
+  <div class="pip-header">
+    <span class="pip-title">⏱️ 타이머</span>
+    <button class="pip-close" onclick="togglePIP()">✕</button>
+  </div>
+  <div id="pip-list"><span style="color:var(--muted);font-size:.8rem;">실행 중인 타이머 없음</span></div>
 </div>
 <footer>
   <div style="margin-bottom:4px;">제작 · 운영: 표식길드 <strong style="color:var(--accent)">fourcard</strong></div>
@@ -469,6 +501,55 @@ function updateClock() {
   document.getElementById('kst-clock').textContent = `KST ${String(kst.getUTCHours()).padStart(2,'0')}:${String(kst.getUTCMinutes()).padStart(2,'0')}:${String(kst.getUTCSeconds()).padStart(2,'0')}`;
 }
 setInterval(updateClock,1000); updateClock();
+
+// ── 접속자 수 (localStorage 기반 간이 카운팅) ──
+(function(){
+  const KEY='mrlv_visitors', SID='mrlv_'+Math.random().toString(36).slice(2), TTL=60000;
+  function heartbeat(){
+    try{
+      let d=JSON.parse(localStorage.getItem(KEY)||'{}');
+      d[SID]=Date.now();
+      Object.keys(d).forEach(k=>{if(Date.now()-d[k]>TTL)delete d[k];});
+      localStorage.setItem(KEY,JSON.stringify(d));
+      const cnt=Object.keys(d).length;
+      const el=document.getElementById('online-count');
+      if(el)el.textContent=cnt;
+    }catch(e){}
+  }
+  heartbeat();
+  setInterval(heartbeat,20000);
+  window.addEventListener('beforeunload',()=>{
+    try{let d=JSON.parse(localStorage.getItem(KEY)||'{}');delete d[SID];localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}
+  });
+})();
+
+// ── PIP 타이머 ──
+let pipVisible=false;
+function togglePIP(){
+  pipVisible=!pipVisible;
+  document.getElementById('pip-overlay').classList.toggle('show',pipVisible);
+  if(pipVisible)updatePIP();
+}
+function updatePIP(){
+  if(!pipVisible)return;
+  const pip=document.getElementById('pip-list');
+  const active=timers.filter(t=>t.running||t.remaining>0);
+  if(active.length===0){pip.innerHTML='<span style="color:var(--muted);font-size:.8rem;">실행 중인 타이머 없음</span>';return;}
+  pip.innerHTML=active.map(t=>{
+    const m=String(Math.floor(t.remaining/60)).padStart(2,'0');
+    const s=String(t.remaining%60).padStart(2,'0');
+    const cls=t.remaining<=30?'urgent':'';
+    return `<div class="pip-timer-item"><span class="pip-timer-name">${t.name}</span><span class="pip-timer-val ${cls}">${t.finished?'⏰':m+':'+s}</span></div>`;
+  }).join('');
+}
+// PIP 드래그
+(function(){
+  const el=document.getElementById('pip-overlay');
+  let ox=0,oy=0,dragging=false;
+  el.addEventListener('mousedown',e=>{if(e.target.classList.contains('pip-close'))return;dragging=true;ox=e.clientX-el.offsetLeft;oy=e.clientY-el.offsetTop;});
+  document.addEventListener('mousemove',e=>{if(!dragging)return;el.style.left=Math.max(0,Math.min(window.innerWidth-el.offsetWidth,e.clientX-ox))+'px';el.style.right='auto';el.style.bottom='auto';el.style.top=Math.max(0,Math.min(window.innerHeight-el.offsetHeight,e.clientY-oy))+'px';});
+  document.addEventListener('mouseup',()=>dragging=false);
+})();
 
 // 탭
 function switchTab(name) {
@@ -505,17 +586,32 @@ async function fetchSpot(btn,keyword,name,emoji){
   const errBox=document.getElementById('spot-error'),resBox=document.getElementById('spot-result');
   errBox.classList.add('hidden');resBox.classList.add('hidden');
   const orig=btn.innerHTML;btn.disabled=true;btn.innerHTML=`<span class="spinner"></span> 조회 중...`;
+  const shopUrl=`https://mashop.kr/search?q=${encodeURIComponent(keyword)}`;
   try{
     const enc=encodeURIComponent(keyword);
     const [listRaw,statRaw]=await Promise.all([proxyFetch(`https://api.mashop.kr/api/maps?keyword=${enc}`),proxyFetch(`https://api.mashop.kr/api/maps/price-stat?keyword=${enc}`)]);
-    const prices=exAll(listRaw,'price'),colors=exAll(listRaw,'serverColor'),tradeTypes=exAll(listRaw,'tradeType'),createTimes=exAll(listRaw,'createTime'),statPrices=exAll(statRaw,'price'),statTimes=exAll(statRaw,'dateTime'),memos=exComments(listRaw);
-    let html=`<div class="card"><div style="font-weight:700;margin-bottom:10px;">${emoji} ${name}</div>`;
+    const prices=exAll(listRaw,'price'),tradeTypes=exAll(listRaw,'tradeType'),createTimes=exAll(listRaw,'createTime'),statPrices=exAll(statRaw,'price'),statTimes=exAll(statRaw,'dateTime'),memos=exComments(listRaw);
+    // sold 상태 파싱
+    const soldArr=[];const soldRe=/"status"\s*:\s*"?([^",}]+)"?/g;let sm;const listArr=listRaw.match(/"status"\s*:\s*"?([^",}]+)"?/g)||[];listArr.forEach(s=>{const v=s.replace(/.*:\s*"?/,'').replace(/"$/,'').trim();soldArr.push(v);});
+    let html=`<div class="card"><div style="font-weight:700;margin-bottom:10px;">${emoji} ${name} <a href="${shopUrl}" target="_blank" style="font-size:.72rem;color:var(--accent);text-decoration:none;margin-left:6px;">↗ mashop.kr</a></div>`;
     if(statPrices.length>0){html+=`<div class="item-result-title">📊 시간대별 평균가</div>`;const from=Math.max(0,statPrices.length-3);for(let i=from;i<statPrices.length;i++){const h=statTimes[i]?statTimes[i].substring(11,16):'??:??';html+=`<div class="item-row"><span>${h}</span><span class="price-high">${fmtP(statPrices[i])}</span></div>`;}html+=`<hr class="divider">`;}
-    html+=`<div class="item-result-title">💸 판매 매물</div>`;let sc=0;
-    for(let j=0;j<prices.length&&sc<5;j++){if((tradeTypes[j]||'SELL')!=='SELL')continue;html+=`<div class="item-row"><span class="price-sell">${fmtP(prices[j])}</span><span style="color:var(--muted);font-size:.76rem">${createTimes[j]?` 🕐${toKST(createTimes[j])}`:''} ${memos[j]?`· ${memos[j]}`:''}</span></div>`;sc++;}
+    html+=`<div class="item-result-title">💸 판매 매물 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;let sc=0;
+    for(let j=0;j<prices.length&&sc<5;j++){
+      if((tradeTypes[j]||'SELL')!=='SELL')continue;
+      const isSold=soldArr[j]==='SOLD'||soldArr[j]==='sold';
+      const timeStr=createTimes[j]?`🕐${toKST(createTimes[j])}`:'';
+      const memoStr=memos[j]?`· ${memos[j]}`:'';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${shopUrl}','_blank')"><span class="price-sell">${fmtP(prices[j])}</span><span style="color:var(--muted);font-size:.76rem">${timeStr} ${memoStr}</span></div>`;sc++;
+    }
     if(sc===0)html+=`<div class="item-row"><span style="color:var(--muted)">판매 매물 없음</span></div>`;
-    html+=`<hr class="divider"><div class="item-result-title">🛒 구매 희망가</div>`;let bc=0;
-    for(let k=0;k<prices.length&&bc<3;k++){if(tradeTypes[k]!=='BUY')continue;html+=`<div class="item-row"><span class="price-buy">${fmtP(prices[k])}</span></div>`;bc++;}
+    html+=`<hr class="divider"><div class="item-result-title">🛒 구매 희망가 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;let bc=0;
+    for(let k=0;k<prices.length&&bc<5;k++){
+      if(tradeTypes[k]!=='BUY')continue;
+      const isSold=soldArr[k]==='SOLD'||soldArr[k]==='sold';
+      const timeStr=createTimes[k]?`🕐${toKST(createTimes[k])}`:'';
+      const memoStr=memos[k]?`· ${memos[k]}`:'';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${shopUrl}','_blank')"><span class="price-buy">${fmtP(prices[k])}</span><span style="color:var(--muted);font-size:.76rem">${timeStr} ${memoStr}</span></div>`;bc++;
+    }
     if(bc===0)html+=`<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
     html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--muted)">♡ <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 기준</div></div>`;
     resBox.innerHTML=html;resBox.classList.remove('hidden');
@@ -596,13 +692,32 @@ async function applyFilter(){
 
 function renderTradeResult(data,container){
   if(!container)return;
-  let html=`<div class="item-result-title" style="margin-top:8px;">💸 팝니다</div>`;
-  if(data.sell&&data.sell.length>0){data.sell.forEach(e=>{const price=formatPrice(e.itemPrice||0),comment=e.comment?` · ${e.comment}`:'',pad=e.incPAD?` 공+${e.incPAD}`:'',mad=e.incMAD?` 마+${e.incMAD}`:'',tuc=e.tuc!==undefined?` 남${e.tuc}`:'';html+=`<div class="item-row"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${pad}${mad}${tuc}${comment}</span></div>`;});}
-  else html+=`<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
-  html+=`<hr class="divider"><div class="item-result-title">🛒 삽니다</div>`;
-  if(data.buy&&data.buy.length>0){data.buy.forEach(e=>{const price=formatPrice(e.itemPrice||0),comment=e.comment?` · ${e.comment}`:'';html+=`<div class="item-row"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${comment}</span></div>`;});}
-  else html+=`<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
-  html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
+  const itemName=selectedItem?selectedItem.name:'';
+  const ggUrl=`https://mapleland.gg/market?name=${encodeURIComponent(itemName)}`;
+  let html=`<div class="item-result-title" style="margin-top:8px;">💸 팝니다 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;
+  if(data.sell&&data.sell.length>0){
+    data.sell.forEach(e=>{
+      const price=formatPrice(e.itemPrice||0);
+      const comment=e.comment?` · ${e.comment}`:'';
+      const pad=e.incPAD?` 공+${e.incPAD}`:'';
+      const mad=e.incMAD?` 마+${e.incMAD}`:'';
+      const tuc=e.tuc!==undefined?` 남${e.tuc}`:'';
+      const timeStr=e.updatedAt?` 🕐${toKST(e.updatedAt)}`:(e.createdAt?` 🕐${toKST(e.createdAt)}`:'');
+      const isSold=e.status==='SOLD'||e.status==='sold';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${ggUrl}','_blank')"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${pad}${mad}${tuc}${timeStr}${comment}</span></div>`;
+    });
+  } else html+=`<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
+  html+=`<hr class="divider"><div class="item-result-title">🛒 삽니다 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;
+  if(data.buy&&data.buy.length>0){
+    data.buy.slice(0,5).forEach(e=>{
+      const price=formatPrice(e.itemPrice||0);
+      const comment=e.comment?` · ${e.comment}`:'';
+      const timeStr=e.updatedAt?` 🕐${toKST(e.updatedAt)}`:(e.createdAt?` 🕐${toKST(e.createdAt)}`:'');
+      const isSold=e.status==='SOLD'||e.status==='sold';
+      html+=`<div class="item-row clickable${isSold?' sold':''}" onclick="window.open('${ggUrl}','_blank')"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${timeStr}${comment}</span></div>`;
+    });
+  } else html+=`<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
+  html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--muted)">♡ <a href="${ggUrl}" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
   container.innerHTML=html;
 }
 
@@ -680,6 +795,7 @@ function tickTimers() {
     if(t.running) anyActive = true;
   });
   renderTimers();
+  updatePIP();
   if(!anyActive) { clearInterval(timerInterval); timerInterval = null; }
 }
 
@@ -745,13 +861,13 @@ async function loadPosts() {
     const catClass={'문의':'cat-general','버그':'cat-bug','기능요청':'cat-request','사용후기':'cat-review','일반':'cat-general'};
     const catEmoji={'문의':'💬','버그':'🐛','기능요청':'💡','사용후기':'⭐','일반':'📝'};
     list.innerHTML=posts.map(p=>`
-      <div class="post-card">
+      <div class="post-card" id="post-card-${p.id}">
         <div class="post-header">
           <span class="post-category ${catClass[p.category]||'cat-general'}">${catEmoji[p.category]||'📝'} ${p.category}</span>
           <span class="post-nickname">${p.nickname}</span>
           <span class="post-date">${new Date(p.createdAt).toLocaleDateString('ko-KR')}</span>
         </div>
-        <div class="post-content">${p.content.replace(/\n/g,'<br>')}</div>
+        <div class="post-content" id="post-content-${p.id}">${p.content.replace(/\n/g,'<br>')}</div>
         ${p.comments&&p.comments.length>0?`
           <div class="post-comments">
             ${p.comments.map(c=>`<div class="comment-item"><div class="comment-admin">🔑 fourcard (운영자)</div>${c.content.replace(/\n/g,'<br>')}</div>`).join('')}
@@ -761,20 +877,63 @@ async function loadPosts() {
           <input class="admin-input" id="comment-${p.id}" placeholder="관리자 답글 (관리자 키 필요)">
           <button class="btn-secondary" style="padding:7px 12px;font-size:.8rem;" onclick="submitComment(${p.id})">답글</button>
         </div>
+        <div class="post-actions">
+          <button class="post-act-btn" onclick="toggleEditPost(${p.id})">✏️ 수정</button>
+          <button class="post-act-btn del" onclick="deletePost(${p.id})">🗑️ 삭제</button>
+        </div>
+        <div class="post-edit-area" id="edit-area-${p.id}">
+          <textarea id="edit-text-${p.id}">${p.content}</textarea>
+          <div style="display:flex;gap:6px;margin-top:5px;">
+            <input class="form-input" id="edit-pw-${p.id}" type="password" placeholder="글 작성 시 설정한 암호" style="flex:1;">
+            <button class="btn-primary" style="padding:6px 12px;font-size:.8rem;" onclick="submitEditPost(${p.id})">저장</button>
+            <button class="btn-secondary" style="padding:6px 10px;font-size:.8rem;" onclick="toggleEditPost(${p.id})">취소</button>
+          </div>
+          <div id="edit-msg-${p.id}" style="font-size:.78rem;margin-top:4px;"></div>
+        </div>
       </div>`).join('');
   }catch(e){list.innerHTML=`<div class="error-box"><span>✕</span><span>게시판 로드 실패: ${e.message}<br><small>봇 서버가 실행 중인지 확인해주세요.</small></span></div>`;}
 }
 
+function toggleEditPost(id){
+  const area=document.getElementById(`edit-area-${id}`);
+  area.style.display=area.style.display==='none'||area.style.display===''?'block':'none';
+}
+
+async function submitEditPost(id){
+  const content=document.getElementById(`edit-text-${id}`).value.trim();
+  const pw=document.getElementById(`edit-pw-${id}`).value.trim();
+  const msg=document.getElementById(`edit-msg-${id}`);
+  if(!content||!pw){msg.style.color='#e74c3c';msg.textContent='내용과 암호를 입력해주세요.';return;}
+  try{
+    const res=await fetch(`${NGROK_URL}/posts/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({content,password:pw})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'실패');}
+    msg.style.color='var(--green)';msg.textContent='✓ 수정됐어요!';
+    setTimeout(()=>loadPosts(),800);
+  }catch(e){msg.style.color='#e74c3c';msg.textContent='오류: '+e.message;}
+}
+
+async function deletePost(id){
+  const pw=prompt('글 삭제를 위해 작성 시 설정한 암호를 입력하세요:');
+  if(!pw)return;
+  try{
+    const res=await fetch(`${NGROK_URL}/posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({password:pw})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'삭제 실패');}
+    alert('삭제됐어요!');loadPosts();
+  }catch(e){alert('오류: '+e.message);}
+}
+
 async function submitPost(){
   const nickname=document.getElementById('post-nickname').value.trim();
+  const password=document.getElementById('post-password').value.trim();
   const category=document.getElementById('post-category').value;
   const content=document.getElementById('post-content').value.trim();
   const msg=document.getElementById('post-submit-msg');
   if(!nickname){msg.style.color='#e74c3c';msg.textContent='닉네임을 입력해주세요.';return;}
+  if(!password){msg.style.color='#e74c3c';msg.textContent='글 암호를 설정해주세요.';return;}
   if(!content){msg.style.color='#e74c3c';msg.textContent='내용을 입력해주세요.';return;}
   msg.style.color='var(--muted)';msg.textContent='전송 중...';
   try{
-    const res=await fetch(`${NGROK_URL}/posts`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({nickname,category,content})});
+    const res=await fetch(`${NGROK_URL}/posts`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({nickname,category,content,password})});
     if(!res.ok)throw new Error('전송 실패');
     msg.style.color='var(--green)';msg.textContent='✓ 글이 작성되었습니다!';
     document.getElementById('post-content').value='';
@@ -801,91 +960,55 @@ async function submitComment(postId){
 // 파밍 정보
 // ══════════════════════════
 
-// maplestory.io 몹 이미지 URL
-const MOB_IMG = (id) => `https://maplestory.io/api/GMS/62/mob/${id}/render/stand`;
+// maplestory.io 몹 이미지 (GMS v62)
+const MOB_IMG = id => `https://maplestory.io/api/GMS/62/mob/${id}/render/stand`;
 
-// 몹 이름 → ID 매핑 (GMS v62 기준)
+// 몹 이름 → ID 매핑 (이미지 직접 확인 기준)
 const MOB_ID_MAP = {
-  '스켈레곤':8190003,'스켈로스':8190004,'네스트골렘':8190005,
-  '울프 스파이더':9400545,'라이칸스로프':8140000,'화이트팽':5140000,
-  '폭렬 망둥이집':8140555,'샤크':8150100,'콜드샤크':8150101,
-  '버크':8140110,'듀얼 버크':8140111,
-  '바이킹':8141000,
-  '그린코니언':8150200,'다크코니언':8150201,
-  '월묘':5100004,'다크 엑스텀프':4230106,'호돌이':5100004,
-  '마이너 좀비':6300004,'플라이아이':4230200,
-  '마스터 크로노스':4230116,'울트라 그레이':4230119,'원로 그레이':4230117,
-  '좀비 머쉬맘':6300005,'좀비버섯':2230116,'주니어 부기':3230301,
-  '천록':7220000,'비금':7220001,'묘선':7220002,
-  '아이스 드레이크':8150300,'다크 드레이크':8150302,
-  '미스릴 뮤테':4130100,'강화된 미스릴 뮤테':4110302,
+  // 미나르숲/용의둥지
+  '스켈레곤': 8190003,
+  '스켈로스': 8190004,
+  '네스트골렘': 8190005,
+  // 아쿠아로드
+  '폭렬 망둥이집': 8140555,
+  '샤크': 8150100,
+  '콜드샤크': 8150101,
+  // 울프 스파이더
+  '울프 스파이더': 9400545,
+  '라이칸스로프': 8140000,
+  '화이트팽': 5140000,
+  '좀비 머쉬맘': 6300005,
+  '좀비버섯': 2230116,
+  '주니어 부기': 3230301,
+  // 숲/시계탑
+  '버크': 8140110,
+  '듀얼 버크': 8140111,
+  '바이킹': 8141000,
+  '그린코니언': 8150200,
+  '다크코니언': 8150201,
+  // 루더스호수/폐광 (이미지 확인된 ID)
+  '월묘': 4230300,       // Moon Bunny
+  '다크 엑스텀프': 2130100, // Dark Axe Stump
+  '호돌이': 5100003,     // Hodori
+  '마이너 좀비': 5130108, // Miner Zombie
+  '플라이아이': 4230107,  // Flyeye
+  // 루디브리엄
+  '마스터 크로노스': 4230116, // Master Chronos
+  '울트라 그레이': 4230119,
+  '원로 그레이': 4230117,
+  // 무릉도원
+  '천록': 5120505,       // Reindeer
+  '묘선': 7220002,
+  '아이스 드레이크': 6230600,
+  '다크 드레이크': 6230601,
+  // 마가티아
+  '미스릴 뮤테': 4110302,       // Mithril Mutae
+  '강화된 미스릴 뮤테': 5110300, // Reinforced Mithril Mutae
 };
 
-const DEFAULT_FARMING = [
-  { id:1, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"110~113",
-    mobs:[{name:"스켈로스",lv:113},{name:"네스트골렘",lv:110}],
-    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.001%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.004%"}], memo:"" },
-  { id:2, zone:"미나르숲", spot:"남겨진 용의 둥지1", level:"110~113",
-    mobs:[{name:"스켈레곤",lv:110},{name:"스켈로스",lv:113}],
-    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"피어싱 20",price:"11,313,333",rate:"0.0001%"},{name:"장갑 공격력 주문서 10%",price:"6,360,557",rate:"0.004%"}], memo:"" },
-  { id:3, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~102",
-    mobs:[{name:"폭렬 망둥이집",lv:90},{name:"샤크",lv:100},{name:"콜드샤크",lv:102}],
-    drops:[{name:"샤프 아이즈 20",price:"166,100,000",rate:"0.004%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.006%"},{name:"망토 행운 주문서 60%",price:"2,545,580",rate:"0.006%"}], memo:"" },
-  { id:4, zone:"울프 스파이더", spot:"울프 스파이더의 굴", level:"80",
-    mobs:[{name:"울프 스파이더",lv:80}],
-    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.004%"},{name:"청갑충",price:"옵션에 따라 상이",rate:"0.004%"}], memo:"" },
-  { id:5, zone:"울프 스파이더", spot:"폐광: 늑대의영역3", level:"58~80",
-    mobs:[{name:"라이칸스로프",lv:80},{name:"화이트팽",lv:58}],
-    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.2%"}], memo:"" },
-  { id:6, zone:"울프 스파이더", spot:"던전: 머쉬맘의 무덤", level:"24~65",
-    mobs:[{name:"좀비 머쉬맘",lv:65},{name:"좀비버섯",lv:24},{name:"주니어 부기",lv:35}],
-    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.06%"},{name:"창 공격력 주문서 10%",price:"1,970,866",rate:"0.006%"},{name:"아대 공격력 주문서 60%",price:"1,102,448",rate:"0.4%"}], memo:"" },
-  { id:7, zone:"숲/시계탑", spot:"숲의 갈림길", level:"85~88",
-    mobs:[{name:"버크",lv:85},{name:"듀얼 버크",lv:88}],
-    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"귀 장식 행운 주문서 10%",price:"4,392,000",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.002%"}], memo:"" },
-  { id:8, zone:"숲/시계탑", spot:"시계탑최하층: 뒤틀린 시간의 길<4>", level:"93",
-    mobs:[{name:"바이킹",lv:93}],
-    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.006%"},{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.004%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.004%"}], memo:"" },
-  { id:9, zone:"숲/시계탑", spot:"미나르숲: 사라진 숲", level:"100~105",
-    mobs:[{name:"그린코니언",lv:100},{name:"다크코니언",lv:105}],
-    drops:[{name:"스탠스 20",price:"47,868,750",rate:"0.0004%"},{name:"귀 장식 지력 주문서 10%",price:"5,595,451",rate:"0.001%"},{name:"돌진 20",price:"1,819,384",rate:"0.002%"}], memo:"" },
-  { id:10, zone:"루더스호수/폐광", spot:"루더스호수: 까막산 입구", level:"10~57",
-    mobs:[{name:"월묘",lv:45},{name:"다크 엑스텀프",lv:10}],
-    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"노란색 우산",price:"옵션에 따라 상이",rate:"0.008%"}], memo:"" },
-  { id:11, zone:"루더스호수/폐광", spot:"루더스호수: 옹달샘", level:"10~50",
-    mobs:[{name:"월묘",lv:45},{name:"호돌이",lv:50},{name:"다크 엑스텀프",lv:10}],
-    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"}], memo:"" },
-  { id:12, zone:"루더스호수/폐광", spot:"폐광: 폐광4", level:"41~57",
-    mobs:[{name:"마이너 좀비",lv:57},{name:"플라이아이",lv:41}],
-    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"망토 힘 주문서 10%",price:"1,695,937",rate:"0.004%"},{name:"좀비의 잃어버린 금니",price:"20,627",rate:"4%"}], memo:"" },
-  { id:13, zone:"루디브리엄/시간의 길", spot:"루디브리엄성: 잃어버린시간<2>", level:"46",
-    mobs:[{name:"마스터 크로노스",lv:46}],
-    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}], memo:"" },
-  { id:14, zone:"루디브리엄/시간의 길", spot:"시간의길<4>", level:"46",
-    mobs:[{name:"마스터 크로노스",lv:46}],
-    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}], memo:"" },
-  { id:15, zone:"루디브리엄/시간의 길", spot:"루더스호수: 콜란초원5", level:"45~49",
-    mobs:[{name:"울트라 그레이",lv:45},{name:"원로 그레이",lv:49}],
-    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"투구 민첩 주문서 10%",price:"7,320,000",rate:"0.006%"},{name:"스태프 마력 주문서 60%",price:"496,920",rate:"0.008%"}], memo:"" },
-  { id:16, zone:"무릉도원", spot:"무릉도원: 안개 낀 숲", level:"55~58",
-    mobs:[{name:"천록",lv:58},{name:"비금",lv:55}],
-    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}], memo:"" },
-  { id:17, zone:"무릉도원", spot:"무릉도원: 요괴의 숲", level:"55~66",
-    mobs:[{name:"비금",lv:55},{name:"묘선",lv:66}],
-    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"귀 장식 지력 주문서 60%",price:"1,421,590",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}], memo:"" },
-  { id:18, zone:"무릉도원", spot:"던전: 차가운 요람", level:"64~68",
-    mobs:[{name:"아이스 드레이크",lv:64},{name:"다크 드레이크",lv:68}],
-    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.004%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.006%"}], memo:"" },
-  { id:19, zone:"무릉도원", spot:"알카드노 연구소: 연구소 A-1 구역", level:"47~50",
-    mobs:[{name:"미스릴 뮤테",lv:47},{name:"강화된 미스릴 뮤테",lv:50}],
-    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 민첩 주문서 100%",price:"11,081,250",rate:"0.007%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.007%"}], memo:"" },
-];
-
-let farmingData = DEFAULT_FARMING;
-
-// ── 실시간 가격 캐시 ──
-const PRICE_CACHE = {};        // { 아이템명: { price, ts } }
-const PRICE_TTL = 5 * 60 * 60 * 1000; // 5시간
+// 실시간 가격 캐시 (5시간 TTL)
+const PRICE_CACHE = {};
+const PRICE_TTL = 5 * 60 * 60 * 1000;
 
 async function fetchLivePrice(itemName) {
   const cached = PRICE_CACHE[itemName];
@@ -897,7 +1020,7 @@ async function fetchLivePrice(itemName) {
     if (!res.ok) return null;
     const data = await res.json();
     const sells = data.sell || [];
-    if (sells.length === 0) return null;
+    if (!sells.length) return null;
     const price = sells[0].itemPrice;
     PRICE_CACHE[itemName] = { price, ts: Date.now() };
     return price;
@@ -907,32 +1030,91 @@ async function fetchLivePrice(itemName) {
 function fmtPriceNum(n) {
   if (!n || isNaN(n)) return null;
   n = parseInt(n);
-  if (n >= 100000000) { const u=Math.floor(n/100000000),m=Math.floor((n%100000000)/10000); return m>0?`${u}억 ${m}만`:`${u}억`; }
+  if (n >= 100000000) { const u=Math.floor(n/100000000), m=Math.floor((n%100000000)/10000); return m>0?`${u}억 ${m}만`:`${u}억`; }
   if (n >= 10000) return Math.floor(n/10000)+'만';
   return n.toLocaleString('ko-KR');
 }
 
-// 가격 업데이트: 렌더 후 비동기로 카드별 갱신
 async function updateDropPrices() {
   const cards = document.querySelectorAll('.drop-card[data-item]');
   for (const card of cards) {
     const itemName = card.dataset.item;
     if (!itemName) continue;
-    const liveEl = card.querySelector('.drop-card-live');
-    const loadEl = card.querySelector('.drop-card-loading');
+    const loadEl = card.querySelector('.drop-loading');
+    const liveEl = card.querySelector('.drop-live');
     if (loadEl) loadEl.textContent = '조회 중...';
     const price = await fetchLivePrice(itemName);
     if (price !== null) {
-      const formatted = fmtPriceNum(price);
-      const priceEl = card.querySelector('.drop-card-price');
-      if (priceEl && formatted) priceEl.textContent = '💰 ' + formatted;
-      if (liveEl) liveEl.textContent = '✓ 실시간';
-      if (loadEl) loadEl.textContent = '';
-    } else {
-      if (loadEl) loadEl.textContent = '';
+      const fmt = fmtPriceNum(price);
+      const priceEl = card.querySelector('.drop-price');
+      if (priceEl && fmt) priceEl.textContent = '💰 ' + fmt;
+      if (liveEl) { liveEl.textContent = '✓ 실시간'; liveEl.style.display = 'block'; }
     }
+    if (loadEl) loadEl.textContent = '';
   }
 }
+
+const DEFAULT_FARMING = [
+  { id:1, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"110~113",
+    mobs:[{name:"스켈로스",lv:113},{name:"네스트골렘",lv:110}],
+    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.001%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.004%"}] },
+  { id:2, zone:"미나르숲", spot:"남겨진 용의 둥지1", level:"110~113",
+    mobs:[{name:"스켈레곤",lv:110},{name:"스켈로스",lv:113}],
+    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"피어싱 20",price:"11,313,333",rate:"0.0001%"},{name:"장갑 공격력 주문서 10%",price:"6,360,557",rate:"0.004%"}] },
+  { id:3, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~102",
+    mobs:[{name:"폭렬 망둥이집",lv:90},{name:"샤크",lv:100},{name:"콜드샤크",lv:102}],
+    drops:[{name:"샤프 아이즈 20",price:"166,100,000",rate:"0.004%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.006%"},{name:"망토 행운 주문서 60%",price:"2,545,580",rate:"0.006%"}] },
+  { id:4, zone:"폐광/숲", spot:"울프 스파이더의 굴", level:"80",
+    mobs:[{name:"울프 스파이더",lv:80}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.004%"},{name:"청갑충",price:"옵션에 따라 상이",rate:"0.004%"}] },
+  { id:5, zone:"폐광/숲", spot:"폐광: 늑대의영역3", level:"58~80",
+    mobs:[{name:"라이칸스로프",lv:80},{name:"화이트팽",lv:58}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.2%"}] },
+  { id:6, zone:"폐광/숲", spot:"던전: 머쉬맘의 무덤", level:"24~65",
+    mobs:[{name:"좀비 머쉬맘",lv:65},{name:"좀비버섯",lv:24},{name:"주니어 부기",lv:35}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.06%"},{name:"창 공격력 주문서 10%",price:"1,970,866",rate:"0.006%"},{name:"아대 공격력 주문서 60%",price:"1,102,448",rate:"0.4%"}] },
+  { id:7, zone:"폐광/숲", spot:"숲의 갈림길", level:"85~88",
+    mobs:[{name:"버크",lv:85},{name:"듀얼 버크",lv:88}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"귀 장식 행운 주문서 10%",price:"4,392,000",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.002%"}] },
+  { id:8, zone:"시계탑", spot:"시계탑최하층: 뒤틀린 시간의 길<4>", level:"93",
+    mobs:[{name:"바이킹",lv:93}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.006%"},{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.004%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.004%"}] },
+  { id:9, zone:"미나르숲", spot:"미나르숲: 사라진 숲", level:"100~105",
+    mobs:[{name:"그린코니언",lv:100},{name:"다크코니언",lv:105}],
+    drops:[{name:"스탠스 20",price:"47,868,750",rate:"0.0004%"},{name:"귀 장식 지력 주문서 10%",price:"5,595,451",rate:"0.001%"},{name:"돌진 20",price:"1,819,384",rate:"0.002%"}] },
+  { id:10, zone:"루더스호수", spot:"루더스호수: 까막산 입구", level:"10~57",
+    mobs:[{name:"월묘",lv:45},{name:"다크 엑스텀프",lv:10}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"노란색 우산",price:"옵션에 따라 상이",rate:"0.008%"}] },
+  { id:11, zone:"루더스호수", spot:"루더스호수: 옹달샘", level:"10~50",
+    mobs:[{name:"월묘",lv:45},{name:"호돌이",lv:50},{name:"다크 엑스텀프",lv:10}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"}] },
+  { id:12, zone:"루더스호수", spot:"폐광: 폐광4", level:"41~57",
+    mobs:[{name:"마이너 좀비",lv:57},{name:"플라이아이",lv:41}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"망토 힘 주문서 10%",price:"1,695,937",rate:"0.004%"},{name:"좀비의 잃어버린 금니",price:"20,627",rate:"4%"}] },
+  { id:13, zone:"루디브리엄", spot:"루디브리엄성: 잃어버린시간<2>", level:"46",
+    mobs:[{name:"마스터 크로노스",lv:46}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}] },
+  { id:14, zone:"루디브리엄", spot:"시간의길<4>", level:"46",
+    mobs:[{name:"마스터 크로노스",lv:46}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}] },
+  { id:15, zone:"루디브리엄", spot:"루더스호수: 콜란초원5", level:"45~49",
+    mobs:[{name:"울트라 그레이",lv:45},{name:"원로 그레이",lv:49}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"투구 민첩 주문서 10%",price:"7,320,000",rate:"0.006%"},{name:"스태프 마력 주문서 60%",price:"496,920",rate:"0.008%"}] },
+  { id:16, zone:"무릉도원", spot:"무릉도원: 안개 낀 숲", level:"55~58",
+    mobs:[{name:"천록",lv:58}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}] },
+  { id:17, zone:"무릉도원", spot:"무릉도원: 요괴의 숲", level:"55~66",
+    mobs:[{name:"묘선",lv:66}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"귀 장식 지력 주문서 60%",price:"1,421,590",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}] },
+  { id:18, zone:"무릉도원", spot:"던전: 차가운 요람", level:"64~68",
+    mobs:[{name:"아이스 드레이크",lv:64},{name:"다크 드레이크",lv:68}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.004%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.006%"}] },
+  { id:19, zone:"마가티아", spot:"알카드노 연구소: 연구소 A-1 구역", level:"47~50",
+    mobs:[{name:"미스릴 뮤테",lv:47},{name:"강화된 미스릴 뮤테",lv:50}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 민첩 주문서 100%",price:"11,081,250",rate:"0.007%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.007%"}] },
+];
+
+let farmingData = DEFAULT_FARMING;
 
 function filterFarming() {
   const q = document.getElementById('farming-search').value.toLowerCase();
@@ -953,35 +1135,38 @@ function renderFarming(data) {
     list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px;">검색 결과가 없어요.</div>';
     return;
   }
-
   list.innerHTML = data.map(f => {
-    // 몹 이미지
+    // 몹 이미지 렌더
     const mobsHtml = f.mobs.map(m => {
       const name = m.name || m;
       const lv = m.lv || '';
       const mobId = MOB_ID_MAP[name];
       const imgHtml = mobId
-        ? `<img class="mob-img" src="${MOB_IMG(mobId)}" alt="${name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-           <div class="mob-img-placeholder" style="display:none;">👾</div>`
-        : `<div class="mob-img-placeholder">👾</div>`;
-      return `<div class="mob-item">
+        ? `<img style="width:56px;height:56px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));"
+             src="${MOB_IMG(mobId)}" alt="${name}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <div style="display:none;width:56px;height:56px;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:1.5rem;">👾</div>`
+        : `<div style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-size:1.5rem;">👾</div>`;
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;min-width:64px;">
         ${imgHtml}
-        <span class="mob-name-label">${name}${lv ? ` <span style="color:var(--muted);font-size:.68rem">Lv.${lv}</span>` : ''}</span>
+        <span style="font-size:.7rem;color:var(--muted);text-align:center;max-width:72px;">${name}${lv?`<br><span style="font-size:.65rem">Lv.${lv}</span>`:''}
+        </span>
       </div>`;
     }).join('');
 
-    // 드랍 카드
+    // 드랍 카드 렌더
     const dropsHtml = f.drops.map(d => {
       const name = d.name || d;
       const price = d.price || '-';
       const rate = d.rate || '';
-      // 가격 조회 가능한 아이템만 data-item 설정 (옵션에 따라 상이 제외)
       const canFetch = price !== '옵션에 따라 상이';
-      return `<div class="drop-card"${canFetch ? ` data-item="${name}"` : ''}>
-        <div class="drop-card-name">📜 ${name}</div>
-        <div class="drop-card-price">💰 ${price}</div>
-        <div class="drop-card-rate">${rate}</div>
-        ${canFetch ? '<div class="drop-card-loading"></div><div class="drop-card-live" style="display:none;"></div>' : ''}
+      return `<div style="background:var(--surface);border:1px solid rgba(46,204,113,.25);border-radius:7px;padding:9px 12px;min-width:130px;flex:1;"
+        ${canFetch ? `class="drop-card" data-item="${name}"` : ''}>
+        <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:4px;">📜 ${name}</div>
+        <div class="drop-price" style="font-family:var(--mono);font-size:.78rem;color:var(--accent);margin-bottom:1px;">💰 ${price}</div>
+        <div style="font-family:var(--mono);font-size:.74rem;color:var(--muted);">${rate}</div>
+        ${canFetch ? `<div class="drop-loading" style="font-size:.68rem;color:var(--muted);"></div>
+        <div class="drop-live" style="display:none;font-size:.68rem;color:var(--green);">✓ 실시간</div>` : ''}
       </div>`;
     }).join('');
 
@@ -993,13 +1178,12 @@ function renderFarming(data) {
       </div>
       <div class="farming-section">
         <div class="farming-section-title">👾 몹</div>
-        <div class="mob-list">${mobsHtml}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;">${mobsHtml}</div>
       </div>
-      <div class="farming-section">
+      <div class="farming-section" style="margin-top:10px;">
         <div class="farming-section-title">💎 주요 드랍</div>
-        <div class="drop-card-grid">${dropsHtml}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;">${dropsHtml}</div>
       </div>
-      ${f.memo ? `<div class="farming-memo">💡 ${f.memo}</div>` : ''}
     </div>`;
   }).join('');
 
@@ -1010,9 +1194,9 @@ function renderFarming(data) {
 function initFarming() {
   const zones = [...new Set(farmingData.map(f => f.zone))];
   const sel = document.getElementById('farming-zone-filter');
-  zones.forEach(z => { const o = document.createElement('option'); o.value = z; o.textContent = z; sel.appendChild(o); });
+  zones.forEach(z => { const o = document.createElement('option'); o.value=z; o.textContent=z; sel.appendChild(o); });
   renderFarming(farmingData);
-  // 5시간마다 자동 갱신
+  // 5시간마다 자동 가격 갱신
   setInterval(updateDropPrices, 5 * 60 * 60 * 1000);
 }
 initFarming();
@@ -1032,8 +1216,7 @@ async function addFarmingSpot() {
 
   const newEntry = { id: Date.now(), zone, spot, level,
     mobs: mobs.map(m => ({ name: m, lv: '' })),
-    drops: drops.map(d => ({ name: d, price: '-', rate: '-' })),
-    memo };
+    drops: drops.map(d => ({ name: d, price: '-', rate: '-' })) };
   farmingData.push(newEntry);
 
   // 봇 서버에도 저장 시도
@@ -1078,12 +1261,14 @@ function previewGuildImage(event) {
 async function submitGuildPost() {
   const guildName = document.getElementById('guild-name').value.trim();
   const nickname = document.getElementById('guild-nickname').value.trim();
+  const password = document.getElementById('guild-password').value.trim();
   const content = document.getElementById('guild-content').value.trim();
   const contact = document.getElementById('guild-contact').value.trim();
   const msg = document.getElementById('guild-submit-msg');
 
   if (!guildName) { msg.style.color='#e74c3c'; msg.textContent='길드명을 입력해주세요.'; return; }
   if (!nickname) { msg.style.color='#e74c3c'; msg.textContent='닉네임을 입력해주세요.'; return; }
+  if (!password) { msg.style.color='#e74c3c'; msg.textContent='글 암호를 설정해주세요.'; return; }
   if (!content) { msg.style.color='#e74c3c'; msg.textContent='내용을 입력해주세요.'; return; }
 
   msg.style.color='var(--muted)'; msg.textContent='등록 중...';
@@ -1091,7 +1276,7 @@ async function submitGuildPost() {
     const res = await fetch(`${NGROK_URL}/guild-posts`, {
       method: 'POST',
       headers: { 'Content-Type':'application/json', 'ngrok-skip-browser-warning':'1' },
-      body: JSON.stringify({ guildName, nickname, content, contact, image: guildImageBase64 })
+      body: JSON.stringify({ guildName, nickname, content, contact, image: guildImageBase64, password })
     });
     if (!res.ok) throw new Error('서버 오류');
     msg.style.color='var(--green)'; msg.textContent='✓ 모집 공고가 등록됐어요!';
@@ -1115,19 +1300,60 @@ async function loadGuildPosts() {
     const posts = await res.json();
     if (posts.length === 0) { list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">아직 모집 공고가 없어요. 첫 번째 공고를 올려보세요! ⚔️</div>'; return; }
     list.innerHTML = posts.map(p => `
-      <div class="guild-card">
+      <div class="guild-card" id="guild-card-${p.id}">
         <div class="guild-header">
           <span class="guild-name-badge">⚔️ ${p.guildName}</span>
           <span class="guild-nick">${p.nickname}</span>
           <span class="guild-date">${new Date(p.createdAt).toLocaleDateString('ko-KR')}</span>
         </div>
         ${p.image ? `<img src="${p.image}" class="guild-image-el" alt="길드 포스터">` : ''}
-        <div class="guild-content">${p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="guild-content" id="guild-content-${p.id}">${p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
         ${p.contact ? `<div class="guild-contact">💬 ${p.contact}</div>` : ''}
+        <div class="post-actions" style="margin-top:10px;">
+          <button class="post-act-btn" onclick="toggleEditGuild(${p.id})">✏️ 수정</button>
+          <button class="post-act-btn del" onclick="deleteGuild(${p.id})">🗑️ 삭제</button>
+        </div>
+        <div class="post-edit-area" id="guild-edit-area-${p.id}">
+          <textarea id="guild-edit-text-${p.id}" style="min-height:80px;">${p.content}</textarea>
+          <div style="display:flex;gap:6px;margin-top:5px;">
+            <input class="form-input" id="guild-edit-pw-${p.id}" type="password" placeholder="작성 시 설정한 암호" style="flex:1;">
+            <button class="btn-primary" style="padding:6px 12px;font-size:.8rem;" onclick="submitEditGuild(${p.id})">저장</button>
+            <button class="btn-secondary" style="padding:6px 10px;font-size:.8rem;" onclick="toggleEditGuild(${p.id})">취소</button>
+          </div>
+          <div id="guild-edit-msg-${p.id}" style="font-size:.78rem;margin-top:4px;"></div>
+        </div>
       </div>`).join('');
   } catch(e) {
     list.innerHTML = `<div class="error-box"><span>✕</span><span>로드 실패: ${e.message}<br><small>봇 서버가 실행 중인지 확인해주세요.</small></span></div>`;
   }
+}
+
+function toggleEditGuild(id){
+  const area=document.getElementById(`guild-edit-area-${id}`);
+  area.style.display=area.style.display==='block'?'none':'block';
+}
+
+async function submitEditGuild(id){
+  const content=document.getElementById(`guild-edit-text-${id}`).value.trim();
+  const pw=document.getElementById(`guild-edit-pw-${id}`).value.trim();
+  const msg=document.getElementById(`guild-edit-msg-${id}`);
+  if(!content||!pw){msg.style.color='#e74c3c';msg.textContent='내용과 암호를 입력해주세요.';return;}
+  try{
+    const res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({content,password:pw})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'실패');}
+    msg.style.color='var(--green)';msg.textContent='✓ 수정됐어요!';
+    setTimeout(()=>loadGuildPosts(),800);
+  }catch(e){msg.style.color='#e74c3c';msg.textContent='오류: '+e.message;}
+}
+
+async function deleteGuild(id){
+  const pw=prompt('삭제를 위해 작성 시 설정한 암호를 입력하세요:');
+  if(!pw)return;
+  try{
+    const res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({password:pw})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'삭제 실패');}
+    alert('삭제됐어요!');loadGuildPosts();
+  }catch(e){alert('오류: '+e.message);}
 }
 </script>
 </body>
