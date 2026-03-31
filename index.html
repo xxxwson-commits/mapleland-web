@@ -3,455 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메랜디코 — MAPLELAND INFO HUB</title>
+<title>메랜비서 — MAPLELAND 비서</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Black+Han+Sans&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-/* ── 루트 변수 ── */
 :root {
-  --bg:        #0a0c10;
-  --surface:   #111318;
-  --surface2:  #181b22;
-  --border:    #2a2e3a;
-  --accent:    #e8a020;
-  --accent2:   #c0392b;
-  --green:     #2ecc71;
-  --blue:      #3498db;
-  --text:      #dde1ec;
-  --muted:     #6b7280;
-  --maple:     #d4380d;
-  --mono:      'Share Tech Mono', monospace;
-  --sans:      'Noto Sans KR', sans-serif;
-  --display:   'Black Han Sans', sans-serif;
+  --bg:#0a0c10;--surface:#111318;--surface2:#181b22;--border:#2a2e3a;
+  --accent:#e8a020;--green:#2ecc71;--red:#e74c3c;--text:#dde1ec;--muted:#6b7280;
+  --mono:'Share Tech Mono',monospace;--sans:'Noto Sans KR',sans-serif;--display:'Black Han Sans',sans-serif;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ── 배경 노이즈 텍스처 ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 0;
-}
-
-/* ── 헤더 ── */
-header {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(10,12,16,0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 20px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 52px;
-}
-
-.logo {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--display);
-  font-size: 1.3rem;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  text-decoration: none;
-}
-.logo svg { width: 28px; height: 28px; }
-
-.logo-sub {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  color: var(--muted);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-left: 2px;
-}
-
-.live-badge {
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--mono); font-size: 0.75rem;
-  color: var(--green);
-}
-.live-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--green);
-  animation: pulse 1.8s infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: 0.4; transform: scale(0.8); }
-}
-
-/* ── 탭 네비 ── */
-nav {
-  display: flex;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-nav::-webkit-scrollbar { display: none; }
-
-.tab-btn {
-  flex-shrink: 0;
-  padding: 14px 22px;
-  background: none; border: none;
-  color: var(--muted);
-  font-family: var(--sans); font-size: 0.9rem; font-weight: 500;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.2s;
-  white-space: nowrap;
-}
-.tab-btn span { margin-right: 6px; }
-.tab-btn::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: var(--accent);
-  transform: scaleX(0); transition: transform 0.2s;
-}
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--accent); }
-.tab-btn.active::after { transform: scaleX(1); }
-
-/* ── 메인 레이아웃 ── */
-main { position: relative; z-index: 1; }
-.tab-panel { display: none; padding: 20px; max-width: 900px; margin: 0 auto; animation: fadeIn 0.25s ease; }
-.tab-panel.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-/* ── 섹션 헤더 ── */
-.section-title {
-  font-family: var(--display);
-  font-size: 1.3rem;
-  color: var(--text);
-  margin-bottom: 16px;
-  display: flex; align-items: center; gap: 10px;
-}
-
-/* ── 카드 ── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-
-/* ── 배/엘리베이터 타이머 ── */
-.transport-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-}
-@media (min-width: 600px) {
-  .transport-grid { grid-template-columns: 1fr 1fr; }
-}
-
-.route-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px 16px;
-  transition: border-color 0.3s;
-}
-.route-card.boarding { border-color: var(--green); }
-
-.route-name {
-  font-size: 0.85rem; font-weight: 700;
-  color: var(--text);
-  margin-bottom: 6px;
-  display: flex; align-items: center; gap: 6px;
-}
-.route-status {
-  font-family: var(--mono);
-  font-size: 0.9rem;
-}
-.status-ok   { color: var(--green); }
-.status-wait { color: var(--accent); }
-
-.group-label {
-  font-size: 0.75rem; font-weight: 700;
-  color: var(--muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin: 16px 0 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
-}
-.group-label:first-child { margin-top: 0; }
-
-/* ── 검색 입력 ── */
-.search-row {
-  display: flex; gap: 8px; margin-bottom: 16px;
-}
-.search-input {
-  flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 10px 14px;
-  color: var(--text);
-  font-family: var(--sans); font-size: 0.95rem;
-  outline: none; transition: border-color 0.2s;
-}
-.search-input:focus { border-color: var(--accent); }
-.search-input::placeholder { color: var(--muted); }
-
-.btn-primary {
-  padding: 10px 18px;
-  background: var(--accent);
-  border: none; border-radius: 6px;
-  color: #0a0c10;
-  font-family: var(--sans); font-size: 0.9rem; font-weight: 700;
-  cursor: pointer; transition: opacity 0.2s;
-  white-space: nowrap;
-}
-.btn-primary:hover { opacity: 0.85; }
-.btn-primary:disabled { opacity: 0.4; cursor: default; }
-
-/* ── 태그 칩 ── */
-.chip-row {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  margin-bottom: 14px;
-}
-.chip {
-  padding: 4px 12px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 0.8rem; color: var(--muted);
-  cursor: pointer; transition: all 0.15s;
-}
-.chip:hover { border-color: var(--accent); color: var(--accent); }
-
-/* ── 사냥터 그리드 ── */
-.spot-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.spot-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px;
-  color: var(--text);
-  font-family: var(--sans); font-size: 0.85rem;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 8px;
-  transition: all 0.15s;
-  text-align: left;
-}
-.spot-btn:hover { border-color: var(--accent); background: rgba(232,160,32,0.06); }
-.spot-btn.loading { opacity: 0.6; }
-
-/* ── 결과 영역 ── */
-.result-box {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  font-family: var(--mono); font-size: 0.85rem;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  color: var(--text);
-  min-height: 80px;
-}
-.result-box.hidden { display: none; }
-
-/* ── 에러 메시지 ── */
-.error-box {
-  background: rgba(192,57,43,0.1);
-  border: 1px solid rgba(192,57,43,0.4);
-  border-radius: 6px;
-  padding: 12px 14px;
-  color: #e74c3c;
-  font-size: 0.85rem;
-  display: flex; align-items: flex-start; gap: 8px;
-}
-.error-box.hidden { display: none; }
-
-/* ── 로딩 스피너 ── */
-.spinner {
-  display: inline-block;
-  width: 14px; height: 14px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle; margin-right: 6px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── 날씨 카드 ── */
-.weather-main {
-  font-size: 3rem; text-align: center;
-  margin: 8px 0 4px;
-}
-.weather-temp {
-  font-family: var(--mono); font-size: 2.2rem;
-  text-align: center; color: var(--accent);
-  font-weight: bold;
-}
-.weather-desc { text-align: center; color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
-.weather-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-.weather-stat {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 10px 12px;
-  font-size: 0.82rem;
-}
-.weather-stat-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 2px; }
-.weather-stat-value { font-family: var(--mono); color: var(--text); font-size: 1rem; font-weight: 600; }
-
-/* ── 가격 포맷 스타일 ── */
-.price-high { color: var(--accent); font-weight: 700; }
-.price-sell { color: #e74c3c; }
-.price-buy  { color: var(--green); }
-
-.item-result-section { margin-bottom: 12px; }
-.item-result-title {
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.item-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 7px 10px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  margin-bottom: 4px;
-  font-size: 0.85rem;
-}
-.item-row-left { display: flex; align-items: center; gap: 8px; }
-.server-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  flex-shrink: 0;
-}
-.server-dot.yellow { background: #f1c40f; }
-.server-dot.green  { background: var(--green); }
-.server-dot.red    { background: #e74c3c; }
-.server-dot.white  { background: #bdc3c7; }
-
-/* ── 아이템 선택 목록 ── */
-.item-candidates { margin-bottom: 12px; }
-.candidate-btn {
-  display: block; width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 9px 12px;
-  color: var(--text);
-  font-family: var(--sans); font-size: 0.88rem;
-  cursor: pointer; text-align: left;
-  margin-bottom: 5px;
-  transition: all 0.15s;
-}
-.candidate-btn:hover { border-color: var(--accent); background: rgba(232,160,32,0.06); }
-
-/* ── 구분선 ── */
-.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
-
-/* ── 반응형 ── */
-@media (max-width: 480px) {
-  .spot-grid { grid-template-columns: repeat(2, 1fr); }
-  .weather-grid { grid-template-columns: 1fr; }
-  header { padding: 0 12px; }
-  .tab-btn { padding: 12px 14px; font-size: 0.82rem; }
-}
-
-/* ── 스크롤바 ── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-/* ── 필터 UI ── */
-.filter-grid { display: flex; flex-direction: column; gap: 8px; }
-.filter-row { display: flex; align-items: center; gap: 8px; }
-.filter-label { font-size: .8rem; color: var(--muted); width: 85px; flex-shrink: 0; }
-.filter-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; color: var(--text); font-size: .85rem; outline: none; min-width: 0; transition: border-color .2s; }
-.filter-input:focus { border-color: var(--accent); }
-.filter-input::placeholder { color: var(--muted); }
-.filter-tilde { color: var(--muted); font-size: .85rem; flex-shrink: 0; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+header{position:sticky;top:0;z-index:100;background:rgba(10,12,16,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px;}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:1.2rem;color:var(--accent);text-decoration:none;}
+.logo-sub{font-family:var(--mono);font-size:0.58rem;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;}
+.live-badge{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:0.72rem;color:var(--green);}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;padding:13px 16px;background:none;border:none;color:var(--muted);font-family:var(--sans);font-size:.83rem;font-weight:500;cursor:pointer;position:relative;transition:color .2s;white-space:nowrap;}
+.tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .2s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);}
+.tab-btn.active::after{transform:scaleX(1);}
+main{position:relative;z-index:1;}
+.tab-panel{display:none;padding:16px;max-width:860px;margin:0 auto;animation:fadeIn .22s ease;}
+.tab-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.section-title{font-family:var(--display);font-size:1.2rem;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;}
+.transport-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+@media(max-width:500px){.transport-grid{grid-template-columns:1fr;}}
+.route-card{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:12px 14px;transition:border-color .3s;}
+.route-card.boarding{border-color:var(--green);}
+.route-name{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:5px;}
+.route-status{font-family:var(--mono);font-size:.85rem;}
+.status-ok{color:var(--green);}
+.status-wait{color:var(--accent);}
+.group-label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:14px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.group-label:first-child{margin-top:0;}
+.search-row{display:flex;gap:7px;margin-bottom:14px;}
+.search-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s;}
+.search-input:focus{border-color:var(--accent);}
+.search-input::placeholder{color:var(--muted);}
+.btn-primary{padding:9px 16px;background:var(--accent);border:none;border-radius:6px;color:#0a0c10;font-family:var(--sans);font-size:.88rem;font-weight:700;cursor:pointer;transition:opacity .2s;white-space:nowrap;}
+.btn-primary:hover{opacity:.85;}
+.btn-primary:disabled{opacity:.4;cursor:default;}
+.btn-secondary{padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:.85rem;cursor:pointer;transition:all .15s;}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.chip{padding:3px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .15s;}
+.chip:hover{border-color:var(--accent);color:var(--accent);}
+.spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:7px;margin-bottom:14px;}
+.spot-btn{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:11px;color:var(--text);font-family:var(--sans);font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s;text-align:left;}
+.spot-btn:hover{border-color:var(--accent);background:rgba(232,160,32,.06);}
+.error-box{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.4);border-radius:6px;padding:10px 12px;color:#e74c3c;font-size:.83rem;display:flex;align-items:flex-start;gap:7px;}
+.error-box.hidden,.hidden{display:none;}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.item-result-title{font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.item-row{display:flex;justify-content:space-between;align-items:center;padding:6px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;margin-bottom:3px;font-size:.83rem;}
+.price-sell{color:#e74c3c;font-weight:600;}
+.price-buy{color:var(--green);font-weight:600;}
+.price-high{color:var(--accent);font-weight:700;}
+.candidate-btn{display:block;width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-family:var(--sans);font-size:.85rem;cursor:pointer;text-align:left;margin-bottom:4px;transition:all .15s;}
+.candidate-btn:hover{border-color:var(--accent);background:rgba(232,160,32,.06);}
+.divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
+.weather-main{font-size:2.8rem;text-align:center;margin:6px 0 3px;}
+.weather-temp{font-family:var(--mono);font-size:2rem;text-align:center;color:var(--accent);font-weight:bold;}
+.weather-desc{text-align:center;color:var(--muted);font-size:.88rem;margin-bottom:10px;}
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.weather-stat{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;}
+.weather-stat-label{color:var(--muted);font-size:.72rem;margin-bottom:2px;}
+.weather-stat-value{font-family:var(--mono);color:var(--text);font-size:.95rem;font-weight:600;}
+.filter-grid{display:flex;flex-direction:column;gap:8px;}
+.filter-row{display:flex;align-items:center;gap:8px;}
+.filter-label{font-size:.8rem;color:var(--muted);width:85px;flex-shrink:0;}
+.filter-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text);font-size:.85rem;outline:none;min-width:0;transition:border-color .2s;}
+.filter-input:focus{border-color:var(--accent);}
+.filter-input::placeholder{color:var(--muted);}
+.filter-tilde{color:var(--muted);font-size:.85rem;flex-shrink:0;}
+/* 타이머 */
+.timer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:14px;}
+.timer-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px;position:relative;}
+.timer-card.running{border-color:var(--green);}
+.timer-card.finished{border-color:var(--red);animation:flashBorder 0.5s infinite alternate;}
+@keyframes flashBorder{from{border-color:var(--red);}to{border-color:transparent;}}
+.timer-name{font-size:.85rem;font-weight:700;color:var(--text);}
+.timer-display{font-family:var(--mono);font-size:1.5rem;color:var(--accent);text-align:center;font-weight:bold;}
+.timer-display.urgent{color:var(--red);}
+.timer-controls{display:flex;gap:5px;}
+.timer-btn{flex:1;padding:6px;border:none;border-radius:5px;font-size:.78rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.timer-btn:hover{opacity:.8;}
+.timer-btn.start{background:var(--green);color:#0a0c10;}
+.timer-btn.pause{background:var(--accent);color:#0a0c10;}
+.timer-btn.reset{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
+.timer-btn.delete{background:rgba(192,57,43,.2);border:1px solid rgba(192,57,43,.3);color:var(--red);}
+.timer-time-edit{display:flex;gap:4px;align-items:center;}
+.timer-time-input{width:42px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:4px 6px;color:var(--text);font-family:var(--mono);font-size:.85rem;text-align:center;outline:none;}
+.add-timer-card{background:var(--surface2);border:2px dashed var(--border);border-radius:8px;padding:14px;cursor:pointer;text-align:center;color:var(--muted);font-size:.85rem;transition:all .15s;}
+.add-timer-card:hover{border-color:var(--accent);color:var(--accent);}
+.timer-preset-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.timer-preset{padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .15s;}
+.timer-preset:hover{border-color:var(--accent);color:var(--accent);}
+/* 게시판 */
+.post-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;}
+.post-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.post-category{padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700;}
+.cat-bug{background:rgba(231,76,60,.15);color:#e74c3c;border:1px solid rgba(231,76,60,.3);}
+.cat-request{background:rgba(52,152,219,.15);color:#3498db;border:1px solid rgba(52,152,219,.3);}
+.cat-review{background:rgba(46,204,113,.15);color:#2ecc71;border:1px solid rgba(46,204,113,.3);}
+.cat-general{background:rgba(232,160,32,.15);color:#e8a020;border:1px solid rgba(232,160,32,.3);}
+.post-nickname{font-weight:700;font-size:.88rem;}
+.post-date{font-size:.75rem;color:var(--muted);margin-left:auto;}
+.post-content{font-size:.88rem;line-height:1.7;color:var(--text);margin-bottom:10px;}
+.post-comments{border-top:1px solid var(--border);padding-top:10px;margin-top:4px;}
+.comment-item{background:rgba(232,160,32,.05);border:1px solid rgba(232,160,32,.2);border-radius:6px;padding:8px 10px;margin-bottom:5px;font-size:.83rem;}
+.comment-admin{font-size:.72rem;color:var(--accent);font-weight:700;margin-bottom:3px;}
+.admin-reply-row{display:flex;gap:6px;margin-top:8px;}
+.admin-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text);font-size:.83rem;outline:none;}
+.admin-input:focus{border-color:var(--accent);}
+/* 폼 */
+.form-group{margin-bottom:12px;}
+.form-label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:5px;}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--accent);}
+.form-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;resize:vertical;min-height:100px;transition:border-color .2s;}
+.form-textarea:focus{border-color:var(--accent);}
+.form-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--sans);font-size:.9rem;outline:none;}
+/* 푸터 */
+footer{text-align:center;padding:20px;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);margin-top:20px;}
+footer a{color:var(--muted);text-decoration:none;}
+footer a:hover{color:var(--accent);}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 </style>
 </head>
 <body>
-
-<!-- ── 헤더 ── -->
 <header>
   <a class="logo" href="#">
-    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" fill="#e8a020" opacity="0.15"/>
-      <path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="#e8a020" stroke-width="1.5"/>
-      <path d="M9 14 L14 11 L19 14 L14 17 Z" fill="#e8a020"/>
-    </svg>
-    메랜디코
-    <span class="logo-sub">MAPLELAND INFO HUB</span>
+    <svg width="24" height="24" viewBox="0 0 28 28" fill="none"><path d="M14 2L4 8v12l10 6 10-6V8L14 2z" fill="#e8a020" opacity=".15"/><path d="M14 2L4 8v12l10 6 10-6V8L14 2z" stroke="#e8a020" stroke-width="1.5"/><path d="M9 14L14 11L19 14L14 17Z" fill="#e8a020"/></svg>
+    메랜비서
+    <span class="logo-sub">MAPLELAND 비서</span>
   </a>
   <div class="live-badge">
-    <span id="kst-clock" style="font-size:0.8rem;color:var(--muted)"></span>
+    <span id="kst-clock" style="font-size:.75rem;color:var(--muted)"></span>
     <div class="live-dot"></div>
     <span>LIVE</span>
   </div>
 </header>
-
-<!-- ── 탭 네비 ── -->
 <nav>
-  <button class="tab-btn active" data-tab="ship" onclick="switchTab('ship')">
-    <span>🚢</span>배/엘리베이터
-  </button>
-  <button class="tab-btn" data-tab="spot" onclick="switchTab('spot')">
-    <span>📖</span>사냥터
-  </button>
-  <button class="tab-btn" data-tab="item" onclick="switchTab('item')">
-    <span>💰</span>아이템 시세
-  </button>
-  <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')">
-    <span>🌤️</span>날씨
-  </button>
+  <button class="tab-btn active" data-tab="ship" onclick="switchTab('ship')"><span>🚢</span>배/엘리베이터</button>
+  <button class="tab-btn" data-tab="spot" onclick="switchTab('spot')"><span>📖</span>사냥터</button>
+  <button class="tab-btn" data-tab="item" onclick="switchTab('item')"><span>💰</span>아이템 시세</button>
+  <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')"><span>🌤️</span>날씨</button>
+  <button class="tab-btn" data-tab="timer" onclick="switchTab('timer')"><span>⏱️</span>타이머</button>
+  <button class="tab-btn" data-tab="board" onclick="switchTab('board');loadPosts()"><span>📋</span>문의/후기</button>
 </nav>
-
 <main>
-
-<!-- ════════════════════════════════
-     탭 1: 배/엘리베이터
-════════════════════════════════ -->
+<!-- 배/엘리베이터 -->
 <div id="tab-ship" class="tab-panel active">
   <div class="section-title">🚢 배 · 엘리베이터 시간표</div>
-
   <div class="group-label">🌊 엘리니아 ↔ 오르비스</div>
   <div class="transport-grid" id="grid-ship-elo"></div>
-
   <div class="group-label">⚙️ 루디브리엄 ↔ 오르비스</div>
   <div class="transport-grid" id="grid-ship-rudi"></div>
-
   <div class="group-label">🐉 오르비스 ↔ 리프레</div>
   <div class="transport-grid" id="grid-ship-lifre"></div>
-
   <div class="group-label">🛗 엘리베이터</div>
   <div class="transport-grid" id="grid-elevator"></div>
 </div>
-
-<!-- ════════════════════════════════
-     탭 2: 사냥터
-════════════════════════════════ -->
+<!-- 사냥터 -->
 <div id="tab-spot" class="tab-panel">
   <div class="section-title">📖 사냥터 시세</div>
-
   <div class="spot-grid">
     <button class="spot-btn" onclick="fetchSpot(this,'루더스호수: 까막산 입구','까막산 입구','🌋')">🌋 까막산 입구</button>
     <button class="spot-btn" onclick="fetchSpot(this,'루디브리엄성:시간의길<4>','시간의 길4','⏳')">⏳ 시간의 길4</button>
@@ -468,25 +195,12 @@ main { position: relative; z-index: 1; }
     <button class="spot-btn" onclick="fetchSpot(this,'히든스트리트: 관계자 외 출입금지','관계자 외 출입금지','🚫')">🚫 관계자 외 출입금지</button>
     <button class="spot-btn" onclick="fetchSpot(this,'미나르숲:산양의 골짜기 1','산양의 골짜기 1','🐐')">🐐 산양의 골짜기 1</button>
   </div>
-
-  <div id="spot-error" class="error-box hidden">
-    <span>✕</span>
-    <div>
-      <div id="spot-error-msg"></div>
-      <div style="margin-top:4px;font-size:0.8rem;color:var(--muted)">
-        CORS 제한으로 일부 데이터는 직접 <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a>에서 확인해주세요.
-      </div>
-    </div>
-  </div>
-  <div id="spot-result" class="result-box hidden"></div>
+  <div id="spot-error" class="error-box hidden"><span>✕</span><div><div id="spot-error-msg"></div><div style="margin-top:3px;font-size:.78rem;color:var(--muted)">CORS 제한 — <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 에서 직접 확인하세요.</div></div></div>
+  <div id="spot-result" class="hidden"></div>
 </div>
-
-<!-- ════════════════════════════════
-     탭 3: 아이템 시세
-════════════════════════════════ -->
+<!-- 아이템 시세 -->
 <div id="tab-item" class="tab-panel">
   <div class="section-title">💰 아이템 시세 검색</div>
-
   <div class="chip-row">
     <div class="chip" onclick="setItemSearch('파워 엘릭서')">파엘</div>
     <div class="chip" onclick="setItemSearch('마나 엘릭서')">마엘</div>
@@ -501,27 +215,17 @@ main { position: relative; z-index: 1; }
     <div class="chip" onclick="setItemSearch('드래곤 퍼플 슬레브')">드퍼슬</div>
     <div class="chip" onclick="setItemSearch('드래곤 그린 슬레브')">드그슬</div>
   </div>
-
   <div class="search-row">
-    <input id="item-input" class="search-input" type="text" placeholder="아이템명 입력 (예: 파워 엘릭서)"
-      onkeydown="if(event.key==='Enter') searchItem()">
+    <input id="item-input" class="search-input" type="text" placeholder="아이템명 입력 (예: 파워 엘릭서, 귀민)" onkeydown="if(event.key==='Enter')searchItem()">
     <button class="btn-primary" onclick="searchItem()" id="item-btn">검색</button>
   </div>
-
-  <div id="item-error" class="error-box hidden">
-    <span>✕</span>
-    <span id="item-error-msg"></span>
-  </div>
-  <div id="item-candidates" class="item-candidates hidden"></div>
+  <div id="item-error" class="error-box hidden"><span>✕</span><span id="item-error-msg"></span></div>
+  <div id="item-candidates" class="hidden"></div>
   <div id="item-result" class="hidden"></div>
 </div>
-
-<!-- ════════════════════════════════
-     탭 4: 날씨
-════════════════════════════════ -->
+<!-- 날씨 -->
 <div id="tab-weather" class="tab-panel">
   <div class="section-title">🌤️ 실시간 날씨</div>
-
   <div class="chip-row">
     <div class="chip" onclick="setWeatherSearch('서울')">서울</div>
     <div class="chip" onclick="setWeatherSearch('부산')">부산</div>
@@ -532,669 +236,399 @@ main { position: relative; z-index: 1; }
     <div class="chip" onclick="setWeatherSearch('제주')">제주</div>
     <div class="chip" onclick="setWeatherSearch('강릉')">강릉</div>
   </div>
-
   <div class="search-row">
-    <input id="weather-input" class="search-input" type="text" placeholder="지역명 입력 (예: 서울, 부산)"
-      onkeydown="if(event.key==='Enter') searchWeather()">
+    <input id="weather-input" class="search-input" type="text" placeholder="지역명 입력 (예: 서울)" onkeydown="if(event.key==='Enter')searchWeather()">
     <button class="btn-primary" onclick="searchWeather()" id="weather-btn">조회</button>
   </div>
-
-  <div id="weather-error" class="error-box hidden">
-    <span>✕</span>
-    <span id="weather-error-msg">날씨 조회 실패: Failed to fetch</span>
-  </div>
+  <div id="weather-error" class="error-box hidden"><span>✕</span><span id="weather-error-msg"></span></div>
   <div id="weather-result" class="hidden"></div>
 </div>
-
+<!-- 타이머 -->
+<div id="tab-timer" class="tab-panel">
+  <div class="section-title">⏱️ 스킬 타이머</div>
+  <div style="margin-bottom:10px;font-size:.82rem;color:var(--muted)">프리셋 클릭으로 빠르게 추가, 시간 직접 수정도 가능해요.</div>
+  <div class="timer-preset-row">
+    <div class="timer-preset" onclick="addTimer('한타임',60,0)">🍁 한타임 1시간</div>
+    <div class="timer-preset" onclick="addTimer('경쿠',15,0)">❄️ 경쿠 15분</div>
+    <div class="timer-preset" onclick="addTimer('사이다',5,0)">🥤 사이다 5분</div>
+    <div class="timer-preset" onclick="addTimer('전사의비약',8,0)">⚗️ 전사의비약 8분</div>
+    <div class="timer-preset" onclick="addTimer('사이다+알케',7,30)">🥤+⚗️ 사이다+알케 7분30초</div>
+    <div class="timer-preset" onclick="addTimer('전비+알케',12,0)">⚗️+⚗️ 전비+알케 12분</div>
+    <div class="timer-preset" onclick="addTimer('인피니티',10,0)">♾️ 인피니티 10분</div>
+    <div class="timer-preset" onclick="addTimer('리저렉션',30,0)">✨ 리저렉션 30분</div>
+    <div class="timer-preset" onclick="addTimer('하이퍼바디',2,35)">💪 하이퍼바디 2분35초</div>
+  </div>
+  <div class="timer-grid" id="timer-grid"></div>
+  <div class="add-timer-card" onclick="addCustomTimer()">＋ 커스텀 타이머 추가</div>
+</div>
+<!-- 문의/후기 게시판 -->
+<div id="tab-board" class="tab-panel">
+  <div class="section-title">📋 문의 · 후기 게시판</div>
+  <!-- 글쓰기 -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="font-weight:700;margin-bottom:12px;font-size:.95rem;">✏️ 글 작성</div>
+    <div class="form-group">
+      <label class="form-label">닉네임</label>
+      <input class="form-input" id="post-nickname" placeholder="닉네임 입력" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label">분류</label>
+      <select class="form-select" id="post-category">
+        <option value="문의">💬 문의</option>
+        <option value="버그">🐛 버그 신고</option>
+        <option value="기능요청">💡 기능 요청</option>
+        <option value="사용후기">⭐ 사용후기</option>
+        <option value="일반">📝 일반</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용 (최대 500자)</label>
+      <textarea class="form-textarea" id="post-content" placeholder="내용을 입력해주세요..." maxlength="500"></textarea>
+    </div>
+    <button class="btn-primary" onclick="submitPost()" style="width:100%">글 작성</button>
+    <div id="post-submit-msg" style="margin-top:8px;font-size:.82rem;text-align:center;"></div>
+  </div>
+  <!-- 글 목록 -->
+  <div style="font-weight:700;margin-bottom:10px;font-size:.9rem;">📌 게시글 목록</div>
+  <div id="posts-list"><div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">로딩 중...</div></div>
+  <!-- 관리자 패널 -->
+  <div style="margin-top:20px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+    <div style="font-size:.75rem;color:var(--muted);margin-bottom:6px;">🔐 관리자 모드</div>
+    <input class="form-input" id="admin-key" type="password" placeholder="관리자 키" style="margin-bottom:6px;">
+    <div style="font-size:.72rem;color:var(--muted)">댓글 작성 시 위 키를 입력하세요.</div>
+  </div>
+</div>
 </main>
-
+<footer>
+  <div style="margin-bottom:4px;">제작 · 운영: 표식길드 <strong style="color:var(--accent)">fourcard</strong></div>
+  <div style="margin-bottom:4px;">후원계좌: 신한 110-376-464404 손x원</div>
+  <div>© 2026 메랜비서 · <a href="https://mapleland.gg" target="_blank">mapleland.gg</a></div>
+</footer>
 <script>
-// ══════════════════════════════════════════
-//  설정
-// ══════════════════════════════════════════
-// Vercel 배포 시 /api/proxy 사용. 로컬 테스트 시 corsproxy fallback
+const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.dev";
+const WEATHER_KEY = "43f5d732250dd4c5facd4a20c479c1e6";
 const IS_PROD = location.hostname !== 'localhost' && location.hostname !== '127.0.0.1';
-const WEATHER_API_KEY = "43f5d732250dd4c5facd4a20c479c1e6";
 
 async function proxyFetch(url) {
-  if (IS_PROD) {
-    const r = await fetch('/api/proxy?url=' + encodeURIComponent(url));
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.text();
-  } else {
-    // 로컬 개발용 CORS 프록시 (테스트 전용)
-    const r = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.text();
-  }
+  if (IS_PROD) { const r = await fetch('/api/proxy?url='+encodeURIComponent(url)); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); }
+  else { const r = await fetch('https://corsproxy.io/?'+encodeURIComponent(url)); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); }
 }
 
-// ══════════════════════════════════════════
-//  KST 시계
-// ══════════════════════════════════════════
+// KST 시계
 function updateClock() {
-  const now = new Date();
-  const kst = new Date(now.getTime() + 9 * 3600000);
-  const h = String(kst.getUTCHours()).padStart(2,'0');
-  const m = String(kst.getUTCMinutes()).padStart(2,'0');
-  const s = String(kst.getUTCSeconds()).padStart(2,'0');
-  document.getElementById('kst-clock').textContent = `KST ${h}:${m}:${s}`;
+  const kst = new Date(Date.now()+9*3600000);
+  document.getElementById('kst-clock').textContent = `KST ${String(kst.getUTCHours()).padStart(2,'0')}:${String(kst.getUTCMinutes()).padStart(2,'0')}:${String(kst.getUTCSeconds()).padStart(2,'0')}`;
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateClock,1000); updateClock();
 
-// ══════════════════════════════════════════
-//  탭 전환
-// ══════════════════════════════════════════
+// 탭
 function switchTab(name) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
   document.querySelector(`[data-tab="${name}"]`).classList.add('active');
 }
 
-// ══════════════════════════════════════════
-//  배/엘리베이터 타이머
-// ══════════════════════════════════════════
-const SHIP_ROUTES = [
-  { key:'엘리니아',       display:'엘리니아 → 오르비스',   interval:15, boardBefore:5, emoji:'🌿', group:'elo' },
-  { key:'오르비스엘',     display:'오르비스 → 엘리니아',   interval:15, boardBefore:5, emoji:'☁️', group:'elo' },
-  { key:'루디오르비스',   display:'루디브리엄 → 오르비스', interval:10, boardBefore:5, emoji:'⚙️', group:'rudi' },
-  { key:'오르비스루디',   display:'오르비스 → 루디브리엄', interval:10, boardBefore:5, emoji:'⚙️', group:'rudi' },
-  { key:'오르비스리프레', display:'오르비스 → 리프레',     interval:10, boardBefore:5, emoji:'🐉', group:'lifre' },
-  { key:'리프레오르비스', display:'리프레 → 오르비스',     interval:10, boardBefore:5, emoji:'🐉', group:'lifre' },
+// 배/엘리베이터
+const SHIPS=[
+  {key:'엘리니아',display:'엘리니아→오르비스',interval:15,board:5,emoji:'🌿',group:'elo'},
+  {key:'오르비스엘',display:'오르비스→엘리니아',interval:15,board:5,emoji:'☁️',group:'elo'},
+  {key:'루디오르비스',display:'루디브리엄→오르비스',interval:10,board:5,emoji:'⚙️',group:'rudi'},
+  {key:'오르비스루디',display:'오르비스→루디브리엄',interval:10,board:5,emoji:'⚙️',group:'rudi'},
+  {key:'오르비스리프레',display:'오르비스→리프레',interval:10,board:5,emoji:'🐉',group:'lifre'},
+  {key:'리프레오르비스',display:'리프레→오르비스',interval:10,board:5,emoji:'🐉',group:'lifre'},
 ];
+const ELEVS=[{name:'루디브리엄→아랫마을',emoji:'⬇️',offset:0},{name:'아랫마을→루디브리엄',emoji:'⬆️',offset:120}];
+function shipInfo(r){const n=new Date(),tot=n.getHours()*3600+n.getMinutes()*60+n.getSeconds(),iv=r.interval*60,rem=iv-(tot%iv),nt=tot+rem,dep=`${String(Math.floor(nt/3600)%24).padStart(2,'0')}:${String(Math.floor((nt%3600)/60)).padStart(2,'0')}`;return{rem,nb:rem-r.board*60,boarding:rem<=r.board*60,dep};}
+function elevInfo(off){const kst=Math.floor(Date.now()/1000)+9*3600,iv=240,bb=60,rem=iv-((kst-off)%iv),nt=kst+rem,dep=`${String(Math.floor(nt/3600)%24).padStart(2,'0')}:${String(Math.floor((nt%3600)/60)).padStart(2,'0')}`;return{rem,nb:rem-bb,boarding:rem<=bb,dep};}
+function fmtT(s){s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),ss=s%60;return m>0?`${m}분 ${String(ss).padStart(2,'0')}초`:`${ss}초`;}
+function initTransport(){['elo','rudi','lifre'].forEach(g=>{const c=document.getElementById('grid-ship-'+g);SHIPS.filter(r=>r.group===g).forEach(r=>{const d=document.createElement('div');d.className='route-card';d.id='ship-'+r.key;d.innerHTML=`<div class="route-name">${r.emoji} ${r.display}</div><div class="route-status" id="st-${r.key}">...</div>`;c.appendChild(d);});});const ec=document.getElementById('grid-elevator');ELEVS.forEach((r,i)=>{const d=document.createElement('div');d.className='route-card';d.id='elev-'+i;d.innerHTML=`<div class="route-name">${r.emoji} ${r.name}</div><div class="route-status" id="est-${i}">...</div>`;ec.appendChild(d);});}
+function updateTransport(){SHIPS.forEach(r=>{const info=shipInfo(r),card=document.getElementById('ship-'+r.key),el=document.getElementById('st-'+r.key);if(!el)return;if(info.boarding){card.classList.add('boarding');el.className='route-status status-ok';el.innerHTML=`🟢 탑승 가능! · 출발까지 <strong>${fmtT(info.rem)}</strong>`;}else{card.classList.remove('boarding');el.className='route-status status-wait';el.innerHTML=`⏳ <strong>${fmtT(info.nb)}</strong> 후 탑승 · 출발 <strong>${info.dep}</strong>`;}});ELEVS.forEach((r,i)=>{const info=elevInfo(r.offset),card=document.getElementById('elev-'+i),el=document.getElementById('est-'+i);if(!el)return;if(info.boarding){card.classList.add('boarding');el.className='route-status status-ok';el.innerHTML=`🟢 탑승 가능! · 출발까지 <strong>${fmtT(info.rem)}</strong>`;}else{card.classList.remove('boarding');el.className='route-status status-wait';el.innerHTML=`⏳ <strong>${fmtT(info.nb)}</strong> 후 탑승 · 출발 <strong>${info.dep}</strong>`;}});}
+initTransport();updateTransport();setInterval(updateTransport,1000);
 
-const ELEVATOR_ROUTES = [
-  { name:'루디브리엄 → 아랫마을', emoji:'⬇️', offsetSec:0 },
-  { name:'아랫마을 → 루디브리엄', emoji:'⬆️', offsetSec:2*60 },
-];
-
-function getKstSec() {
-  return Math.floor(Date.now() / 1000) + 9 * 3600;
+// 사냥터
+function fmtP(p){const n=parseInt(p);if(isNaN(n))return'?';if(n>=100000000){const u=Math.floor(n/100000000),m=Math.floor((n%100000000)/10000);return m>0?`${u}억 ${m}만`:`${u}억`;}if(n>=10000)return Math.floor(n/10000)+'만';return n.toLocaleString('ko-KR');}
+function sColor(c){return c==='Yellow'?'yellow':c==='Green'?'green':c==='Red'?'red':'white';}
+function toKST(d){if(!d)return'';const x=new Date(d+'Z');const h=(x.getUTCHours()+9)%24;return`${String(h).padStart(2,'0')}:${String(x.getUTCMinutes()).padStart(2,'0')}`;}
+function exAll(json,key){const r=[],re=new RegExp(`"${key}"\\s*:\\s*"?([^",}]+)"?`,'g');let m;while((m=re.exec(json))!==null)r.push(m[1].trim());return r;}
+function exComments(json){const r=[],re=/"comment"\s*:\s*"((?:[^"\\]|\\.)*)"/g;let m;while((m=re.exec(json))!==null)r.push(m[1].trim());return r;}
+async function fetchSpot(btn,keyword,name,emoji){
+  const errBox=document.getElementById('spot-error'),resBox=document.getElementById('spot-result');
+  errBox.classList.add('hidden');resBox.classList.add('hidden');
+  const orig=btn.innerHTML;btn.disabled=true;btn.innerHTML=`<span class="spinner"></span> 조회 중...`;
+  try{
+    const enc=encodeURIComponent(keyword);
+    const [listRaw,statRaw]=await Promise.all([proxyFetch(`https://api.mashop.kr/api/maps?keyword=${enc}`),proxyFetch(`https://api.mashop.kr/api/maps/price-stat?keyword=${enc}`)]);
+    const prices=exAll(listRaw,'price'),colors=exAll(listRaw,'serverColor'),tradeTypes=exAll(listRaw,'tradeType'),createTimes=exAll(listRaw,'createTime'),statPrices=exAll(statRaw,'price'),statTimes=exAll(statRaw,'dateTime'),memos=exComments(listRaw);
+    let html=`<div class="card"><div style="font-weight:700;margin-bottom:10px;">${emoji} ${name}</div>`;
+    if(statPrices.length>0){html+=`<div class="item-result-title">📊 시간대별 평균가</div>`;const from=Math.max(0,statPrices.length-3);for(let i=from;i<statPrices.length;i++){const h=statTimes[i]?statTimes[i].substring(11,16):'??:??';html+=`<div class="item-row"><span>${h}</span><span class="price-high">${fmtP(statPrices[i])}</span></div>`;}html+=`<hr class="divider">`;}
+    html+=`<div class="item-result-title">💸 판매 매물</div>`;let sc=0;
+    for(let j=0;j<prices.length&&sc<5;j++){if((tradeTypes[j]||'SELL')!=='SELL')continue;html+=`<div class="item-row"><span class="price-sell">${fmtP(prices[j])}</span><span style="color:var(--muted);font-size:.76rem">${createTimes[j]?` 🕐${toKST(createTimes[j])}`:''} ${memos[j]?`· ${memos[j]}`:''}</span></div>`;sc++;}
+    if(sc===0)html+=`<div class="item-row"><span style="color:var(--muted)">판매 매물 없음</span></div>`;
+    html+=`<hr class="divider"><div class="item-result-title">🛒 구매 희망가</div>`;let bc=0;
+    for(let k=0;k<prices.length&&bc<3;k++){if(tradeTypes[k]!=='BUY')continue;html+=`<div class="item-row"><span class="price-buy">${fmtP(prices[k])}</span></div>`;bc++;}
+    if(bc===0)html+=`<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
+    html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--muted)">♡ <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 기준</div></div>`;
+    resBox.innerHTML=html;resBox.classList.remove('hidden');
+  }catch(e){document.getElementById('spot-error-msg').textContent='조회 실패: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML=orig;}
 }
+</script>
+<script>
+// 아이템 시세
+const SHORTCUTS={파엘:"파워 엘릭서",마엘:"마나 엘릭서",만병:"만병통치약",새벽:"새벽의 이슬",황혼:"황혼의 이슬",일비:"일비 표창",뇌전:"뇌전수리검",장공10:"장갑 공격력 주문서 10%",장공60:"장갑 공격력 주문서 60%",노목:"노가다 목장갑",드퍼슬:"드래곤 퍼플 슬레브",드그슬:"드래곤 그린 슬레브"};
+function setItemSearch(name){document.getElementById('item-input').value=name;searchItem();}
+function formatPrice(n){n=parseInt(n);if(isNaN(n))return'0';return n.toLocaleString('ko-KR');}
+let selectedItem=null;
 
-function getShipInfo(route) {
-  const now = new Date();
-  const totalSec = now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds();
-  const intervalSec = route.interval * 60;
-  const elapsed = totalSec % intervalSec;
-  const remainingSec = intervalSec - elapsed;
-
-  const nextTotal = totalSec + remainingSec;
-  const nextH = Math.floor(nextTotal / 3600) % 24;
-  const nextM = Math.floor((nextTotal % 3600) / 60);
-  const nextDepart = `${String(nextH).padStart(2,'0')}:${String(nextM).padStart(2,'0')}`;
-
-  const boardingOpen = remainingSec <= route.boardBefore * 60;
-  const untilBoardSec = remainingSec - route.boardBefore * 60;
-
-  return { remainingSec, untilBoardSec, boardingOpen, nextDepart };
-}
-
-function getElevatorInfo(offsetSec) {
-  const kstSec = getKstSec();
-  const intervalSec = 4 * 60;
-  const boardBeforeSec = 60;
-  const adjusted = kstSec - offsetSec;
-  const elapsed = adjusted % intervalSec;
-  const remainingSec = intervalSec - elapsed;
-  const boardingOpen = remainingSec <= boardBeforeSec;
-  const untilBoardSec = remainingSec - boardBeforeSec;
-  const nextKst = kstSec + remainingSec;
-  const nextH = Math.floor(nextKst / 3600) % 24;
-  const nextM = Math.floor((nextKst % 3600) / 60);
-  const nextDepart = `${String(nextH).padStart(2,'0')}:${String(nextM).padStart(2,'0')}`;
-  return { remainingSec, untilBoardSec, boardingOpen, nextDepart };
-}
-
-function fmtTime(sec) {
-  sec = Math.max(0, Math.floor(sec));
-  const m = Math.floor(sec / 60);
-  const s = sec % 60;
-  return m > 0 ? `${m}분 ${String(s).padStart(2,'0')}초` : `${s}초`;
-}
-
-// 최초 DOM 생성
-function initTransport() {
-  ['elo','rudi','lifre'].forEach(group => {
-    const container = document.getElementById('grid-ship-' + group);
-    SHIP_ROUTES.filter(r => r.group === group).forEach(route => {
-      const card = document.createElement('div');
-      card.className = 'route-card';
-      card.id = 'ship-' + route.key;
-      card.innerHTML = `
-        <div class="route-name">${route.emoji} ${route.display}</div>
-        <div class="route-status" id="status-${route.key}">...</div>`;
-      container.appendChild(card);
-    });
-  });
-
-  const elevCont = document.getElementById('grid-elevator');
-  ELEVATOR_ROUTES.forEach((route, i) => {
-    const card = document.createElement('div');
-    card.className = 'route-card';
-    card.id = 'elev-' + i;
-    card.innerHTML = `
-      <div class="route-name">${route.emoji} ${route.name}</div>
-      <div class="route-status" id="elevstatus-${i}">...</div>`;
-    elevCont.appendChild(card);
-  });
-}
-
-function updateTransport() {
-  SHIP_ROUTES.forEach(route => {
-    const info = getShipInfo(route);
-    const card = document.getElementById('ship-' + route.key);
-    const el = document.getElementById('status-' + route.key);
-    if (!el) return;
-    if (info.boardingOpen) {
-      card.classList.add('boarding');
-      el.className = 'route-status status-ok';
-      el.innerHTML = `🟢 탑승 가능! · 출발까지 <strong>${fmtTime(info.remainingSec)}</strong>`;
-    } else {
-      card.classList.remove('boarding');
-      el.className = 'route-status status-wait';
-      el.innerHTML = `⏳ <strong>${fmtTime(info.untilBoardSec)}</strong> 후 탑승 · 출발 <strong>${info.nextDepart}</strong>`;
+async function searchItem(){
+  let keyword=document.getElementById('item-input').value.trim();if(!keyword)return;
+  if(SHORTCUTS[keyword])keyword=SHORTCUTS[keyword];
+  const errBox=document.getElementById('item-error'),candBox=document.getElementById('item-candidates'),resultBox=document.getElementById('item-result');
+  errBox.classList.add('hidden');candBox.classList.add('hidden');resultBox.classList.add('hidden');
+  const btn=document.getElementById('item-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  try{
+    const res=await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(keyword)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+    if(res.status===404){
+      const res2=await fetch(`${NGROK_URL}/search?q=${encodeURIComponent(keyword)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+      if(res2.ok){const d=await res2.json();if(d.items&&d.items.length>0){candBox.innerHTML=`<div class="item-result-title" style="margin-bottom:6px">검색 결과 ${d.items.length}개 — 선택하세요</div>`;d.items.forEach(item=>{const b=document.createElement('button');b.className='candidate-btn';b.textContent=item.name;b.onclick=()=>fetchItemByName(item.name);candBox.appendChild(b);});candBox.classList.remove('hidden');return;}}
+      document.getElementById('item-error-msg').textContent=`'${keyword}' 아이템을 찾을 수 없습니다.`;errBox.classList.remove('hidden');return;
     }
-  });
-
-  ELEVATOR_ROUTES.forEach((route, i) => {
-    const info = getElevatorInfo(route.offsetSec);
-    const card = document.getElementById('elev-' + i);
-    const el = document.getElementById('elevstatus-' + i);
-    if (!el) return;
-    if (info.boardingOpen) {
-      card.classList.add('boarding');
-      el.className = 'route-status status-ok';
-      el.innerHTML = `🟢 탑승 가능! · 출발까지 <strong>${fmtTime(info.remainingSec)}</strong>`;
-    } else {
-      card.classList.remove('boarding');
-      el.className = 'route-status status-wait';
-      el.innerHTML = `⏳ <strong>${fmtTime(info.untilBoardSec)}</strong> 후 탑승 · 출발 <strong>${info.nextDepart}</strong>`;
-    }
-  });
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();selectedItem={name:data.name};showFilterUI(data);
+  }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML='검색';}
 }
 
-initTransport();
-updateTransport();
-setInterval(updateTransport, 1000);
-
-// ══════════════════════════════════════════
-//  사냥터 시세
-// ══════════════════════════════════════════
-function formatPriceMashop(p) {
-  const n = parseInt(p);
-  if (isNaN(n)) return '?';
-  if (n >= 100000000) {
-    const uk = Math.floor(n / 100000000);
-    const man = Math.floor((n % 100000000) / 10000);
-    return man > 0 ? `${uk}억 ${man}만` : `${uk}억`;
-  } else if (n >= 10000) {
-    return Math.floor(n / 10000) + '만';
-  }
-  return n.toLocaleString('ko-KR');
-}
-
-function serverColor(c) {
-  if (c === 'Yellow') return 'yellow';
-  if (c === 'Green')  return 'green';
-  if (c === 'Red')    return 'red';
-  return 'white';
-}
-
-function toKST(dateStr) {
-  if (!dateStr) return '';
-  const d = new Date(dateStr + 'Z');
-  const h = (d.getUTCHours() + 9) % 24;
-  const m = String(d.getUTCMinutes()).padStart(2, '0');
-  return `${String(h).padStart(2,'0')}:${m}`;
-}
-
-function extractAll(json, key) {
-  const results = [];
-  const re = new RegExp(`"${key}"\\s*:\\s*"?([^",}]+)"?`, 'g');
-  let m;
-  while ((m = re.exec(json)) !== null) results.push(m[1].trim());
-  return results;
-}
-
-function extractComments(json) {
-  const results = [];
-  const re = /"comment"\s*:\s*"((?:[^"\\]|\\.)*)"/g;
-  let m;
-  while ((m = re.exec(json)) !== null) results.push(m[1].trim());
-  return results;
-}
-
-async function fetchSpot(btn, keyword, name, emoji) {
-  const errBox = document.getElementById('spot-error');
-  const resultBox = document.getElementById('spot-result');
-  errBox.classList.add('hidden');
-  resultBox.classList.add('hidden');
-
-  btn.classList.add('loading');
-  btn.disabled = true;
-  const origText = btn.innerHTML;
-  btn.innerHTML = `<span class="spinner"></span> 조회 중...`;
-
-  try {
-    const enc = encodeURIComponent(keyword);
-    const listRaw = await proxyFetch(`https://api.mashop.kr/api/maps?keyword=${enc}`);
-    const statRaw = await proxyFetch(`https://api.mashop.kr/api/maps/price-stat?keyword=${enc}`);
-
-    const prices      = extractAll(listRaw, 'price');
-    const colors      = extractAll(listRaw, 'serverColor');
-    const tradeTypes  = extractAll(listRaw, 'tradeType');
-    const createTimes = extractAll(listRaw, 'createTime');
-    const statPrices  = extractAll(statRaw, 'price');
-    const statTimes   = extractAll(statRaw, 'dateTime');
-    const memos       = extractComments(listRaw);
-
-    let html = `<div class="item-result-section">`;
-    html += `<div class="item-result-title">${emoji} ${name} — 시간대별 평균가</div>`;
-
-    if (statPrices.length > 0) {
-      const from = Math.max(0, statPrices.length - 3);
-      for (let i = from; i < statPrices.length; i++) {
-        const hour = statTimes[i] ? statTimes[i].substring(11,16) : '??:??';
-        html += `<div class="item-row"><span>${hour}</span><span class="price-high">${formatPriceMashop(statPrices[i])}</span></div>`;
-      }
-    } else {
-      html += `<div class="item-row"><span style="color:var(--muted)">통계 데이터 없음</span></div>`;
-    }
-    html += `</div><hr class="divider">`;
-
-    html += `<div class="item-result-section"><div class="item-result-title">💸 판매 매물</div>`;
-    let sellCount = 0;
-    for (let j = 0; j < prices.length && sellCount < 5; j++) {
-      if ((tradeTypes[j] || 'SELL') !== 'SELL') continue;
-      const ct = createTimes[j] ? ` 🕐${toKST(createTimes[j])}` : '';
-      const memo = memos[j] ? ` · ${memos[j]}` : '';
-      html += `<div class="item-row">
-        <div class="item-row-left">
-          <div class="server-dot ${serverColor(colors[j])}"></div>
-          <span class="price-sell">${formatPriceMashop(prices[j])}</span>
-          <span style="color:var(--muted);font-size:0.78rem">${ct}${memo}</span>
-        </div>
-      </div>`;
-      sellCount++;
-    }
-    if (sellCount === 0) html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 매물 없음</span></div>`;
-    html += `</div><hr class="divider">`;
-
-    html += `<div class="item-result-section"><div class="item-result-title">🛒 구매 희망가</div>`;
-    let buyCount = 0;
-    for (let k = 0; k < prices.length && buyCount < 3; k++) {
-      if (tradeTypes[k] !== 'BUY') continue;
-      const buyCt = createTimes[k] ? ` 🕐${toKST(createTimes[k])}` : '';
-      const buyMemo = memos[k] ? ` · ${memos[k]}` : '';
-      html += `<div class="item-row">
-        <div class="item-row-left">
-          <div class="server-dot ${serverColor(colors[k])}"></div>
-          <span class="price-buy">${formatPriceMashop(prices[k])}</span>
-          <span style="color:var(--muted);font-size:0.78rem">${buyCt}${buyMemo}</span>
-        </div>
-      </div>`;
-      buyCount++;
-    }
-    if (buyCount === 0) html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
-    html += `</div>`;
-    html += `<div style="margin-top:10px;font-size:0.75rem;color:var(--muted)">♡ <a href="https://mashop.kr" target="_blank" style="color:var(--accent)">mashop.kr</a> 기준</div>`;
-
-    resultBox.innerHTML = html;
-    resultBox.classList.remove('hidden');
-    resultBox.className = 'card hidden';
-    resultBox.classList.remove('hidden');
-
-  } catch(e) {
-    document.getElementById('spot-error-msg').textContent = '조회 실패: ' + e.message;
-    errBox.classList.remove('hidden');
-  } finally {
-    btn.classList.remove('loading');
-    btn.disabled = false;
-    btn.innerHTML = origText;
-  }
-}
-
-// ══════════════════════════════════════════
-//  아이템 시세 검색 (내 PC 봇 서버 경유)
-// ══════════════════════════════════════════
-const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.dev";
-
-const SHORTCUTS = {
-  파엘:"파워 엘릭서", 마엘:"마나 엘릭서", 만병:"만병통치약",
-  새벽:"새벽의 이슬", 황혼:"황혼의 이슬", 일비:"일비 표창",
-  뇌전:"뇌전수리검", 장공10:"장갑 공격력 주문서 10%",
-  장공60:"장갑 공격력 주문서 60%", 노목:"노가다 목장갑",
-  드퍼슬:"드래곤 퍼플 슬레브", 드그슬:"드래곤 그린 슬레브",
-};
-
-function setItemSearch(name) {
-  document.getElementById('item-input').value = name;
-  searchItem();
-}
-
-function formatPrice(n) {
-  n = parseInt(n);
-  if (isNaN(n)) return '0';
-  return n.toLocaleString('ko-KR');
-}
-
-async function searchItem() {
-  let keyword = document.getElementById('item-input').value.trim();
-  if (!keyword) return;
-
-  // 줄임말 변환
-  if (SHORTCUTS[keyword]) keyword = SHORTCUTS[keyword];
-
-  const errBox = document.getElementById('item-error');
-  const candBox = document.getElementById('item-candidates');
-  const resultBox = document.getElementById('item-result');
-  errBox.classList.add('hidden');
-  candBox.classList.add('hidden');
-  resultBox.classList.add('hidden');
-
-  const btn = document.getElementById('item-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>';
-
-  try {
-    const res = await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(keyword)}`, {
-      method: 'GET',
-      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' },
-    });
-
-    if (res.status === 404) {
-      // 부분 검색 시도
-      const res2 = await fetch(`${NGROK_URL}/search?q=${encodeURIComponent(keyword)}`, {
-        headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
-      });
-      if (res2.ok) {
-        const data2 = await res2.json();
-        if (data2.items && data2.items.length > 0) {
-          candBox.innerHTML = `<div class="item-result-title" style="margin-bottom:8px">검색 결과 ${data2.items.length}개 — 선택하세요</div>`;
-          data2.items.forEach(item => {
-            const b = document.createElement('button');
-            b.className = 'candidate-btn';
-            b.textContent = item.name;
-            b.onclick = () => fetchItemByName(item.name);
-            candBox.appendChild(b);
-          });
-          candBox.classList.remove('hidden');
-          return;
-        }
-      }
-      document.getElementById('item-error-msg').textContent = `'${keyword}' 아이템을 찾을 수 없습니다.`;
-      errBox.classList.remove('hidden');
-      return;
-    }
-
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    renderItemResult(data);
-  } catch(e) {
-    document.getElementById('item-error-msg').textContent = '오류: ' + e.message;
-    errBox.classList.remove('hidden');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '검색';
-  }
-}
-
-// 선택된 아이템 저장
-let selectedItem = null;
-
-async function fetchItemByName(name) {
+async function fetchItemByName(name){
   document.getElementById('item-candidates').classList.add('hidden');
-  const errBox = document.getElementById('item-error');
-  const btn = document.getElementById('item-btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
-  try {
-    const res = await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(name)}`, {
-      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    selectedItem = { name: data.name, code: data.code };
-    showFilterUI(data);
-  } catch(e) {
-    document.getElementById('item-error-msg').textContent = '오류: ' + e.message;
-    errBox.classList.remove('hidden');
-  } finally { btn.disabled = false; btn.innerHTML = '검색'; }
+  const errBox=document.getElementById('item-error'),btn=document.getElementById('item-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  try{
+    const res=await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(name)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();selectedItem={name:data.name};showFilterUI(data);
+  }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML='검색';}
 }
 
-function showFilterUI(data) {
-  const resultBox = document.getElementById('item-result');
-  resultBox.innerHTML = `
+function showFilterUI(data){
+  const resultBox=document.getElementById('item-result');
+  resultBox.innerHTML=`
     <div style="font-weight:700;font-size:1rem;margin-bottom:14px;">📦 ${data.name}</div>
     <div class="filter-grid">
-      <div class="filter-row">
-        <span class="filter-label">💰 가격</span>
-        <input class="filter-input" id="f-lowprice" placeholder="최소" type="number">
-        <span class="filter-tilde">~</span>
-        <input class="filter-input" id="f-highprice" placeholder="최대" type="number">
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">⚔️ 공격력</span>
-        <input class="filter-input" id="f-lowpad" placeholder="최소" type="number">
-        <span class="filter-tilde">~</span>
-        <input class="filter-input" id="f-highpad" placeholder="최대" type="number">
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">✨ 마력</span>
-        <input class="filter-input" id="f-lowmad" placeholder="최소" type="number">
-        <span class="filter-tilde">~</span>
-        <input class="filter-input" id="f-highmad" placeholder="최대" type="number">
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">📊 합마</span>
-        <input class="filter-input" id="f-lowhapma" placeholder="최소" type="number">
-        <span class="filter-tilde">~</span>
-        <input class="filter-input" id="f-highhapma" placeholder="최대" type="number">
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">🔨 작횟수</span>
-        <input class="filter-input" id="f-lowupgrade" placeholder="최소" type="number">
-        <span class="filter-tilde">~</span>
-        <input class="filter-input" id="f-highupgrade" placeholder="최대" type="number">
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">🔧 남은업횟</span>
-        <input class="filter-input" id="f-lowtuc" placeholder="최소" type="number">
-        <span class="filter-tilde">~</span>
-        <input class="filter-input" id="f-hightuc" placeholder="최대" type="number">
-      </div>
+      <div class="filter-row"><span class="filter-label">💰 가격</span><input class="filter-input" id="f-lowprice" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highprice" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">⚔️ 공격력</span><input class="filter-input" id="f-lowpad" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highpad" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">✨ 마력</span><input class="filter-input" id="f-lowmad" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highmad" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">📊 합마</span><input class="filter-input" id="f-lowhapma" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highhapma" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">🔨 작횟수</span><input class="filter-input" id="f-lowupgrade" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-highupgrade" placeholder="최대" type="number"></div>
+      <div class="filter-row"><span class="filter-label">🔧 남은업횟</span><input class="filter-input" id="f-lowtuc" placeholder="최소" type="number"><span class="filter-tilde">~</span><input class="filter-input" id="f-hightuc" placeholder="최대" type="number"></div>
     </div>
-    <button class="btn-primary" style="width:100%;margin-top:12px;" onclick="applyFilter()">🔍 필터 적용</button>
-    <div id="filter-result" style="margin-top:12px;"></div>
-  `;
-  resultBox.className = 'card';
-  resultBox.classList.remove('hidden');
-
-  // 기본 결과 바로 표시
-  renderTradeResult(data, document.getElementById('filter-result'));
+    <button class="btn-primary" style="width:100%;margin-top:12px;" id="filter-apply-btn" onclick="applyFilter()">🔍 필터 적용</button>
+    <div id="filter-result" style="margin-top:12px;"></div>`;
+  resultBox.className='card';resultBox.classList.remove('hidden');
+  renderTradeResult(data,document.getElementById('filter-result'));
 }
 
-async function applyFilter() {
-  if (!selectedItem) return;
-  const btn = document.querySelector('#item-result .btn-primary');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> 조회 중...';
+async function applyFilter(){
+  if(!selectedItem)return;
+  const btn=document.getElementById('filter-apply-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 조회 중...';
+  const fields={'f-lowprice':'lowPrice','f-highprice':'highPrice','f-lowpad':'lowincPAD','f-highpad':'highincPAD','f-lowmad':'lowincMAD','f-highmad':'highincMAD','f-lowhapma':'lowHapma','f-highhapma':'highHapma','f-lowupgrade':'lowUpgrade','f-highupgrade':'highUpgrade','f-lowtuc':'lowTuc','f-hightuc':'highTuc'};
+  const params=new URLSearchParams({q:selectedItem.name});
+  for(const [id,param] of Object.entries(fields)){const val=document.getElementById(id)?.value.trim();if(val)params.set(param,val);}
+  try{
+    const res=await fetch(`${NGROK_URL}/item?${params.toString()}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    renderTradeResult(await res.json(),document.getElementById('filter-result'));
+  }catch(e){const fr=document.getElementById('filter-result');if(fr)fr.innerHTML=`<div class="error-box">✕ 오류: ${e.message}</div>`;}
+  finally{btn.disabled=false;btn.innerHTML='🔍 필터 적용';}
+}
 
-  const fields = {
-    'f-lowprice': 'lowPrice', 'f-highprice': 'highPrice',
-    'f-lowpad': 'lowincPAD', 'f-highpad': 'highincPAD',
-    'f-lowmad': 'lowincMAD', 'f-highmad': 'highincMAD',
-    'f-lowhapma': 'lowHapma', 'f-highhapma': 'highHapma',
-    'f-lowupgrade': 'lowUpgrade', 'f-highupgrade': 'highUpgrade',
-    'f-lowtuc': 'lowTuc', 'f-hightuc': 'highTuc',
-  };
-  const params = new URLSearchParams({ q: selectedItem.name });
-  for (const [id, param] of Object.entries(fields)) {
-    const val = document.getElementById(id)?.value.trim();
-    if (val) params.set(param, val);
-  }
+function renderTradeResult(data,container){
+  if(!container)return;
+  let html=`<div class="item-result-title" style="margin-top:8px;">💸 팝니다</div>`;
+  if(data.sell&&data.sell.length>0){data.sell.forEach(e=>{const price=formatPrice(e.itemPrice||0),comment=e.comment?` · ${e.comment}`:'',pad=e.incPAD?` 공+${e.incPAD}`:'',mad=e.incMAD?` 마+${e.incMAD}`:'',tuc=e.tuc!==undefined?` 남${e.tuc}`:'';html+=`<div class="item-row"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${pad}${mad}${tuc}${comment}</span></div>`;});}
+  else html+=`<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
+  html+=`<hr class="divider"><div class="item-result-title">🛒 삽니다</div>`;
+  if(data.buy&&data.buy.length>0){data.buy.forEach(e=>{const price=formatPrice(e.itemPrice||0),comment=e.comment?` · ${e.comment}`:'';html+=`<div class="item-row"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${comment}</span></div>`;});}
+  else html+=`<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
+  html+=`<div style="margin-top:8px;font-size:.72rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
+  container.innerHTML=html;
+}
 
+// 날씨
+const REGIONS={서울:'Seoul',부산:'Busan',대구:'Daegu',인천:'Incheon',광주:'Gwangju',대전:'Daejeon',울산:'Ulsan',세종:'Sejong',수원:'Suwon',고양:'Goyang',용인:'Yongin',창원:'Changwon',성남:'Seongnam',청주:'Cheongju',전주:'Jeonju',안산:'Ansan',안양:'Anyang',남양주:'Namyangju',화성:'Hwaseong',부천:'Bucheon',경산:'Gyeongsan',구미:'Gumi',포항:'Pohang',경주:'Gyeongju',춘천:'Chuncheon',원주:'Wonju',강릉:'Gangneung',속초:'Sokcho',제주:'Jeju',서귀포:'Seogwipo',목포:'Mokpo',여수:'Yeosu',순천:'Suncheon',군산:'Gunsan',익산:'Iksan',천안:'Cheonan',아산:'Asan',평택:'Pyeongtaek',김해:'Gimhae',거제:'Geoje',양산:'Yangsan',진주:'Jinju',통영:'Tongyeong',의정부:'Uijeongbu'};
+function wEmoji(id){if(id>=200&&id<300)return'⛈️';if(id>=300&&id<400)return'🌦️';if(id>=500&&id<600)return'🌧️';if(id>=600&&id<700)return'❄️';if(id>=700&&id<800)return'🌫️';if(id===800)return'☀️';if(id===801)return'🌤️';if(id===802)return'⛅';if(id>=803)return'☁️';return'🌤️';}
+function setWeatherSearch(r){document.getElementById('weather-input').value=r;searchWeather();}
+async function searchWeather(){
+  const region=document.getElementById('weather-input').value.trim();if(!region)return;
+  const errBox=document.getElementById('weather-error'),resBox=document.getElementById('weather-result');
+  errBox.classList.add('hidden');resBox.classList.add('hidden');
+  const btn=document.getElementById('weather-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  try{
+    const raw=await proxyFetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(REGIONS[region]||region)},KR&appid=${WEATHER_KEY}&units=metric&lang=kr`);
+    const d=JSON.parse(raw);if(d.cod!==200){document.getElementById('weather-error-msg').textContent=`'${region}' 날씨 정보를 찾을 수 없어요.`;errBox.classList.remove('hidden');return;}
+    const kst=new Date(Date.now()+9*3600000),ts=`${String(kst.getUTCHours()).padStart(2,'0')}:${String(kst.getUTCMinutes()).padStart(2,'0')}`;
+    const dirs=['북','북동','동','남동','남','남서','서','북서'],wd=dirs[Math.round((d.wind.deg||0)/45)%8];
+    resBox.innerHTML=`<div class="card"><div class="weather-main">${wEmoji(d.weather[0].id)}</div><div class="weather-temp">${d.main.temp.toFixed(1)}°C</div><div class="weather-desc">${region} · ${d.weather[0].description} · ${ts} KST</div><div class="weather-grid"><div class="weather-stat"><div class="weather-stat-label">체감</div><div class="weather-stat-value">${d.main.feels_like.toFixed(1)}°C</div></div><div class="weather-stat"><div class="weather-stat-label">습도</div><div class="weather-stat-value">${d.main.humidity}%</div></div><div class="weather-stat"><div class="weather-stat-label">바람</div><div class="weather-stat-value">${d.wind.speed.toFixed(1)}m/s ${wd}풍</div></div><div class="weather-stat"><div class="weather-stat-label">가시거리</div><div class="weather-stat-value">${d.visibility?(d.visibility/1000).toFixed(1)+'km':'정보없음'}</div></div></div></div>`;
+    resBox.classList.remove('hidden');
+  }catch(e){document.getElementById('weather-error-msg').textContent='날씨 조회 실패: '+e.message;errBox.classList.remove('hidden');}
+  finally{btn.disabled=false;btn.innerHTML='조회';}
+}
+</script>
+<script>
+// 타이머
+let timers = [];
+let timerInterval = null;
+
+function beep() {
   try {
-    const res = await fetch(`${NGROK_URL}/item?${params.toString()}`, {
-      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const filterResult = document.querySelector('#item-result #filter-result') || document.getElementById('filter-result');
-    renderTradeResult(await res.json(), filterResult);
-  } catch(e) {
-    const filterResult = document.querySelector('#item-result #filter-result') || document.getElementById('filter-result');
-    if (filterResult) filterResult.innerHTML = `<div class="error-box">✕ 오류: ${e.message}</div>`;
-  } finally {
-    btn.disabled = false; btn.innerHTML = '🔍 필터 적용';
-  }
-}
-
-function renderTradeResult(data, container) {
-  let html = `<div class="item-result-section"><div class="item-result-title">💸 팝니다</div>`;
-  if (data.sell && data.sell.length > 0) {
-    data.sell.forEach(e => {
-      const price = formatPrice(e.itemPrice || 0);
-      const comment = e.comment ? ` · ${e.comment}` : '';
-      const pad = e.incPAD ? ` 공+${e.incPAD}` : '';
-      const mad = e.incMAD ? ` 마+${e.incMAD}` : '';
-      const tuc = e.tuc !== undefined ? ` 남은업횟${e.tuc}` : '';
-      html += `<div class="item-row"><span class="price-sell">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${pad}${mad}${tuc}${comment}</span></div>`;
-    });
-  } else {
-    html += `<div class="item-row"><span style="color:var(--muted)">현재 판매 없음</span></div>`;
-  }
-  html += `</div><hr class="divider">`;
-  html += `<div class="item-result-section"><div class="item-result-title">🛒 삽니다</div>`;
-  if (data.buy && data.buy.length > 0) {
-    data.buy.forEach(e => {
-      const price = formatPrice(e.itemPrice || 0);
-      const comment = e.comment ? ` · ${e.comment}` : '';
-      html += `<div class="item-row"><span class="price-buy">${price} 메소</span><span style="color:var(--muted);font-size:.78rem">${comment}</span></div>`;
-    });
-  } else {
-    html += `<div class="item-row"><span style="color:var(--muted)">구매 희망 없음</span></div>`;
-  }
-  html += `</div><div style="margin-top:8px;font-size:.75rem;color:var(--muted)">♡ <a href="https://mapleland.gg" target="_blank" style="color:var(--accent)">mapleland.gg</a> 거래소 기준</div>`;
-  container.innerHTML = html;
-}
-
-function renderItemResult(data) {
-  selectedItem = { name: data.name };
-  showFilterUI(data);
-}
-
-
-// ══════════════════════════════════════════
-//  날씨
-// ══════════════════════════════════════════
-const REGION_MAP = {
-  서울:'Seoul', 부산:'Busan', 대구:'Daegu', 인천:'Incheon',
-  광주:'Gwangju', 대전:'Daejeon', 울산:'Ulsan', 세종:'Sejong',
-  수원:'Suwon', 고양:'Goyang', 용인:'Yongin', 창원:'Changwon',
-  성남:'Seongnam', 청주:'Cheongju', 전주:'Jeonju', 안산:'Ansan',
-  안양:'Anyang', 남양주:'Namyangju', 화성:'Hwaseong', 부천:'Bucheon',
-  경산:'Gyeongsan', 구미:'Gumi', 포항:'Pohang', 경주:'Gyeongju',
-  춘천:'Chuncheon', 원주:'Wonju', 강릉:'Gangneung', 속초:'Sokcho',
-  제주:'Jeju', 서귀포:'Seogwipo', 목포:'Mokpo', 여수:'Yeosu',
-  순천:'Suncheon', 군산:'Gunsan', 익산:'Iksan', 천안:'Cheonan',
-  아산:'Asan', 평택:'Pyeongtaek', 김해:'Gimhae', 거제:'Geoje',
-  양산:'Yangsan', 진주:'Jinju', 통영:'Tongyeong', 의정부:'Uijeongbu',
-};
-
-function weatherEmoji(id) {
-  if (id >= 200 && id < 300) return '⛈️';
-  if (id >= 300 && id < 400) return '🌦️';
-  if (id >= 500 && id < 600) return '🌧️';
-  if (id >= 600 && id < 700) return '❄️';
-  if (id >= 700 && id < 800) return '🌫️';
-  if (id === 800) return '☀️';
-  if (id === 801) return '🌤️';
-  if (id === 802) return '⛅';
-  if (id >= 803) return '☁️';
-  return '🌤️';
-}
-
-function setWeatherSearch(region) {
-  document.getElementById('weather-input').value = region;
-  searchWeather();
-}
-
-async function searchWeather() {
-  const region = document.getElementById('weather-input').value.trim();
-  if (!region) return;
-
-  const errBox = document.getElementById('weather-error');
-  const resultBox = document.getElementById('weather-result');
-  errBox.classList.add('hidden');
-  resultBox.classList.add('hidden');
-
-  const btn = document.getElementById('weather-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>';
-
-  const cityEn = REGION_MAP[region] || region;
-
-  try {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityEn)},KR&appid=${WEATHER_API_KEY}&units=metric&lang=kr`;
-    const raw = await proxyFetch(url);
-    const data = JSON.parse(raw);
-
-    if (data.cod !== 200) {
-      document.getElementById('weather-error-msg').textContent = `'${region}' 날씨 정보를 찾을 수 없어요.`;
-      errBox.classList.remove('hidden');
-      return;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    for(let i=0;i<3;i++){
+      const osc=ctx.createOscillator(),gain=ctx.createGain();
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.frequency.value=880;osc.type='sine';
+      gain.gain.setValueAtTime(0.3,ctx.currentTime+i*0.4);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.4+0.3);
+      osc.start(ctx.currentTime+i*0.4);osc.stop(ctx.currentTime+i*0.4+0.3);
     }
+  } catch(e) {}
+}
 
-    const temp     = data.main.temp.toFixed(1);
-    const feels    = data.main.feels_like.toFixed(1);
-    const humidity = data.main.humidity;
-    const windSpd  = data.wind.speed.toFixed(1);
-    const desc     = data.weather[0].description;
-    const wid      = data.weather[0].id;
-    const emoji    = weatherEmoji(wid);
-    const vis      = data.visibility ? (data.visibility/1000).toFixed(1)+'km' : '정보없음';
+function addTimer(name, mins, secs) {
+  const id = Date.now();
+  timers.push({ id, name, totalSec: mins*60+secs, remaining: mins*60+secs, running: false, finished: false, mins, secs });
+  renderTimers();
+  if(!timerInterval) timerInterval = setInterval(tickTimers, 1000);
+}
 
-    const dirs = ['북','북동','동','남동','남','남서','서','북서'];
-    const windDir = dirs[Math.round((data.wind.deg||0) / 45) % 8];
+function addCustomTimer() {
+  const name = prompt('타이머 이름:') || '커스텀';
+  const mins = parseInt(prompt('분:') || '0') || 0;
+  const secs = parseInt(prompt('초:') || '0') || 0;
+  if(mins === 0 && secs === 0) return;
+  addTimer(name, mins, secs);
+}
 
-    const now = new Date();
-    const kst = new Date(now.getTime() + 9*3600000);
-    const timeStr = `${String(kst.getUTCHours()).padStart(2,'0')}:${String(kst.getUTCMinutes()).padStart(2,'0')}`;
+function tickTimers() {
+  let anyRunning = false;
+  timers.forEach(t => {
+    if(t.running && !t.finished) {
+      t.remaining--;
+      if(t.remaining <= 0) { t.remaining=0; t.finished=true; t.running=false; beep(); }
+      anyRunning = true;
+    }
+    if(t.running) anyRunning = true;
+  });
+  renderTimers();
+  if(!anyRunning && timers.every(t=>!t.running)) { clearInterval(timerInterval); timerInterval=null; }
+}
 
-    let html = `<div class="card">`;
-    html += `<div class="weather-main">${emoji}</div>`;
-    html += `<div class="weather-temp">${temp}°C</div>`;
-    html += `<div class="weather-desc">${region} · ${desc} · ${timeStr} KST</div>`;
-    html += `<div class="weather-grid">
-      <div class="weather-stat">
-        <div class="weather-stat-label">체감 온도</div>
-        <div class="weather-stat-value">${feels}°C</div>
+function startTimer(id) {
+  const t=timers.find(t=>t.id===id);if(!t)return;
+  t.running=true;t.finished=false;
+  if(!timerInterval) timerInterval=setInterval(tickTimers,1000);
+  renderTimers();
+}
+function pauseTimer(id) { const t=timers.find(t=>t.id===id);if(t){t.running=false;renderTimers();} }
+function resetTimer(id) { const t=timers.find(t=>t.id===id);if(t){t.running=false;t.finished=false;t.remaining=t.totalSec;renderTimers();} }
+function deleteTimer(id) { timers=timers.filter(t=>t.id!==id);renderTimers(); }
+function updateTimerTime(id) {
+  const t=timers.find(t=>t.id===id);if(!t)return;
+  const m=parseInt(document.getElementById(`tm-${id}`).value)||0;
+  const s=parseInt(document.getElementById(`ts-${id}`).value)||0;
+  t.totalSec=m*60+s;t.remaining=m*60+s;t.running=false;t.finished=false;
+  renderTimers();
+}
+
+function fmtTimer(sec){const m=Math.floor(sec/60),s=sec%60;return`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+
+function renderTimers() {
+  const grid=document.getElementById('timer-grid');
+  if(timers.length===0){grid.innerHTML='';return;}
+  grid.innerHTML=timers.map(t=>{
+    const urgent=t.remaining<=10&&!t.finished;
+    return `<div class="timer-card ${t.running?'running':''} ${t.finished?'finished':''}">
+      <div class="timer-name">${t.name}</div>
+      <div class="timer-display ${urgent||t.finished?'urgent':''}">${t.finished?'⏰ 종료!':fmtTimer(t.remaining)}</div>
+      <div class="timer-time-edit">
+        <input class="timer-time-input" id="tm-${t.id}" value="${Math.floor(t.totalSec/60)}" min="0" max="999" type="number">
+        <span style="color:var(--muted);font-size:.8rem;">분</span>
+        <input class="timer-time-input" id="ts-${t.id}" value="${t.totalSec%60}" min="0" max="59" type="number">
+        <span style="color:var(--muted);font-size:.8rem;">초</span>
+        <button class="btn-secondary" style="padding:4px 8px;font-size:.72rem;" onclick="updateTimerTime(${t.id})">설정</button>
       </div>
-      <div class="weather-stat">
-        <div class="weather-stat-label">습도</div>
-        <div class="weather-stat-value">${humidity}%</div>
-      </div>
-      <div class="weather-stat">
-        <div class="weather-stat-label">바람</div>
-        <div class="weather-stat-value">${windSpd}m/s ${windDir}풍</div>
-      </div>
-      <div class="weather-stat">
-        <div class="weather-stat-label">가시거리</div>
-        <div class="weather-stat-value">${vis}</div>
+      <div class="timer-controls">
+        ${t.running?`<button class="timer-btn pause" onclick="pauseTimer(${t.id})">⏸ 일시정지</button>`:`<button class="timer-btn start" onclick="startTimer(${t.id})">▶ 시작</button>`}
+        <button class="timer-btn reset" onclick="resetTimer(${t.id})">↺</button>
+        <button class="timer-btn delete" onclick="deleteTimer(${t.id})">✕</button>
       </div>
     </div>`;
-    html += `</div>`;
+  }).join('');
+}
 
-    resultBox.innerHTML = html;
-    resultBox.classList.remove('hidden');
-  } catch(e) {
-    document.getElementById('weather-error-msg').textContent = '날씨 조회 실패: ' + e.message;
-    errBox.classList.remove('hidden');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '조회';
-  }
+// 게시판
+async function loadPosts() {
+  const list=document.getElementById('posts-list');
+  list.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:.85rem;">불러오는 중...</div>';
+  try{
+    const res=await fetch(`${NGROK_URL}/posts`,{headers:{'ngrok-skip-browser-warning':'1'}});
+    if(!res.ok)throw new Error('서버 연결 실패');
+    const posts=await res.json();
+    if(posts.length===0){list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">아직 게시글이 없어요. 첫 번째 글을 작성해보세요! 😊</div>';return;}
+    const catClass={'문의':'cat-general','버그':'cat-bug','기능요청':'cat-request','사용후기':'cat-review','일반':'cat-general'};
+    const catEmoji={'문의':'💬','버그':'🐛','기능요청':'💡','사용후기':'⭐','일반':'📝'};
+    list.innerHTML=posts.map(p=>`
+      <div class="post-card">
+        <div class="post-header">
+          <span class="post-category ${catClass[p.category]||'cat-general'}">${catEmoji[p.category]||'📝'} ${p.category}</span>
+          <span class="post-nickname">${p.nickname}</span>
+          <span class="post-date">${new Date(p.createdAt).toLocaleDateString('ko-KR')}</span>
+        </div>
+        <div class="post-content">${p.content.replace(/\n/g,'<br>')}</div>
+        ${p.comments&&p.comments.length>0?`
+          <div class="post-comments">
+            ${p.comments.map(c=>`<div class="comment-item"><div class="comment-admin">🔑 fourcard (운영자)</div>${c.content.replace(/\n/g,'<br>')}</div>`).join('')}
+          </div>`:''
+        }
+        <div class="admin-reply-row">
+          <input class="admin-input" id="comment-${p.id}" placeholder="관리자 답글 (관리자 키 필요)">
+          <button class="btn-secondary" style="padding:7px 12px;font-size:.8rem;" onclick="submitComment(${p.id})">답글</button>
+        </div>
+      </div>`).join('');
+  }catch(e){list.innerHTML=`<div class="error-box"><span>✕</span><span>게시판 로드 실패: ${e.message}<br><small>봇 서버가 실행 중인지 확인해주세요.</small></span></div>`;}
+}
+
+async function submitPost(){
+  const nickname=document.getElementById('post-nickname').value.trim();
+  const category=document.getElementById('post-category').value;
+  const content=document.getElementById('post-content').value.trim();
+  const msg=document.getElementById('post-submit-msg');
+  if(!nickname){msg.style.color='#e74c3c';msg.textContent='닉네임을 입력해주세요.';return;}
+  if(!content){msg.style.color='#e74c3c';msg.textContent='내용을 입력해주세요.';return;}
+  msg.style.color='var(--muted)';msg.textContent='전송 중...';
+  try{
+    const res=await fetch(`${NGROK_URL}/posts`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({nickname,category,content})});
+    if(!res.ok)throw new Error('전송 실패');
+    msg.style.color='var(--green)';msg.textContent='✓ 글이 작성되었습니다!';
+    document.getElementById('post-content').value='';
+    loadPosts();
+    setTimeout(()=>msg.textContent='',3000);
+  }catch(e){msg.style.color='#e74c3c';msg.textContent='오류: '+e.message;}
+}
+
+async function submitComment(postId){
+  const content=document.getElementById(`comment-${postId}`).value.trim();
+  const adminKey=document.getElementById('admin-key').value.trim();
+  if(!content){alert('댓글 내용을 입력하세요.');return;}
+  if(!adminKey){alert('관리자 키를 입력하세요.');return;}
+  try{
+    const res=await fetch(`${NGROK_URL}/posts/${postId}/comment`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({content,adminKey})});
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'실패');}
+    document.getElementById(`comment-${postId}`).value='';
+    loadPosts();
+  }catch(e){alert('오류: '+e.message);}
 }
 </script>
 </body>
