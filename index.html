@@ -177,6 +177,21 @@ footer a:hover{color:var(--accent);}
 .farming-tag{padding:3px 9px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:.78rem;color:var(--text);}
 .farming-tag.drop{border-color:rgba(46,204,113,.4);color:var(--green);}
 .farming-memo{font-size:.8rem;color:var(--muted);margin-top:6px;font-style:italic;}
+/* 몹 이미지 */
+.mob-list{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:4px;}
+.mob-item{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:60px;}
+.mob-img{width:60px;height:60px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));}
+.mob-img-placeholder{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;}
+.mob-name-label{font-size:.72rem;color:var(--muted);text-align:center;max-width:70px;word-break:keep-all;}
+/* 드랍 카드 */
+.drop-card-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+.drop-card{background:var(--surface);border:1px solid rgba(46,204,113,.25);border-radius:7px;padding:9px 12px;min-width:130px;cursor:pointer;transition:border-color .15s,background .15s;position:relative;}
+.drop-card:hover{border-color:rgba(46,204,113,.6);background:rgba(46,204,113,.05);}
+.drop-card-name{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:4px;}
+.drop-card-price{font-family:var(--mono);font-size:.78rem;color:var(--accent);margin-bottom:1px;}
+.drop-card-rate{font-family:var(--mono);font-size:.74rem;color:var(--muted);}
+.drop-card-live{font-size:.68rem;color:var(--green);margin-top:3px;}
+.drop-card-loading{font-size:.7rem;color:var(--muted);margin-top:3px;}
 /* 길드 카드 */
 .guild-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;}
 .guild-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
@@ -785,203 +800,138 @@ async function submitComment(postId){
 // ══════════════════════════
 // 파밍 정보
 // ══════════════════════════
+
+// maplestory.io 몹 이미지 URL
+const MOB_IMG = (id) => `https://maplestory.io/api/GMS/62/mob/${id}/render/stand`;
+
+// 몹 이름 → ID 매핑 (GMS v62 기준)
+const MOB_ID_MAP = {
+  '스켈레곤':8190003,'스켈로스':8190004,'네스트골렘':8190005,
+  '울프 스파이더':9400545,'라이칸스로프':8140000,'화이트팽':5140000,
+  '폭렬 망둥이집':8140555,'샤크':8150100,'콜드샤크':8150101,
+  '버크':8140110,'듀얼 버크':8140111,
+  '바이킹':8141000,
+  '그린코니언':8150200,'다크코니언':8150201,
+  '월묘':5100004,'다크 엑스텀프':4230106,'호돌이':5100004,
+  '마이너 좀비':6300004,'플라이아이':4230200,
+  '마스터 크로노스':4230116,'울트라 그레이':4230119,'원로 그레이':4230117,
+  '좀비 머쉬맘':6300005,'좀비버섯':2230116,'주니어 부기':3230301,
+  '천록':7220000,'비금':7220001,'묘선':7220002,
+  '아이스 드레이크':8150300,'다크 드레이크':8150302,
+  '미스릴 뮤테':4130100,'강화된 미스릴 뮤테':4110302,
+};
+
 const DEFAULT_FARMING = [
-  {
-    id:1, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"110~113",
-    mobs:["스켈로스 Lv.113","네스트골렘 Lv.110"],
-    drops:[
-      {name:"샤프 아이즈 30", price:"172,486,952", rate:"0.0002%"},
-      {name:"망토 힘 주문서 60%", price:"3,471,091", rate:"0.001%"},
-      {name:"귀 장식 체력 주문서 60%", price:"970,912", rate:"0.004%"}
-    ],
-    memo:""
-  },
-  {
-    id:2, zone:"미나르숲", spot:"남겨진 용의 둥지1", level:"110~113",
-    mobs:["스켈레곤 Lv.110","스켈로스 Lv.113"],
-    drops:[
-      {name:"샤프 아이즈 30", price:"172,486,952", rate:"0.0002%"},
-      {name:"피어싱 20", price:"11,313,333", rate:"0.0001%"},
-      {name:"장갑 공격력 주문서 10%", price:"6,360,557", rate:"0.004%"}
-    ],
-    memo:""
-  },
-  {
-    id:3, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~102",
-    mobs:["폭렬 망둥이집 Lv.90","샤크 Lv.100","콜드샤크 Lv.102"],
-    drops:[
-      {name:"샤프 아이즈 20", price:"166,100,000", rate:"0.004%"},
-      {name:"망토 힘 주문서 60%", price:"3,471,091", rate:"0.006%"},
-      {name:"망토 행운 주문서 60%", price:"2,545,580", rate:"0.006%"}
-    ],
-    memo:""
-  },
-  {
-    id:4, zone:"울프 스파이더", spot:"울프 스파이더의 굴", level:"80",
-    mobs:["울프 스파이더 Lv.80"],
-    drops:[
-      {name:"일비 표창", price:"69,151,460", rate:"0.004%"},
-      {name:"아대 공격력 주문서 10%", price:"2,342,219", rate:"0.004%"},
-      {name:"청갑충", price:"옵션에 따라 상이", rate:"0.004%"}
-    ],
-    memo:""
-  },
-  {
-    id:5, zone:"울프 스파이더", spot:"폐광: 늑대의영역3", level:"58~80",
-    mobs:["라이칸스로프 Lv.80","화이트팽 Lv.58"],
-    drops:[
-      {name:"일비 표창", price:"69,151,460", rate:"0.008%"},
-      {name:"투구 지력 주문서 100%", price:"3,943,636", rate:"0.006%"},
-      {name:"엘릭서", price:"9,336", rate:"0.2%"}
-    ],
-    memo:""
-  },
-  {
-    id:6, zone:"울프 스파이더", spot:"던전: 머쉬맘의 무덤", level:"24~65",
-    mobs:["좀비 머쉬맘 Lv.65","좀비버섯 Lv.24","주니어 부기 Lv.35"],
-    drops:[
-      {name:"일비 표창", price:"69,151,460", rate:"0.06%"},
-      {name:"창 공격력 주문서 10%", price:"1,970,866", rate:"0.006%"},
-      {name:"아대 공격력 주문서 60%", price:"1,102,448", rate:"0.4%"}
-    ],
-    memo:""
-  },
-  {
-    id:7, zone:"숲/시계탑", spot:"숲의 갈림길", level:"85~88",
-    mobs:["버크 Lv.85","듀얼 버크 Lv.88"],
-    drops:[
-      {name:"일비 표창", price:"69,151,460", rate:"0.008%"},
-      {name:"귀 장식 행운 주문서 10%", price:"4,392,000", rate:"0.004%"},
-      {name:"아대 공격력 주문서 10%", price:"2,342,219", rate:"0.002%"}
-    ],
-    memo:""
-  },
-  {
-    id:8, zone:"숲/시계탑", spot:"시계탑최하층: 뒤틀린 시간의 길<4>", level:"93",
-    mobs:["바이킹 Lv.93"],
-    drops:[
-      {name:"일비 표창", price:"69,151,460", rate:"0.006%"},
-      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.004%"},
-      {name:"석궁 공격력 주문서 10%", price:"652,388", rate:"0.004%"}
-    ],
-    memo:""
-  },
-  {
-    id:9, zone:"숲/시계탑", spot:"미나르숲: 사라진 숲", level:"100~105",
-    mobs:["그린코니언 Lv.100","다크코니언 Lv.105"],
-    drops:[
-      {name:"스탠스 20", price:"47,868,750", rate:"0.0004%"},
-      {name:"귀 장식 지력 주문서 10%", price:"5,595,451", rate:"0.001%"},
-      {name:"돌진 20", price:"1,819,384", rate:"0.002%"}
-    ],
-    memo:""
-  },
-  {
-    id:10, zone:"루더스호수/폐광", spot:"루더스호수: 까막산 입구", level:"10~57",
-    mobs:["월묘 Lv.45","다크 엑스텀프 Lv.10"],
-    drops:[
-      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
-      {name:"신발 점프력 주문서 10%", price:"3,196,868", rate:"0.006%"},
-      {name:"노란색 우산", price:"옵션에 따라 상이", rate:"0.008%"}
-    ],
-    memo:""
-  },
-  {
-    id:11, zone:"루더스호수/폐광", spot:"루더스호수: 옹달샘", level:"10~50",
-    mobs:["월묘 Lv.45","호돌이 Lv.50","다크 엑스텀프 Lv.10"],
-    drops:[
-      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
-      {name:"신발 점프력 주문서 10%", price:"3,196,868", rate:"0.006%"},
-      {name:"장갑 공격력 주문서 60%", price:"2,597,160", rate:"0.006%"}
-    ],
-    memo:""
-  },
-  {
-    id:12, zone:"루더스호수/폐광", spot:"폐광: 폐광4", level:"41~57",
-    mobs:["마이너 좀비 Lv.57","플라이아이 Lv.41"],
-    drops:[
-      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
-      {name:"망토 힘 주문서 10%", price:"1,695,937", rate:"0.004%"},
-      {name:"좀비의 잃어버린 금니", price:"20,627", rate:"4%"}
-    ],
-    memo:""
-  },
-  {
-    id:13, zone:"루디브리엄/시간의 길", spot:"루디브리엄성: 잃어버린시간<2>", level:"46",
-    mobs:["마스터 크로노스 Lv.46"],
-    drops:[
-      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
-      {name:"스태프 마력 주문서 10%", price:"1,539,033", rate:"0.004%"},
-      {name:"엘릭서", price:"9,336", rate:"1%"}
-    ],
-    memo:""
-  },
-  {
-    id:14, zone:"루디브리엄/시간의 길", spot:"시간의길<4>", level:"46",
-    mobs:["마스터 크로노스 Lv.46"],
-    drops:[
-      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
-      {name:"스태프 마력 주문서 10%", price:"1,539,033", rate:"0.004%"},
-      {name:"엘릭서", price:"9,336", rate:"1%"}
-    ],
-    memo:""
-  },
-  {
-    id:15, zone:"루디브리엄/시간의 길", spot:"루더스호수: 콜란초원5", level:"45~49",
-    mobs:["울트라 그레이 Lv.45","원로 그레이 Lv.49"],
-    drops:[
-      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
-      {name:"투구 민첩 주문서 10%", price:"7,320,000", rate:"0.006%"},
-      {name:"스태프 마력 주문서 60%", price:"496,920", rate:"0.008%"}
-    ],
-    memo:""
-  },
-  {
-    id:16, zone:"무릉도원", spot:"무릉도원: 안개 낀 숲", level:"55~58",
-    mobs:["천록 Lv.58","비금 Lv.55"],
-    drops:[
-      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.005%"},
-      {name:"장갑 공격력 주문서 60%", price:"2,597,160", rate:"0.006%"},
-      {name:"엘릭서", price:"9,336", rate:"0.1%"}
-    ],
-    memo:""
-  },
-  {
-    id:17, zone:"무릉도원", spot:"무릉도원: 요괴의 숲", level:"55~66",
-    mobs:["비금 Lv.55","묘선 Lv.66"],
-    drops:[
-      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.005%"},
-      {name:"귀 장식 지력 주문서 60%", price:"1,421,590", rate:"0.004%"},
-      {name:"엘릭서", price:"9,336", rate:"0.1%"}
-    ],
-    memo:""
-  },
-  {
-    id:18, zone:"무릉도원", spot:"던전: 차가운 요람", level:"64~68",
-    mobs:["아이스 드레이크 Lv.64","다크 드레이크 Lv.68"],
-    drops:[
-      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.006%"},
-      {name:"투구 지력 주문서 100%", price:"3,943,636", rate:"0.004%"},
-      {name:"귀 장식 체력 주문서 60%", price:"970,912", rate:"0.006%"}
-    ],
-    memo:""
-  },
-  {
-    id:19, zone:"무릉도원", spot:"알카드노 연구소: 연구소 A-1 구역", level:"47~50",
-    mobs:["미스릴 뮤테 Lv.47","강화된 미스릴 뮤테 Lv.50"],
-    drops:[
-      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.006%"},
-      {name:"투구 민첩 주문서 100%", price:"11,081,250", rate:"0.007%"},
-      {name:"석궁 공격력 주문서 10%", price:"652,388", rate:"0.007%"}
-    ],
-    memo:""
-  },
+  { id:1, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"110~113",
+    mobs:[{name:"스켈로스",lv:113},{name:"네스트골렘",lv:110}],
+    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.001%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.004%"}], memo:"" },
+  { id:2, zone:"미나르숲", spot:"남겨진 용의 둥지1", level:"110~113",
+    mobs:[{name:"스켈레곤",lv:110},{name:"스켈로스",lv:113}],
+    drops:[{name:"샤프 아이즈 30",price:"172,486,952",rate:"0.0002%"},{name:"피어싱 20",price:"11,313,333",rate:"0.0001%"},{name:"장갑 공격력 주문서 10%",price:"6,360,557",rate:"0.004%"}], memo:"" },
+  { id:3, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~102",
+    mobs:[{name:"폭렬 망둥이집",lv:90},{name:"샤크",lv:100},{name:"콜드샤크",lv:102}],
+    drops:[{name:"샤프 아이즈 20",price:"166,100,000",rate:"0.004%"},{name:"망토 힘 주문서 60%",price:"3,471,091",rate:"0.006%"},{name:"망토 행운 주문서 60%",price:"2,545,580",rate:"0.006%"}], memo:"" },
+  { id:4, zone:"울프 스파이더", spot:"울프 스파이더의 굴", level:"80",
+    mobs:[{name:"울프 스파이더",lv:80}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.004%"},{name:"청갑충",price:"옵션에 따라 상이",rate:"0.004%"}], memo:"" },
+  { id:5, zone:"울프 스파이더", spot:"폐광: 늑대의영역3", level:"58~80",
+    mobs:[{name:"라이칸스로프",lv:80},{name:"화이트팽",lv:58}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.2%"}], memo:"" },
+  { id:6, zone:"울프 스파이더", spot:"던전: 머쉬맘의 무덤", level:"24~65",
+    mobs:[{name:"좀비 머쉬맘",lv:65},{name:"좀비버섯",lv:24},{name:"주니어 부기",lv:35}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.06%"},{name:"창 공격력 주문서 10%",price:"1,970,866",rate:"0.006%"},{name:"아대 공격력 주문서 60%",price:"1,102,448",rate:"0.4%"}], memo:"" },
+  { id:7, zone:"숲/시계탑", spot:"숲의 갈림길", level:"85~88",
+    mobs:[{name:"버크",lv:85},{name:"듀얼 버크",lv:88}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.008%"},{name:"귀 장식 행운 주문서 10%",price:"4,392,000",rate:"0.004%"},{name:"아대 공격력 주문서 10%",price:"2,342,219",rate:"0.002%"}], memo:"" },
+  { id:8, zone:"숲/시계탑", spot:"시계탑최하층: 뒤틀린 시간의 길<4>", level:"93",
+    mobs:[{name:"바이킹",lv:93}],
+    drops:[{name:"일비 표창",price:"69,151,460",rate:"0.006%"},{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.004%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.004%"}], memo:"" },
+  { id:9, zone:"숲/시계탑", spot:"미나르숲: 사라진 숲", level:"100~105",
+    mobs:[{name:"그린코니언",lv:100},{name:"다크코니언",lv:105}],
+    drops:[{name:"스탠스 20",price:"47,868,750",rate:"0.0004%"},{name:"귀 장식 지력 주문서 10%",price:"5,595,451",rate:"0.001%"},{name:"돌진 20",price:"1,819,384",rate:"0.002%"}], memo:"" },
+  { id:10, zone:"루더스호수/폐광", spot:"루더스호수: 까막산 입구", level:"10~57",
+    mobs:[{name:"월묘",lv:45},{name:"다크 엑스텀프",lv:10}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"노란색 우산",price:"옵션에 따라 상이",rate:"0.008%"}], memo:"" },
+  { id:11, zone:"루더스호수/폐광", spot:"루더스호수: 옹달샘", level:"10~50",
+    mobs:[{name:"월묘",lv:45},{name:"호돌이",lv:50},{name:"다크 엑스텀프",lv:10}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"신발 점프력 주문서 10%",price:"3,196,868",rate:"0.006%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"}], memo:"" },
+  { id:12, zone:"루더스호수/폐광", spot:"폐광: 폐광4", level:"41~57",
+    mobs:[{name:"마이너 좀비",lv:57},{name:"플라이아이",lv:41}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"망토 힘 주문서 10%",price:"1,695,937",rate:"0.004%"},{name:"좀비의 잃어버린 금니",price:"20,627",rate:"4%"}], memo:"" },
+  { id:13, zone:"루디브리엄/시간의 길", spot:"루디브리엄성: 잃어버린시간<2>", level:"46",
+    mobs:[{name:"마스터 크로노스",lv:46}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}], memo:"" },
+  { id:14, zone:"루디브리엄/시간의 길", spot:"시간의길<4>", level:"46",
+    mobs:[{name:"마스터 크로노스",lv:46}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"스태프 마력 주문서 10%",price:"1,539,033",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"1%"}], memo:"" },
+  { id:15, zone:"루디브리엄/시간의 길", spot:"루더스호수: 콜란초원5", level:"45~49",
+    mobs:[{name:"울트라 그레이",lv:45},{name:"원로 그레이",lv:49}],
+    drops:[{name:"투구 민첩 주문서 60%",price:"16,653,620",rate:"0.006%"},{name:"투구 민첩 주문서 10%",price:"7,320,000",rate:"0.006%"},{name:"스태프 마력 주문서 60%",price:"496,920",rate:"0.008%"}], memo:"" },
+  { id:16, zone:"무릉도원", spot:"무릉도원: 안개 낀 숲", level:"55~58",
+    mobs:[{name:"천록",lv:58},{name:"비금",lv:55}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"장갑 공격력 주문서 60%",price:"2,597,160",rate:"0.006%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}], memo:"" },
+  { id:17, zone:"무릉도원", spot:"무릉도원: 요괴의 숲", level:"55~66",
+    mobs:[{name:"비금",lv:55},{name:"묘선",lv:66}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.005%"},{name:"귀 장식 지력 주문서 60%",price:"1,421,590",rate:"0.004%"},{name:"엘릭서",price:"9,336",rate:"0.1%"}], memo:"" },
+  { id:18, zone:"무릉도원", spot:"던전: 차가운 요람", level:"64~68",
+    mobs:[{name:"아이스 드레이크",lv:64},{name:"다크 드레이크",lv:68}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 지력 주문서 100%",price:"3,943,636",rate:"0.004%"},{name:"귀 장식 체력 주문서 60%",price:"970,912",rate:"0.006%"}], memo:"" },
+  { id:19, zone:"무릉도원", spot:"알카드노 연구소: 연구소 A-1 구역", level:"47~50",
+    mobs:[{name:"미스릴 뮤테",lv:47},{name:"강화된 미스릴 뮤테",lv:50}],
+    drops:[{name:"귀 장식 민첩 주문서 60%",price:"12,588,750",rate:"0.006%"},{name:"투구 민첩 주문서 100%",price:"11,081,250",rate:"0.007%"},{name:"석궁 공격력 주문서 10%",price:"652,388",rate:"0.007%"}], memo:"" },
 ];
 
 let farmingData = DEFAULT_FARMING;
 
-function saveFarmingLocal() {
-  localStorage.setItem('farming_data', JSON.stringify(farmingData));
+// ── 실시간 가격 캐시 ──
+const PRICE_CACHE = {};        // { 아이템명: { price, ts } }
+const PRICE_TTL = 5 * 60 * 60 * 1000; // 5시간
+
+async function fetchLivePrice(itemName) {
+  const cached = PRICE_CACHE[itemName];
+  if (cached && Date.now() - cached.ts < PRICE_TTL) return cached.price;
+  try {
+    const res = await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(itemName)}`, {
+      headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const sells = data.sell || [];
+    if (sells.length === 0) return null;
+    const price = sells[0].itemPrice;
+    PRICE_CACHE[itemName] = { price, ts: Date.now() };
+    return price;
+  } catch(e) { return null; }
+}
+
+function fmtPriceNum(n) {
+  if (!n || isNaN(n)) return null;
+  n = parseInt(n);
+  if (n >= 100000000) { const u=Math.floor(n/100000000),m=Math.floor((n%100000000)/10000); return m>0?`${u}억 ${m}만`:`${u}억`; }
+  if (n >= 10000) return Math.floor(n/10000)+'만';
+  return n.toLocaleString('ko-KR');
+}
+
+// 가격 업데이트: 렌더 후 비동기로 카드별 갱신
+async function updateDropPrices() {
+  const cards = document.querySelectorAll('.drop-card[data-item]');
+  for (const card of cards) {
+    const itemName = card.dataset.item;
+    if (!itemName) continue;
+    const liveEl = card.querySelector('.drop-card-live');
+    const loadEl = card.querySelector('.drop-card-loading');
+    if (loadEl) loadEl.textContent = '조회 중...';
+    const price = await fetchLivePrice(itemName);
+    if (price !== null) {
+      const formatted = fmtPriceNum(price);
+      const priceEl = card.querySelector('.drop-card-price');
+      if (priceEl && formatted) priceEl.textContent = '💰 ' + formatted;
+      if (liveEl) liveEl.textContent = '✓ 실시간';
+      if (loadEl) loadEl.textContent = '';
+    } else {
+      if (loadEl) loadEl.textContent = '';
+    }
+  }
 }
 
 function filterFarming() {
@@ -989,7 +939,9 @@ function filterFarming() {
   const zone = document.getElementById('farming-zone-filter').value;
   const filtered = farmingData.filter(f => {
     const matchZone = !zone || f.zone === zone;
-    const matchQ = !q || f.spot.toLowerCase().includes(q) || f.mobs.some(m=>m.toLowerCase().includes(q)) || f.drops.some(d=>(typeof d==='object'?d.name:d).toLowerCase().includes(q));
+    const matchQ = !q || f.spot.toLowerCase().includes(q)
+      || f.mobs.some(m => (m.name||m).toLowerCase().includes(q))
+      || f.drops.some(d => (d.name||d).toLowerCase().includes(q));
     return matchZone && matchQ;
   });
   renderFarming(filtered);
@@ -997,23 +949,43 @@ function filterFarming() {
 
 function renderFarming(data) {
   const list = document.getElementById('farming-list');
-  if (!data || data.length === 0) { list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;">검색 결과가 없어요.</div>'; return; }
-  list.innerHTML = data.map(f => {
-    // drops가 객체배열({name,price,rate})이면 카드형, 문자열배열이면 태그형
-    const isRich = f.drops.length > 0 && typeof f.drops[0] === 'object';
-    const dropsHtml = isRich
-      ? `<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;">
-          ${f.drops.map(d=>`
-            <div style="background:var(--surface);border:1px solid rgba(46,204,113,.35);border-radius:7px;padding:8px 11px;min-width:130px;text-align:center;">
-              <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:4px;">📜 ${d.name}</div>
-              <div style="font-family:var(--mono);font-size:.78rem;color:var(--accent);">💰 ${d.price}</div>
-              <div style="font-family:var(--mono);font-size:.75rem;color:#e8a020;opacity:.75;">${d.rate}</div>
-            </div>`).join('')}
-        </div>`
-      : `<div class="farming-tags">${f.drops.map(d=>`<span class="farming-tag drop">${d}</span>`).join('')}</div>`;
+  if (!data || data.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px;">검색 결과가 없어요.</div>';
+    return;
+  }
 
-    return `
-    <div class="farming-card">
+  list.innerHTML = data.map(f => {
+    // 몹 이미지
+    const mobsHtml = f.mobs.map(m => {
+      const name = m.name || m;
+      const lv = m.lv || '';
+      const mobId = MOB_ID_MAP[name];
+      const imgHtml = mobId
+        ? `<img class="mob-img" src="${MOB_IMG(mobId)}" alt="${name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <div class="mob-img-placeholder" style="display:none;">👾</div>`
+        : `<div class="mob-img-placeholder">👾</div>`;
+      return `<div class="mob-item">
+        ${imgHtml}
+        <span class="mob-name-label">${name}${lv ? ` <span style="color:var(--muted);font-size:.68rem">Lv.${lv}</span>` : ''}</span>
+      </div>`;
+    }).join('');
+
+    // 드랍 카드
+    const dropsHtml = f.drops.map(d => {
+      const name = d.name || d;
+      const price = d.price || '-';
+      const rate = d.rate || '';
+      // 가격 조회 가능한 아이템만 data-item 설정 (옵션에 따라 상이 제외)
+      const canFetch = price !== '옵션에 따라 상이';
+      return `<div class="drop-card"${canFetch ? ` data-item="${name}"` : ''}>
+        <div class="drop-card-name">📜 ${name}</div>
+        <div class="drop-card-price">💰 ${price}</div>
+        <div class="drop-card-rate">${rate}</div>
+        ${canFetch ? '<div class="drop-card-loading"></div><div class="drop-card-live" style="display:none;"></div>' : ''}
+      </div>`;
+    }).join('');
+
+    return `<div class="farming-card">
       <div class="farming-header">
         <span class="farming-spot-name">🗺️ ${f.spot}</span>
         <span class="farming-zone-badge">${f.zone}</span>
@@ -1021,23 +993,27 @@ function renderFarming(data) {
       </div>
       <div class="farming-section">
         <div class="farming-section-title">👾 몹</div>
-        <div class="farming-tags">${f.mobs.map(m=>`<span class="farming-tag">${m}</span>`).join('')}</div>
+        <div class="mob-list">${mobsHtml}</div>
       </div>
       <div class="farming-section">
         <div class="farming-section-title">💎 주요 드랍</div>
-        ${dropsHtml}
+        <div class="drop-card-grid">${dropsHtml}</div>
       </div>
-      ${f.memo?`<div class="farming-memo">💡 ${f.memo}</div>`:''}
+      ${f.memo ? `<div class="farming-memo">💡 ${f.memo}</div>` : ''}
     </div>`;
   }).join('');
+
+  // 렌더 완료 후 실시간 가격 갱신
+  updateDropPrices();
 }
 
 function initFarming() {
-  // 구역 필터 옵션 채우기
-  const zones = [...new Set(farmingData.map(f=>f.zone))];
+  const zones = [...new Set(farmingData.map(f => f.zone))];
   const sel = document.getElementById('farming-zone-filter');
-  zones.forEach(z => { const o=document.createElement('option'); o.value=z; o.textContent=z; sel.appendChild(o); });
+  zones.forEach(z => { const o = document.createElement('option'); o.value = z; o.textContent = z; sel.appendChild(o); });
   renderFarming(farmingData);
+  // 5시간마다 자동 갱신
+  setInterval(updateDropPrices, 5 * 60 * 60 * 1000);
 }
 initFarming();
 
@@ -1054,9 +1030,11 @@ async function addFarmingSpot() {
   if (adminKey !== 'fourcard2024') { msg.style.color='#e74c3c'; msg.textContent='관리자 키가 틀렸어요.'; return; }
   if (!zone||!spot||!level||mobs.length===0||drops.length===0) { msg.style.color='#e74c3c'; msg.textContent='모든 항목을 입력해주세요.'; return; }
 
-  const newEntry = { id: Date.now(), zone, spot, level, mobs, drops, memo };
+  const newEntry = { id: Date.now(), zone, spot, level,
+    mobs: mobs.map(m => ({ name: m, lv: '' })),
+    drops: drops.map(d => ({ name: d, price: '-', rate: '-' })),
+    memo };
   farmingData.push(newEntry);
-  saveFarmingLocal();
 
   // 봇 서버에도 저장 시도
   try {
