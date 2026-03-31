@@ -1021,7 +1021,6 @@ async function applyFilter() {
   const btn = document.querySelector('#item-result .btn-primary');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> 조회 중...';
 
-  const params = new URLSearchParams({ q: selectedItem.name });
   const fields = {
     'f-lowprice': 'lowPrice', 'f-highprice': 'highPrice',
     'f-lowpad': 'lowincPAD', 'f-highpad': 'highincPAD',
@@ -1030,8 +1029,9 @@ async function applyFilter() {
     'f-lowupgrade': 'lowUpgrade', 'f-highupgrade': 'highUpgrade',
     'f-lowtuc': 'lowTuc', 'f-hightuc': 'highTuc',
   };
+  const params = new URLSearchParams({ q: selectedItem.name });
   for (const [id, param] of Object.entries(fields)) {
-    const val = document.getElementById(id)?.value;
+    const val = document.getElementById(id)?.value.trim();
     if (val) params.set(param, val);
   }
 
@@ -1040,9 +1040,11 @@ async function applyFilter() {
       headers: { 'ngrok-skip-browser-warning': '1', 'Accept': 'application/json' }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    renderTradeResult(await res.json(), document.getElementById('filter-result'));
+    const filterResult = document.querySelector('#item-result #filter-result') || document.getElementById('filter-result');
+    renderTradeResult(await res.json(), filterResult);
   } catch(e) {
-    document.getElementById('filter-result').innerHTML = `<div class="error-box">✕ 오류: ${e.message}</div>`;
+    const filterResult = document.querySelector('#item-result #filter-result') || document.getElementById('filter-result');
+    if (filterResult) filterResult.innerHTML = `<div class="error-box">✕ 오류: ${e.message}</div>`;
   } finally {
     btn.disabled = false; btn.innerHTML = '🔍 필터 적용';
   }
