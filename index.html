@@ -164,7 +164,29 @@ footer a:hover{color:var(--accent);}
 .code-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;margin-bottom:4px;font-size:.82rem;}
 .code-badge{font-family:var(--mono);color:var(--accent);font-weight:700;flex:1;}
 .code-name{color:var(--muted);font-size:.78rem;}
-.code-disabled{opacity:.4;}</style>
+.code-disabled{opacity:.4;}
+/* 파밍 카드 */
+.farming-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;}
+.farming-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.farming-spot-name{font-weight:700;font-size:.95rem;}
+.farming-zone-badge{padding:2px 8px;background:rgba(232,160,32,.15);color:var(--accent);border:1px solid rgba(232,160,32,.3);border-radius:12px;font-size:.72rem;}
+.farming-level-badge{padding:2px 8px;background:rgba(52,152,219,.15);color:#3498db;border:1px solid rgba(52,152,219,.3);border-radius:12px;font-size:.72rem;}
+.farming-section{margin-bottom:8px;}
+.farming-section-title{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.farming-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.farming-tag{padding:3px 9px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:.78rem;color:var(--text);}
+.farming-tag.drop{border-color:rgba(46,204,113,.4);color:var(--green);}
+.farming-memo{font-size:.8rem;color:var(--muted);margin-top:6px;font-style:italic;}
+/* 길드 카드 */
+.guild-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px;}
+.guild-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.guild-name-badge{font-family:var(--display);font-size:1rem;color:var(--accent);}
+.guild-nick{font-size:.85rem;color:var(--muted);}
+.guild-date{font-size:.75rem;color:var(--muted);margin-left:auto;}
+.guild-content{font-size:.88rem;line-height:1.8;color:var(--text);white-space:pre-wrap;margin-bottom:10px;}
+.guild-image-el{max-width:100%;border-radius:6px;margin-bottom:10px;border:1px solid var(--border);}
+.guild-contact{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.3);border-radius:6px;font-size:.82rem;color:var(--accent);}
+.guild-image-preview-el{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);}</style>
 </style>
 </head>
 <body>
@@ -187,6 +209,8 @@ footer a:hover{color:var(--accent);}
   <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')"><span>🌤️</span>날씨</button>
   <button class="tab-btn" data-tab="timer" onclick="switchTab('timer')"><span>⏱️</span>타이머</button>
   <button class="tab-btn" data-tab="board" onclick="switchTab('board');loadPosts()"><span>📋</span>문의/후기</button>
+  <button class="tab-btn" data-tab="farming" onclick="switchTab('farming')"><span>🗺️</span>파밍정보</button>
+  <button class="tab-btn" data-tab="guild" onclick="switchTab('guild');loadGuildPosts()"><span>⚔️</span>길드모집</button>
 </nav>
 <main>
 <!-- 배/엘리베이터 -->
@@ -323,11 +347,96 @@ footer a:hover{color:var(--accent);}
     <div style="font-size:.72rem;color:var(--muted)">댓글 작성 시 위 키를 입력하세요.</div>
   </div>
 </div>
-</main>
+<!-- 파밍 정보 -->
+<div id="tab-farming" class="tab-panel">
+  <div class="section-title">🗺️ 파밍 정보</div>
+  <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;">
+    <input class="search-input" id="farming-search" placeholder="몹명 또는 아이템명 검색..." style="flex:1;min-width:160px;" oninput="filterFarming()">
+    <select class="form-select" id="farming-zone-filter" style="width:auto;" onchange="filterFarming()">
+      <option value="">전체 구역</option>
+    </select>
+  </div>
+  <div id="farming-list"></div>
+
+  <!-- 관리자 추가 -->
+  <div style="margin-top:20px;">
+    <div style="font-weight:700;font-size:.9rem;margin-bottom:10px;color:var(--muted);">🔐 파밍 정보 관리 (관리자)</div>
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">관리자 키</label>
+        <input class="form-input" id="farming-admin-key" type="password" placeholder="관리자 키">
+      </div>
+      <div class="form-group">
+        <label class="form-label">구역</label>
+        <input class="form-input" id="farming-zone" placeholder="예: 미나르숲">
+      </div>
+      <div class="form-group">
+        <label class="form-label">사냥터명</label>
+        <input class="form-input" id="farming-spot" placeholder="예: 큰 둥지 봉우리">
+      </div>
+      <div class="form-group">
+        <label class="form-label">추천 레벨</label>
+        <input class="form-input" id="farming-level" placeholder="예: 100~120">
+      </div>
+      <div class="form-group">
+        <label class="form-label">몹 이름 (쉼표로 구분)</label>
+        <input class="form-input" id="farming-mobs" placeholder="예: 와이번, 블루 와이번">
+      </div>
+      <div class="form-group">
+        <label class="form-label">주요 드랍 아이템 (쉼표로 구분)</label>
+        <textarea class="form-textarea" id="farming-drops" style="min-height:70px;" placeholder="예: 드래곤 스킨, 와이번 스케일, 망토 공격력 주문서 60%"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">메모</label>
+        <input class="form-input" id="farming-memo" placeholder="예: 경험치 효율 최상, 파티 추천">
+      </div>
+      <button class="btn-primary" onclick="addFarmingSpot()" style="width:100%;">파밍 정보 추가</button>
+      <div id="farming-add-msg" style="margin-top:8px;font-size:.82rem;text-align:center;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 길드 모집 -->
+<div id="tab-guild" class="tab-panel">
+  <div class="section-title">⚔️ 길드원 모집</div>
+
+  <!-- 글쓰기 -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="font-weight:700;margin-bottom:12px;font-size:.95rem;">📝 모집 공고 작성</div>
+    <div class="form-group">
+      <label class="form-label">길드명</label>
+      <input class="form-input" id="guild-name" placeholder="길드명" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label">대표자 닉네임</label>
+      <input class="form-input" id="guild-nickname" placeholder="닉네임" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label">모집 내용 (최대 2000자)</label>
+      <textarea class="form-textarea" id="guild-content" style="min-height:160px;" placeholder="길드 소개, 모집 조건, 활동 시간 등을 자유롭게 적어주세요..." maxlength="2000"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">포스터/이미지 (선택)</label>
+      <input type="file" id="guild-image" accept="image/*" style="display:none;" onchange="previewGuildImage(event)">
+      <button class="btn-secondary" onclick="document.getElementById('guild-image').click()" style="width:100%;padding:10px;">🖼️ 이미지 첨부</button>
+      <div id="guild-image-preview" style="margin-top:8px;"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">연락처 (디스코드 ID 등)</label>
+      <input class="form-input" id="guild-contact" placeholder="예: fourcard#1234" maxlength="50">
+    </div>
+    <button class="btn-primary" onclick="submitGuildPost()" style="width:100%;">모집 공고 등록</button>
+    <div id="guild-submit-msg" style="margin-top:8px;font-size:.82rem;text-align:center;"></div>
+  </div>
+
+  <!-- 목록 -->
+  <div style="font-weight:700;margin-bottom:10px;font-size:.9rem;">📌 모집 공고 목록</div>
+  <div id="guild-list"><div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">로딩 중...</div></div>
+</div>
 <footer>
   <div style="margin-bottom:4px;">제작 · 운영: 표식길드 <strong style="color:var(--accent)">fourcard</strong></div>
   <div style="margin-bottom:4px;">후원계좌: 신한 110-376-464404 손x원</div>
-  <div>© 2026 메랜비서 · <a href="https://mapleland.gg" target="_blank">mapleland.gg</a></div>
+  <div>© 2026 메랜비서 · 문의 디스코드 j_son1993</div>
 </footer>
 <script>
 const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.dev";
@@ -670,6 +779,186 @@ async function submitComment(postId){
     document.getElementById(`comment-${postId}`).value='';
     loadPosts();
   }catch(e){alert('오류: '+e.message);}
+}
+</script>
+<script>
+// ══════════════════════════
+// 파밍 정보
+// ══════════════════════════
+const DEFAULT_FARMING = [
+  { id:1, zone:"엘나스", spot:"와이번 둥지", level:"100~115", mobs:["와이번","블루 와이번"], drops:["드래곤 스킨","와이번 스케일","망토 공격력 주문서 60%","장갑 공격력 주문서 60%"], memo:"경험치 효율 최상, 드랍 아이템 고가" },
+  { id:2, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"105~120", mobs:["와이번","드래곤"], drops:["드래곤 스킨","블루 드래곤 스케일","드래곤 퍼플 슬레브","드래곤 그린 슬레브"], memo:"고레벨 파밍 명소, 사냥터 시세 참고" },
+  { id:3, zone:"미나르숲", spot:"남겨진 용의 둥지", level:"110~125", mobs:["레드 드래곤","와이번"], drops:["드래곤 스킨","레드 드래곤 스케일","망토 마력 주문서 60%"], memo:"레드 드래곤 스케일 고가" },
+  { id:4, zone:"미나르숲", spot:"망가진 용의 둥지", level:"108~122", mobs:["그린 드래곤","드래곤"], drops:["드래곤 스킨","그린 드래곤 스케일","장갑 마력 주문서 60%"], memo:"그린 드래곤 스케일 드랍" },
+  { id:5, zone:"아쿠아로드", spot:"깊은 바다 협곡2", level:"100~115", mobs:["씨 락서스","바다뱀"], drops:["씨 락서스 비늘","바다뱀 껍질","전신 갑옷 민첩 주문서 60%"], memo:"아쿠아로드 대표 사냥터" },
+  { id:6, zone:"아쿠아로드", spot:"위험한 바다 협곡2", level:"95~110", mobs:["씨 락서스","상어"], drops:["씨 락서스 비늘","상어 지느러미","신발 스피드 주문서 60%"], memo:"중반 레벨 추천" },
+  { id:7, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~105", mobs:["돌연변이 문어","서커","바다 유령"], drops:["돌연변이 문어 먹물","장갑 공격력 주문서 10%","귀 장식 주문서"], memo:"귀 장식 주문서 드랍으로 유명" },
+  { id:8, zone:"루더스호수", spot:"까막산 입구", level:"85~100", mobs:["까마귀","크로우"],  drops:["까마귀 깃털","크로우 발톱","전신 갑옷 공격력 주문서 60%"], memo:"중반 레벨 파밍터" },
+  { id:9, zone:"루디브리엄", spot:"시간의 길4", level:"100~120", mobs:["시간의 파수꾼","크로노스"], drops:["시간의 파편","크로노스 스크롤","방패 마력 주문서 60%"], memo:"경험치+파밍 겸용" },
+  { id:10, zone:"루디브리엄", spot:"잃어버린시간2", level:"105~120", mobs:["잃어버린 크로노스","시간의 수호자"], drops:["시간의 파편","잃어버린 크로노스 스크롤","장갑 공격력 주문서 60%"], memo:"고레벨 루디 사냥터" },
+  { id:11, zone:"히든스트리트", spot:"블루 와이번의 둥지", level:"103~118", mobs:["블루 와이번"], drops:["블루 와이번 스케일","드래곤 스킨","망토 공격력 주문서 60%"], memo:"블루 와이번 스케일 전문 파밍" },
+  { id:12, zone:"히든스트리트", spot:"관계자 외 출입금지", level:"95~110", mobs:["기계 경비병","로봇"], drops:["기계 부품","로봇 배터리","장갑 공격력 주문서 60%"], memo:"파티 사냥 추천" },
+  { id:13, zone:"미나르숲", spot:"협곡의 동쪽길", level:"100~115", mobs:["산양","록 스피릿"], drops:["산양 뿔","록 스피릿 결정","신발 점프 주문서 60%"], memo:"적당한 밀도, 초보 파밍터" },
+  { id:14, zone:"미나르숲", spot:"산양의 골짜기 1", level:"95~108", mobs:["산양","어린 산양"], drops:["산양 뿔","장갑 민첩 주문서 60%"], memo:"레벨 올리기 좋음" },
+];
+
+let farmingData = JSON.parse(localStorage.getItem('farming_data') || 'null') || DEFAULT_FARMING;
+
+function saveFarmingLocal() {
+  localStorage.setItem('farming_data', JSON.stringify(farmingData));
+}
+
+function filterFarming() {
+  const q = document.getElementById('farming-search').value.toLowerCase();
+  const zone = document.getElementById('farming-zone-filter').value;
+  const filtered = farmingData.filter(f => {
+    const matchZone = !zone || f.zone === zone;
+    const matchQ = !q || f.spot.toLowerCase().includes(q) || f.mobs.some(m=>m.toLowerCase().includes(q)) || f.drops.some(d=>d.toLowerCase().includes(q));
+    return matchZone && matchQ;
+  });
+  renderFarming(filtered);
+}
+
+function renderFarming(data) {
+  const list = document.getElementById('farming-list');
+  if (!data || data.length === 0) { list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;">검색 결과가 없어요.</div>'; return; }
+  list.innerHTML = data.map(f => `
+    <div class="farming-card">
+      <div class="farming-header">
+        <span class="farming-spot-name">🗺️ ${f.spot}</span>
+        <span class="farming-zone-badge">${f.zone}</span>
+        <span class="farming-level-badge">Lv. ${f.level}</span>
+      </div>
+      <div class="farming-section">
+        <div class="farming-section-title">👾 몹</div>
+        <div class="farming-tags">${f.mobs.map(m=>`<span class="farming-tag">${m}</span>`).join('')}</div>
+      </div>
+      <div class="farming-section">
+        <div class="farming-section-title">💎 주요 드랍</div>
+        <div class="farming-tags">${f.drops.map(d=>`<span class="farming-tag drop">${d}</span>`).join('')}</div>
+      </div>
+      ${f.memo?`<div class="farming-memo">💡 ${f.memo}</div>`:''}
+    </div>`).join('');
+}
+
+function initFarming() {
+  // 구역 필터 옵션 채우기
+  const zones = [...new Set(farmingData.map(f=>f.zone))];
+  const sel = document.getElementById('farming-zone-filter');
+  zones.forEach(z => { const o=document.createElement('option'); o.value=z; o.textContent=z; sel.appendChild(o); });
+  renderFarming(farmingData);
+}
+initFarming();
+
+async function addFarmingSpot() {
+  const adminKey = document.getElementById('farming-admin-key').value.trim();
+  const zone = document.getElementById('farming-zone').value.trim();
+  const spot = document.getElementById('farming-spot').value.trim();
+  const level = document.getElementById('farming-level').value.trim();
+  const mobs = document.getElementById('farming-mobs').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const drops = document.getElementById('farming-drops').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const memo = document.getElementById('farming-memo').value.trim();
+  const msg = document.getElementById('farming-add-msg');
+
+  if (adminKey !== 'fourcard2024') { msg.style.color='#e74c3c'; msg.textContent='관리자 키가 틀렸어요.'; return; }
+  if (!zone||!spot||!level||mobs.length===0||drops.length===0) { msg.style.color='#e74c3c'; msg.textContent='모든 항목을 입력해주세요.'; return; }
+
+  const newEntry = { id: Date.now(), zone, spot, level, mobs, drops, memo };
+  farmingData.push(newEntry);
+  saveFarmingLocal();
+
+  // 봇 서버에도 저장 시도
+  try {
+    await fetch(`${NGROK_URL}/farming`, { method:'POST', headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'}, body: JSON.stringify({adminKey, entry: newEntry}) });
+  } catch(e) {}
+
+  msg.style.color='var(--green)'; msg.textContent='✓ 추가됐어요!';
+  document.getElementById('farming-zone').value='';
+  document.getElementById('farming-spot').value='';
+  document.getElementById('farming-level').value='';
+  document.getElementById('farming-mobs').value='';
+  document.getElementById('farming-drops').value='';
+  document.getElementById('farming-memo').value='';
+
+  // 구역 필터 업데이트
+  const zones = [...new Set(farmingData.map(f=>f.zone))];
+  const sel = document.getElementById('farming-zone-filter');
+  sel.innerHTML = '<option value="">전체 구역</option>';
+  zones.forEach(z => { const o=document.createElement('option'); o.value=z; o.textContent=z; sel.appendChild(o); });
+  filterFarming();
+  setTimeout(()=>msg.textContent='', 3000);
+}
+
+// ══════════════════════════
+// 길드 모집 게시판
+// ══════════════════════════
+let guildImageBase64 = null;
+
+function previewGuildImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    guildImageBase64 = e.target.result;
+    document.getElementById('guild-image-preview').innerHTML =
+      `<img src="${e.target.result}" class="guild-image-preview-el"><div style="font-size:.75rem;color:var(--green);margin-top:4px;">✓ 이미지 첨부됨</div>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function submitGuildPost() {
+  const guildName = document.getElementById('guild-name').value.trim();
+  const nickname = document.getElementById('guild-nickname').value.trim();
+  const content = document.getElementById('guild-content').value.trim();
+  const contact = document.getElementById('guild-contact').value.trim();
+  const msg = document.getElementById('guild-submit-msg');
+
+  if (!guildName) { msg.style.color='#e74c3c'; msg.textContent='길드명을 입력해주세요.'; return; }
+  if (!nickname) { msg.style.color='#e74c3c'; msg.textContent='닉네임을 입력해주세요.'; return; }
+  if (!content) { msg.style.color='#e74c3c'; msg.textContent='내용을 입력해주세요.'; return; }
+
+  msg.style.color='var(--muted)'; msg.textContent='등록 중...';
+  try {
+    const res = await fetch(`${NGROK_URL}/guild-posts`, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'ngrok-skip-browser-warning':'1' },
+      body: JSON.stringify({ guildName, nickname, content, contact, image: guildImageBase64 })
+    });
+    if (!res.ok) throw new Error('서버 오류');
+    msg.style.color='var(--green)'; msg.textContent='✓ 모집 공고가 등록됐어요!';
+    document.getElementById('guild-name').value='';
+    document.getElementById('guild-nickname').value='';
+    document.getElementById('guild-content').value='';
+    document.getElementById('guild-contact').value='';
+    document.getElementById('guild-image-preview').innerHTML='';
+    guildImageBase64 = null;
+    loadGuildPosts();
+    setTimeout(()=>msg.textContent='', 3000);
+  } catch(e) { msg.style.color='#e74c3c'; msg.textContent='오류: '+e.message; }
+}
+
+async function loadGuildPosts() {
+  const list = document.getElementById('guild-list');
+  list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:20px;font-size:.85rem;">불러오는 중...</div>';
+  try {
+    const res = await fetch(`${NGROK_URL}/guild-posts`, { headers:{'ngrok-skip-browser-warning':'1'} });
+    if (!res.ok) throw new Error('서버 연결 실패');
+    const posts = await res.json();
+    if (posts.length === 0) { list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;font-size:.85rem;">아직 모집 공고가 없어요. 첫 번째 공고를 올려보세요! ⚔️</div>'; return; }
+    list.innerHTML = posts.map(p => `
+      <div class="guild-card">
+        <div class="guild-header">
+          <span class="guild-name-badge">⚔️ ${p.guildName}</span>
+          <span class="guild-nick">${p.nickname}</span>
+          <span class="guild-date">${new Date(p.createdAt).toLocaleDateString('ko-KR')}</span>
+        </div>
+        ${p.image ? `<img src="${p.image}" class="guild-image-el" alt="길드 포스터">` : ''}
+        <div class="guild-content">${p.content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        ${p.contact ? `<div class="guild-contact">💬 ${p.contact}</div>` : ''}
+      </div>`).join('');
+  } catch(e) {
+    list.innerHTML = `<div class="error-box"><span>✕</span><span>로드 실패: ${e.message}<br><small>봇 서버가 실행 중인지 확인해주세요.</small></span></div>`;
+  }
 }
 </script>
 </body>
