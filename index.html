@@ -502,25 +502,25 @@ function updateClock() {
 }
 setInterval(updateClock,1000); updateClock();
 
-// ── 접속자 수 (localStorage 기반 간이 카운팅) ──
+// ── 접속자 수 (SSE 실시간 카운팅) ──
 (function(){
-  const KEY='mrlv_visitors', SID='mrlv_'+Math.random().toString(36).slice(2), TTL=60000;
-  function heartbeat(){
+  function connectSSE(){
     try{
-      let d=JSON.parse(localStorage.getItem(KEY)||'{}');
-      d[SID]=Date.now();
-      Object.keys(d).forEach(k=>{if(Date.now()-d[k]>TTL)delete d[k];});
-      localStorage.setItem(KEY,JSON.stringify(d));
-      const cnt=Object.keys(d).length;
-      const el=document.getElementById('online-count');
-      if(el)el.textContent=cnt;
+      const es=new EventSource(NGROK_URL+'/viewers');
+      es.onmessage=function(e){
+        try{
+          const data=JSON.parse(e.data);
+          const el=document.getElementById('online-count');
+          if(el&&data.viewers!=null)el.textContent=data.viewers;
+        }catch(err){}
+      };
+      es.onerror=function(){
+        es.close();
+        setTimeout(connectSSE,5000);
+      };
     }catch(e){}
   }
-  heartbeat();
-  setInterval(heartbeat,20000);
-  window.addEventListener('beforeunload',()=>{
-    try{let d=JSON.parse(localStorage.getItem(KEY)||'{}');delete d[SID];localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}
-  });
+  connectSSE();
 })();
 
 // ── PIP 타이머 (팝업 윈도우) ──
