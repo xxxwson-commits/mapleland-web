@@ -542,13 +542,32 @@ function updatePIP(){
     return `<div class="pip-timer-item"><span class="pip-timer-name">${t.name}</span><span class="pip-timer-val ${cls}">${t.finished?'⏰':m+':'+s}</span></div>`;
   }).join('');
 }
-// PIP 드래그
+// PIP 드래그 - 화면 밖으로도 자유롭게 이동
 (function(){
   const el=document.getElementById('pip-overlay');
-  let ox=0,oy=0,dragging=false;
-  el.addEventListener('mousedown',e=>{if(e.target.classList.contains('pip-close'))return;dragging=true;ox=e.clientX-el.offsetLeft;oy=e.clientY-el.offsetTop;});
-  document.addEventListener('mousemove',e=>{if(!dragging)return;el.style.left=Math.max(0,Math.min(window.innerWidth-el.offsetWidth,e.clientX-ox))+'px';el.style.right='auto';el.style.bottom='auto';el.style.top=Math.max(0,Math.min(window.innerHeight-el.offsetHeight,e.clientY-oy))+'px';});
-  document.addEventListener('mouseup',()=>dragging=false);
+  let dragging=false,ox=0,oy=0;
+  function startDrag(cx,cy){
+    dragging=true;
+    const rect=el.getBoundingClientRect();
+    ox=cx-rect.left; oy=cy-rect.top;
+    el.style.right='auto'; el.style.bottom='auto';
+    el.style.left=rect.left+'px'; el.style.top=rect.top+'px';
+  }
+  function moveDrag(cx,cy){
+    if(!dragging)return;
+    // 제한 없이 자유롭게 이동 (화면 밖도 가능)
+    el.style.left=(cx-ox)+'px';
+    el.style.top=(cy-oy)+'px';
+  }
+  function endDrag(){ dragging=false; }
+  // 마우스
+  el.addEventListener('mousedown',e=>{if(e.target.classList.contains('pip-close'))return;startDrag(e.clientX,e.clientY);e.preventDefault();});
+  document.addEventListener('mousemove',e=>{moveDrag(e.clientX,e.clientY);});
+  document.addEventListener('mouseup',endDrag);
+  // 터치
+  el.addEventListener('touchstart',e=>{if(e.target.classList.contains('pip-close'))return;const t=e.touches[0];startDrag(t.clientX,t.clientY);},{passive:true});
+  document.addEventListener('touchmove',e=>{if(!dragging)return;const t=e.touches[0];moveDrag(t.clientX,t.clientY);e.preventDefault();},{passive:false});
+  document.addEventListener('touchend',endDrag);
 })();
 
 // 탭
@@ -586,7 +605,8 @@ async function fetchSpot(btn,keyword,name,emoji){
   const errBox=document.getElementById('spot-error'),resBox=document.getElementById('spot-result');
   errBox.classList.add('hidden');resBox.classList.add('hidden');
   const orig=btn.innerHTML;btn.disabled=true;btn.innerHTML=`<span class="spinner"></span> 조회 중...`;
-  const shopUrl=`https://mashop.kr/search?q=${encodeURIComponent(keyword)}`;
+  // mashop.kr 자리 시세: /jari/맵이름(인코딩) - keyword가 실제 맵 풀이름
+  const shopUrl=`https://mashop.kr/jari/${encodeURIComponent(keyword)}`;
   try{
     const enc=encodeURIComponent(keyword);
     const [listRaw,statRaw]=await Promise.all([proxyFetch(`https://api.mashop.kr/api/maps?keyword=${enc}`),proxyFetch(`https://api.mashop.kr/api/maps/price-stat?keyword=${enc}`)]);
@@ -640,7 +660,7 @@ async function searchItem(){
       document.getElementById('item-error-msg').textContent=`'${keyword}' 아이템을 찾을 수 없습니다.`;errBox.classList.remove('hidden');return;
     }
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();selectedItem={name:data.name};showFilterUI(data);
+    const data=await res.json();selectedItem={name:data.name, id:data.id||data.itemId||null};showFilterUI(data);
   }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
   finally{btn.disabled=false;btn.innerHTML='검색';}
 }
@@ -652,7 +672,7 @@ async function fetchItemByName(name){
   try{
     const res=await fetch(`${NGROK_URL}/item?q=${encodeURIComponent(name)}`,{headers:{'ngrok-skip-browser-warning':'1','Accept':'application/json'}});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();selectedItem={name:data.name};showFilterUI(data);
+    const data=await res.json();selectedItem={name:data.name, id:data.id||data.itemId||null};showFilterUI(data);
   }catch(e){document.getElementById('item-error-msg').textContent='오류: '+e.message;errBox.classList.remove('hidden');}
   finally{btn.disabled=false;btn.innerHTML='검색';}
 }
@@ -693,10 +713,14 @@ async function applyFilter(){
 function renderTradeResult(data,container){
   if(!container)return;
   const itemName=selectedItem?selectedItem.name:'';
-  const ggUrl=`https://mapleland.gg/market?name=${encodeURIComponent(itemName)}`;
+  const itemId=selectedItem?selectedItem.id:null;
+  // mapleland.gg: ID 있으면 /item/{id}, 없으면 시장 메인
+  const ggUrl=itemId
+    ? `https://mapleland.gg/item/${itemId}`
+    : `https://mapleland.gg/market`;
   let html=`<div class="item-result-title" style="margin-top:8px;">💸 팝니다 <span style="font-size:.68rem;color:var(--muted)">(클릭 시 이동)</span></div>`;
   if(data.sell&&data.sell.length>0){
-    data.sell.forEach(e=>{
+    data.sell.slice(0,5).forEach(e=>{
       const price=formatPrice(e.itemPrice||0);
       const comment=e.comment?` · ${e.comment}`:'';
       const pad=e.incPAD?` 공+${e.incPAD}`:'';
@@ -993,7 +1017,7 @@ const MOB_ID_MAP = {
   '마이너 좀비': 5130108, // Miner Zombie
   '플라이아이': 4230107,  // Flyeye
   // 루디브리엄
-  '마스터 크로노스': 4230116, // Master Chronos
+  '마스터 크로노스': 8200001, // Master Chronos (루디브리엄)
   '울트라 그레이': 4230119,
   '원로 그레이': 4230117,
   // 무릉도원
@@ -1347,13 +1371,18 @@ async function submitEditGuild(id){
 }
 
 async function deleteGuild(id){
-  const pw=prompt('삭제를 위해 작성 시 설정한 암호를 입력하세요:');
+  const pw=prompt('삭제를 위해 작성 시 설정한 암호를 입력하세요:\n(관리자라면 관리자 키를 입력하세요)');
   if(!pw)return;
   try{
-    const res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({password:pw})});
-    if(!res.ok){const e=await res.json();throw new Error(e.error||'삭제 실패');}
+    // 일반 암호로 시도
+    let res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({password:pw})});
+    // 실패 시 관리자 키로 재시도
+    if(!res.ok){
+      res=await fetch(`${NGROK_URL}/guild-posts/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'1'},body:JSON.stringify({adminKey:pw,password:pw})});
+    }
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'삭제 실패');}
     alert('삭제됐어요!');loadGuildPosts();
-  }catch(e){alert('오류: '+e.message);}
+  }catch(e){alert('오류: '+e.message+'\n\n서버가 꺼져 있거나 암호가 다릅니다.');}
 }
 </script>
 </body>
