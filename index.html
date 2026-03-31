@@ -208,9 +208,9 @@ footer a:hover{color:var(--accent);}
   <button class="tab-btn" data-tab="item" onclick="switchTab('item')"><span>💰</span>아이템 시세</button>
   <button class="tab-btn" data-tab="weather" onclick="switchTab('weather')"><span>🌤️</span>날씨</button>
   <button class="tab-btn" data-tab="timer" onclick="switchTab('timer')"><span>⏱️</span>타이머</button>
-  <button class="tab-btn" data-tab="board" onclick="switchTab('board');loadPosts()"><span>📋</span>문의/후기</button>
   <button class="tab-btn" data-tab="farming" onclick="switchTab('farming')"><span>🗺️</span>파밍정보</button>
   <button class="tab-btn" data-tab="guild" onclick="switchTab('guild');loadGuildPosts()"><span>⚔️</span>길드모집</button>
+  <button class="tab-btn" data-tab="board" onclick="switchTab('board');loadPosts()"><span>📋</span>문의/후기</button>
 </nav>
 <main>
 <!-- 배/엘리베이터 -->
@@ -436,7 +436,7 @@ footer a:hover{color:var(--accent);}
 <footer>
   <div style="margin-bottom:4px;">제작 · 운영: 표식길드 <strong style="color:var(--accent)">fourcard</strong></div>
   <div style="margin-bottom:4px;">후원계좌: 신한 110-376-464404 손x원</div>
-  <div>© 2026 메랜비서 · <a href="https://mapleland.gg" target="_blank">mapleland.gg</a></div>
+  <div>© 2026 메랜비서 · 문의 디스코드 j_son1993</div>
 </footer>
 <script>
 const NGROK_URL = "https://mason-falconnoid-isabela.ngrok-free.dev";
@@ -786,23 +786,199 @@ async function submitComment(postId){
 // 파밍 정보
 // ══════════════════════════
 const DEFAULT_FARMING = [
-  { id:1, zone:"엘나스", spot:"와이번 둥지", level:"100~115", mobs:["와이번","블루 와이번"], drops:["드래곤 스킨","와이번 스케일","망토 공격력 주문서 60%","장갑 공격력 주문서 60%"], memo:"경험치 효율 최상, 드랍 아이템 고가" },
-  { id:2, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"105~120", mobs:["와이번","드래곤"], drops:["드래곤 스킨","블루 드래곤 스케일","드래곤 퍼플 슬레브","드래곤 그린 슬레브"], memo:"고레벨 파밍 명소, 사냥터 시세 참고" },
-  { id:3, zone:"미나르숲", spot:"남겨진 용의 둥지", level:"110~125", mobs:["레드 드래곤","와이번"], drops:["드래곤 스킨","레드 드래곤 스케일","망토 마력 주문서 60%"], memo:"레드 드래곤 스케일 고가" },
-  { id:4, zone:"미나르숲", spot:"망가진 용의 둥지", level:"108~122", mobs:["그린 드래곤","드래곤"], drops:["드래곤 스킨","그린 드래곤 스케일","장갑 마력 주문서 60%"], memo:"그린 드래곤 스케일 드랍" },
-  { id:5, zone:"아쿠아로드", spot:"깊은 바다 협곡2", level:"100~115", mobs:["씨 락서스","바다뱀"], drops:["씨 락서스 비늘","바다뱀 껍질","전신 갑옷 민첩 주문서 60%"], memo:"아쿠아로드 대표 사냥터" },
-  { id:6, zone:"아쿠아로드", spot:"위험한 바다 협곡2", level:"95~110", mobs:["씨 락서스","상어"], drops:["씨 락서스 비늘","상어 지느러미","신발 스피드 주문서 60%"], memo:"중반 레벨 추천" },
-  { id:7, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~105", mobs:["돌연변이 문어","서커","바다 유령"], drops:["돌연변이 문어 먹물","장갑 공격력 주문서 10%","귀 장식 주문서"], memo:"귀 장식 주문서 드랍으로 유명" },
-  { id:8, zone:"루더스호수", spot:"까막산 입구", level:"85~100", mobs:["까마귀","크로우"],  drops:["까마귀 깃털","크로우 발톱","전신 갑옷 공격력 주문서 60%"], memo:"중반 레벨 파밍터" },
-  { id:9, zone:"루디브리엄", spot:"시간의 길4", level:"100~120", mobs:["시간의 파수꾼","크로노스"], drops:["시간의 파편","크로노스 스크롤","방패 마력 주문서 60%"], memo:"경험치+파밍 겸용" },
-  { id:10, zone:"루디브리엄", spot:"잃어버린시간2", level:"105~120", mobs:["잃어버린 크로노스","시간의 수호자"], drops:["시간의 파편","잃어버린 크로노스 스크롤","장갑 공격력 주문서 60%"], memo:"고레벨 루디 사냥터" },
-  { id:11, zone:"히든스트리트", spot:"블루 와이번의 둥지", level:"103~118", mobs:["블루 와이번"], drops:["블루 와이번 스케일","드래곤 스킨","망토 공격력 주문서 60%"], memo:"블루 와이번 스케일 전문 파밍" },
-  { id:12, zone:"히든스트리트", spot:"관계자 외 출입금지", level:"95~110", mobs:["기계 경비병","로봇"], drops:["기계 부품","로봇 배터리","장갑 공격력 주문서 60%"], memo:"파티 사냥 추천" },
-  { id:13, zone:"미나르숲", spot:"협곡의 동쪽길", level:"100~115", mobs:["산양","록 스피릿"], drops:["산양 뿔","록 스피릿 결정","신발 점프 주문서 60%"], memo:"적당한 밀도, 초보 파밍터" },
-  { id:14, zone:"미나르숲", spot:"산양의 골짜기 1", level:"95~108", mobs:["산양","어린 산양"], drops:["산양 뿔","장갑 민첩 주문서 60%"], memo:"레벨 올리기 좋음" },
+  {
+    id:1, zone:"미나르숲", spot:"큰 둥지 봉우리", level:"110~113",
+    mobs:["스켈로스 Lv.113","네스트골렘 Lv.110"],
+    drops:[
+      {name:"샤프 아이즈 30", price:"172,486,952", rate:"0.0002%"},
+      {name:"망토 힘 주문서 60%", price:"3,471,091", rate:"0.001%"},
+      {name:"귀 장식 체력 주문서 60%", price:"970,912", rate:"0.004%"}
+    ],
+    memo:""
+  },
+  {
+    id:2, zone:"미나르숲", spot:"남겨진 용의 둥지1", level:"110~113",
+    mobs:["스켈레곤 Lv.110","스켈로스 Lv.113"],
+    drops:[
+      {name:"샤프 아이즈 30", price:"172,486,952", rate:"0.0002%"},
+      {name:"피어싱 20", price:"11,313,333", rate:"0.0001%"},
+      {name:"장갑 공격력 주문서 10%", price:"6,360,557", rate:"0.004%"}
+    ],
+    memo:""
+  },
+  {
+    id:3, zone:"아쿠아로드", spot:"난파선의 무덤", level:"90~102",
+    mobs:["폭렬 망둥이집 Lv.90","샤크 Lv.100","콜드샤크 Lv.102"],
+    drops:[
+      {name:"샤프 아이즈 20", price:"166,100,000", rate:"0.004%"},
+      {name:"망토 힘 주문서 60%", price:"3,471,091", rate:"0.006%"},
+      {name:"망토 행운 주문서 60%", price:"2,545,580", rate:"0.006%"}
+    ],
+    memo:""
+  },
+  {
+    id:4, zone:"울프 스파이더", spot:"울프 스파이더의 굴", level:"80",
+    mobs:["울프 스파이더 Lv.80"],
+    drops:[
+      {name:"일비 표창", price:"69,151,460", rate:"0.004%"},
+      {name:"아대 공격력 주문서 10%", price:"2,342,219", rate:"0.004%"},
+      {name:"청갑충", price:"옵션에 따라 상이", rate:"0.004%"}
+    ],
+    memo:""
+  },
+  {
+    id:5, zone:"울프 스파이더", spot:"폐광: 늑대의영역3", level:"58~80",
+    mobs:["라이칸스로프 Lv.80","화이트팽 Lv.58"],
+    drops:[
+      {name:"일비 표창", price:"69,151,460", rate:"0.008%"},
+      {name:"투구 지력 주문서 100%", price:"3,943,636", rate:"0.006%"},
+      {name:"엘릭서", price:"9,336", rate:"0.2%"}
+    ],
+    memo:""
+  },
+  {
+    id:6, zone:"울프 스파이더", spot:"던전: 머쉬맘의 무덤", level:"24~65",
+    mobs:["좀비 머쉬맘 Lv.65","좀비버섯 Lv.24","주니어 부기 Lv.35"],
+    drops:[
+      {name:"일비 표창", price:"69,151,460", rate:"0.06%"},
+      {name:"창 공격력 주문서 10%", price:"1,970,866", rate:"0.006%"},
+      {name:"아대 공격력 주문서 60%", price:"1,102,448", rate:"0.4%"}
+    ],
+    memo:""
+  },
+  {
+    id:7, zone:"숲/시계탑", spot:"숲의 갈림길", level:"85~88",
+    mobs:["버크 Lv.85","듀얼 버크 Lv.88"],
+    drops:[
+      {name:"일비 표창", price:"69,151,460", rate:"0.008%"},
+      {name:"귀 장식 행운 주문서 10%", price:"4,392,000", rate:"0.004%"},
+      {name:"아대 공격력 주문서 10%", price:"2,342,219", rate:"0.002%"}
+    ],
+    memo:""
+  },
+  {
+    id:8, zone:"숲/시계탑", spot:"시계탑최하층: 뒤틀린 시간의 길<4>", level:"93",
+    mobs:["바이킹 Lv.93"],
+    drops:[
+      {name:"일비 표창", price:"69,151,460", rate:"0.006%"},
+      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.004%"},
+      {name:"석궁 공격력 주문서 10%", price:"652,388", rate:"0.004%"}
+    ],
+    memo:""
+  },
+  {
+    id:9, zone:"숲/시계탑", spot:"미나르숲: 사라진 숲", level:"100~105",
+    mobs:["그린코니언 Lv.100","다크코니언 Lv.105"],
+    drops:[
+      {name:"스탠스 20", price:"47,868,750", rate:"0.0004%"},
+      {name:"귀 장식 지력 주문서 10%", price:"5,595,451", rate:"0.001%"},
+      {name:"돌진 20", price:"1,819,384", rate:"0.002%"}
+    ],
+    memo:""
+  },
+  {
+    id:10, zone:"루더스호수/폐광", spot:"루더스호수: 까막산 입구", level:"10~57",
+    mobs:["월묘 Lv.45","다크 엑스텀프 Lv.10"],
+    drops:[
+      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
+      {name:"신발 점프력 주문서 10%", price:"3,196,868", rate:"0.006%"},
+      {name:"노란색 우산", price:"옵션에 따라 상이", rate:"0.008%"}
+    ],
+    memo:""
+  },
+  {
+    id:11, zone:"루더스호수/폐광", spot:"루더스호수: 옹달샘", level:"10~50",
+    mobs:["월묘 Lv.45","호돌이 Lv.50","다크 엑스텀프 Lv.10"],
+    drops:[
+      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
+      {name:"신발 점프력 주문서 10%", price:"3,196,868", rate:"0.006%"},
+      {name:"장갑 공격력 주문서 60%", price:"2,597,160", rate:"0.006%"}
+    ],
+    memo:""
+  },
+  {
+    id:12, zone:"루더스호수/폐광", spot:"폐광: 폐광4", level:"41~57",
+    mobs:["마이너 좀비 Lv.57","플라이아이 Lv.41"],
+    drops:[
+      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
+      {name:"망토 힘 주문서 10%", price:"1,695,937", rate:"0.004%"},
+      {name:"좀비의 잃어버린 금니", price:"20,627", rate:"4%"}
+    ],
+    memo:""
+  },
+  {
+    id:13, zone:"루디브리엄/시간의 길", spot:"루디브리엄성: 잃어버린시간<2>", level:"46",
+    mobs:["마스터 크로노스 Lv.46"],
+    drops:[
+      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
+      {name:"스태프 마력 주문서 10%", price:"1,539,033", rate:"0.004%"},
+      {name:"엘릭서", price:"9,336", rate:"1%"}
+    ],
+    memo:""
+  },
+  {
+    id:14, zone:"루디브리엄/시간의 길", spot:"시간의길<4>", level:"46",
+    mobs:["마스터 크로노스 Lv.46"],
+    drops:[
+      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
+      {name:"스태프 마력 주문서 10%", price:"1,539,033", rate:"0.004%"},
+      {name:"엘릭서", price:"9,336", rate:"1%"}
+    ],
+    memo:""
+  },
+  {
+    id:15, zone:"루디브리엄/시간의 길", spot:"루더스호수: 콜란초원5", level:"45~49",
+    mobs:["울트라 그레이 Lv.45","원로 그레이 Lv.49"],
+    drops:[
+      {name:"투구 민첩 주문서 60%", price:"16,653,620", rate:"0.006%"},
+      {name:"투구 민첩 주문서 10%", price:"7,320,000", rate:"0.006%"},
+      {name:"스태프 마력 주문서 60%", price:"496,920", rate:"0.008%"}
+    ],
+    memo:""
+  },
+  {
+    id:16, zone:"무릉도원", spot:"무릉도원: 안개 낀 숲", level:"55~58",
+    mobs:["천록 Lv.58","비금 Lv.55"],
+    drops:[
+      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.005%"},
+      {name:"장갑 공격력 주문서 60%", price:"2,597,160", rate:"0.006%"},
+      {name:"엘릭서", price:"9,336", rate:"0.1%"}
+    ],
+    memo:""
+  },
+  {
+    id:17, zone:"무릉도원", spot:"무릉도원: 요괴의 숲", level:"55~66",
+    mobs:["비금 Lv.55","묘선 Lv.66"],
+    drops:[
+      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.005%"},
+      {name:"귀 장식 지력 주문서 60%", price:"1,421,590", rate:"0.004%"},
+      {name:"엘릭서", price:"9,336", rate:"0.1%"}
+    ],
+    memo:""
+  },
+  {
+    id:18, zone:"무릉도원", spot:"던전: 차가운 요람", level:"64~68",
+    mobs:["아이스 드레이크 Lv.64","다크 드레이크 Lv.68"],
+    drops:[
+      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.006%"},
+      {name:"투구 지력 주문서 100%", price:"3,943,636", rate:"0.004%"},
+      {name:"귀 장식 체력 주문서 60%", price:"970,912", rate:"0.006%"}
+    ],
+    memo:""
+  },
+  {
+    id:19, zone:"무릉도원", spot:"알카드노 연구소: 연구소 A-1 구역", level:"47~50",
+    mobs:["미스릴 뮤테 Lv.47","강화된 미스릴 뮤테 Lv.50"],
+    drops:[
+      {name:"귀 장식 민첩 주문서 60%", price:"12,588,750", rate:"0.006%"},
+      {name:"투구 민첩 주문서 100%", price:"11,081,250", rate:"0.007%"},
+      {name:"석궁 공격력 주문서 10%", price:"652,388", rate:"0.007%"}
+    ],
+    memo:""
+  },
 ];
 
-let farmingData = JSON.parse(localStorage.getItem('farming_data') || 'null') || DEFAULT_FARMING;
+let farmingData = DEFAULT_FARMING;
 
 function saveFarmingLocal() {
   localStorage.setItem('farming_data', JSON.stringify(farmingData));
@@ -813,7 +989,7 @@ function filterFarming() {
   const zone = document.getElementById('farming-zone-filter').value;
   const filtered = farmingData.filter(f => {
     const matchZone = !zone || f.zone === zone;
-    const matchQ = !q || f.spot.toLowerCase().includes(q) || f.mobs.some(m=>m.toLowerCase().includes(q)) || f.drops.some(d=>d.toLowerCase().includes(q));
+    const matchQ = !q || f.spot.toLowerCase().includes(q) || f.mobs.some(m=>m.toLowerCase().includes(q)) || f.drops.some(d=>(typeof d==='object'?d.name:d).toLowerCase().includes(q));
     return matchZone && matchQ;
   });
   renderFarming(filtered);
@@ -822,7 +998,21 @@ function filterFarming() {
 function renderFarming(data) {
   const list = document.getElementById('farming-list');
   if (!data || data.length === 0) { list.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px;">검색 결과가 없어요.</div>'; return; }
-  list.innerHTML = data.map(f => `
+  list.innerHTML = data.map(f => {
+    // drops가 객체배열({name,price,rate})이면 카드형, 문자열배열이면 태그형
+    const isRich = f.drops.length > 0 && typeof f.drops[0] === 'object';
+    const dropsHtml = isRich
+      ? `<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;">
+          ${f.drops.map(d=>`
+            <div style="background:var(--surface);border:1px solid rgba(46,204,113,.35);border-radius:7px;padding:8px 11px;min-width:130px;text-align:center;">
+              <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:4px;">📜 ${d.name}</div>
+              <div style="font-family:var(--mono);font-size:.78rem;color:var(--accent);">💰 ${d.price}</div>
+              <div style="font-family:var(--mono);font-size:.75rem;color:#e8a020;opacity:.75;">${d.rate}</div>
+            </div>`).join('')}
+        </div>`
+      : `<div class="farming-tags">${f.drops.map(d=>`<span class="farming-tag drop">${d}</span>`).join('')}</div>`;
+
+    return `
     <div class="farming-card">
       <div class="farming-header">
         <span class="farming-spot-name">🗺️ ${f.spot}</span>
@@ -835,10 +1025,11 @@ function renderFarming(data) {
       </div>
       <div class="farming-section">
         <div class="farming-section-title">💎 주요 드랍</div>
-        <div class="farming-tags">${f.drops.map(d=>`<span class="farming-tag drop">${d}</span>`).join('')}</div>
+        ${dropsHtml}
       </div>
       ${f.memo?`<div class="farming-memo">💡 ${f.memo}</div>`:''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function initFarming() {
